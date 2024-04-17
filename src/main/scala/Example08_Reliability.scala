@@ -545,4 +545,4 @@ object Example08_Reliability_8 extends ZIOAppDefault:
         .get
         .debug("Contract Breaches")
         .run
-  // Result: 0
+  // Result: 2
