@@ -165,7 +165,6 @@ object Example06_Composability_0 extends ZIOAppDefault:
       textAlert:
         topStory
       .run
-  // Texting story: Battery Breakthrough
   // Result: ()
 
 
@@ -185,7 +184,6 @@ object Example06_Composability_1 extends ZIOAppDefault:
         ???
       .catchAll:
         logAndProvideDefault
-  // an implementation is missing
   // Result: default value
 
 
@@ -228,7 +226,7 @@ object Example06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@6e336f15
+  // Result: repl.MdocSession$MdocApp$$anon$19@1e362f87
 
 
 object Example06_Composability_7 extends ZIOAppDefault:

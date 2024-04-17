@@ -347,12 +347,12 @@ object Example04_Configuration_12 extends ZIOAppDefault:
     flipTen
   // Tails
   // Heads
+  // Tails
   // Heads
   // Tails
   // Heads
   // Heads
-  // Tails
-  // Tails
   // Heads
+  // Tails
   // Tails
   // Result: 5
