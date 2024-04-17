@@ -12,7 +12,7 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
           .run
         assertTrue:
           flipTen.run == 10
-    // spec190: ToTest[Nothing, Nothing] = mdoctools.ToTest@3c205a8e
+    // spec190: ToTest[Nothing, Nothing] = mdoctools.ToTest@177dcd77
     // Heads
     // Heads
     // Heads
@@ -34,7 +34,7 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
           .run
         rosencrantzAndGuildensternAreDead.run
         assertCompletes
-    // spec194: ToTest[String, Nothing] = mdoctools.ToTest@3de41291
+    // spec194: ToTest[String, Nothing] = mdoctools.ToTest@42fa4f9d
     // *Performance Begins*
     // R: Heads
     // R: Heads
@@ -60,6 +60,6 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
           .run
     
         assertCompletes
-    // spec229: ToTest[Nothing, Nothing] = mdoctools.ToTest@615d500e
+    // spec229: ToTest[Nothing, Nothing] = mdoctools.ToTest@5f97adc9
     // Parsing CSV: ()
     // Result: Test PASSED

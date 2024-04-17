@@ -345,14 +345,14 @@ object Example04_Configuration_11 extends ZIOAppDefault:
 object Example04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
+  // Heads
   // Tails
   // Tails
   // Tails
   // Heads
-  // Heads
+  // Tails
   // Tails
   // Heads
   // Tails
   // Heads
-  // Tails
   // Result: 4
