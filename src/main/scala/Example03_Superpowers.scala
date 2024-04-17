@@ -235,7 +235,7 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT0.000723995S,User saved)
+  // Result: (PT0.000485868S,User saved)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
