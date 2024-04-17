@@ -352,7 +352,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // Tails
   // Heads
   // Heads
-  // Heads
   // Tails
+  // Heads
   // Tails
   // Result: 5

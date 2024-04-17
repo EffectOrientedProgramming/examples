@@ -408,15 +408,15 @@ object Example08_Reliability_3 extends ZIOAppDefault:
         .timedSecondsDebug:
           "Total time"
         .run
-  // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // James called API [took 2s]
-  // Bill called API [took 3s]
-  // Bruce called API [took 3s]
+  // James called API [took 0s]
+  // Bill called API [took 1s]
+  // Bruce called API [took 2s]
   // James called API [took 3s]
   // Bill called API [took 3s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bill called API [took 3s]
+  // Bruce called API [took 3s]
   // Total time [took 8s]
   // Result: List((), (), ())
 
@@ -510,7 +510,7 @@ object Example08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 object Example08_Reliability_8 extends ZIOAppDefault:
