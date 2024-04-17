@@ -12,7 +12,7 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
           .run
         assertTrue:
           flipTen.run == 10
-    // spec190: ToTest[Nothing, Nothing] = mdoctools.ToTest@1e5975db
+    // spec190: ToTest[Nothing, Nothing] = mdoctools.ToTest@177dcd77
     // Heads
     // Heads
     // Heads
@@ -23,7 +23,6 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
     // Heads
     // Heads
     // Heads
-    // + flips 10 times
     // Result: Test PASSED
     + test("rosencrantzAndGuildensternAreDead finishes"):
       defer:
@@ -35,7 +34,7 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
           .run
         rosencrantzAndGuildensternAreDead.run
         assertCompletes
-    // spec194: ToTest[String, Nothing] = mdoctools.ToTest@190f1d4a
+    // spec194: ToTest[String, Nothing] = mdoctools.ToTest@42fa4f9d
     // *Performance Begins*
     // R: Heads
     // R: Heads
@@ -48,7 +47,6 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
     // R: Heads
     // G: ...probability
     // R: Heads
-    // + rosencrantzAndGuildensternAreDead finishes
     // Result: Test PASSED
     + test("batch runs after 24 hours"):
       val timeTravel =
@@ -62,7 +60,6 @@ object Example04_ConfigurationSpec extends ZIOSpecDefault:
           .run
     
         assertCompletes
-    // spec229: ToTest[Nothing, Nothing] = mdoctools.ToTest@73707d4
+    // spec229: ToTest[Nothing, Nothing] = mdoctools.ToTest@5f97adc9
     // Parsing CSV: ()
-    // + batch runs after 24 hours
     // Result: Test PASSED
