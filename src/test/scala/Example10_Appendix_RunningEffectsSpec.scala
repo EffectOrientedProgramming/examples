@@ -2,23 +2,29 @@ import zio.*
 import zio.direct.*
 import zio.test.*
 
-object Example10_Appendix_RunningEffectsSpec extends ZIOSpecDefault:
-  def spec = suite("suite"):
+object Example10_Appendix_RunningEffects_0 extends ZIOSpecDefault:
+  def spec =
     test("random is random"):
       defer:
         assertTrue:
           Random.nextIntBounded(10).run < 10
-    // spec50: ToTest[Nothing, Nothing] = mdoctools.ToTest@18056246
-    // Result: Test PASSED
-    + test("random is still random"):
+  // Result: Test PASSED
+
+
+object Example10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
+  def spec =
+    test("random is still random"):
       defer:
         assertTrue:
           Random.nextIntBetween(0, 10).run <= 10 &&
           Random.nextIntBetween(10, 20).run <= 20 &&
           Random.nextIntBetween(20, 30).run <= 30
-    // spec56: ToTest[Nothing, Nothing] = mdoctools.ToTest@35e12935
-    // Result: Test PASSED
-    + test("console works"):
+  // Result: Test PASSED
+
+
+object Example10_Appendix_RunningEffects_2 extends ZIOSpecDefault:
+  def spec =
+    test("console works"):
       defer:
         TestConsole
           .feedLines:
@@ -31,9 +37,8 @@ object Example10_Appendix_RunningEffectsSpec extends ZIOSpecDefault:
           TestConsole.output.run.mkString
         val expectedOutput =
           s"""|Enter your name
-              |Hello Zeb
-              |""".stripMargin
+Hello Zeb
+""".stripMargin
         assertTrue:
           capturedOutput == expectedOutput
-    // spec70: ToTest[Nothing, Nothing] = mdoctools.ToTest@4869c55d
-    // Result: Test PASSED
+  // Result: Test PASSED
