@@ -172,6 +172,7 @@ object Example03_Superpowers_2 extends ZIOAppDefault:
   
   def run =
     effect0
+  // Log: **Database crashed!!**
   // Result: **Database crashed!!**
 
 
@@ -181,6 +182,7 @@ object Example03_Superpowers_3 extends ZIOAppDefault:
   
   def run =
     effect1
+  // Log: **Database crashed!!**
   // Result: User saved
 
 
@@ -190,6 +192,7 @@ object Example03_Superpowers_4 extends ZIOAppDefault:
   
   def run =
     effect1
+  // Log: **Database crashed!!**
   // Result: **Database crashed!!**
 
 
@@ -199,6 +202,7 @@ object Example03_Superpowers_5 extends ZIOAppDefault:
   
   def run =
     effect2
+  // Log: **Database crashed!!**
   // Result: ERROR: User could not be saved
 
 
@@ -235,7 +239,7 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT0.000402365S,User saved)
+  // Result: (PT0.000451091S,User saved)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:

@@ -107,11 +107,10 @@ extension [R, E, A](z: ZIO[R, E, A])
     z.timed
       .tap:
         (duration, _) =>
-          println(
+          Console.printLine(
             message + " [took " +
               duration.getSeconds + "s]"
-          )
-          ZIO.unit
+          ).orDie
       .map(_._2)
 
 import nl.vroste.rezilience.RateLimiter
@@ -179,16 +178,12 @@ object DelicateResource:
   val live =
     ZLayer.fromZIO:
       defer:
-        ZIO
-          .succeed:
-            println:
-              "Delicate Resource constructed."
-          .run
-        ZIO
-          .succeed:
-            println:
-              "Do not make more than 3 concurrent requests!"
-          .run
+        Console.printLine:
+          "Delicate Resource constructed."
+        .run
+        Console.printLine:
+          "Do not make more than 3 concurrent requests!"
+        .run
         Live(
           Ref.make[List[Int]](List.empty).run,
           Ref.make(true).run
@@ -387,10 +382,6 @@ object Example08_Reliability_2 extends ZIOAppDefault:
           "System"
         .timedSecondsDebug("Result")
         .run
-  // System called API [took 0s]
-  // System called API [took 1s]
-  // System called API [took 1s]
-  // Result [took 2s]
   // Result: ()
 
 
@@ -408,16 +399,6 @@ object Example08_Reliability_3 extends ZIOAppDefault:
         .timedSecondsDebug:
           "Total time"
         .run
-  // Bill called API [took 0s]
-  // Bill called API [took 1s]
-  // Bruce called API [took 2s]
-  // James called API [took 3s]
-  // Bill called API [took 3s]
-  // Bruce called API [took 3s]
-  // James called API [took 3s]
-  // Bruce called API [took 2s]
-  // James called API [took 2s]
-  // Total time [took 8s]
   // Result: List((), (), ())
 
 
@@ -462,8 +443,6 @@ object Example08_Reliability_5 extends ZIOAppDefault:
         .run
     .provideSome[Scope]:
       DelicateResource.live
-  // Delicate Resource constructed.
-  // Do not make more than 3 concurrent requests!
   // Result: All Requests Succeeded
 
 

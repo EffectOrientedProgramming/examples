@@ -12,16 +12,6 @@ object Example04_Configuration_0 extends ZIOSpecDefault:
           .run
         assertTrue:
           flipTen.run == 10
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
   // Result: Test PASSED
 
 
@@ -37,18 +27,6 @@ object Example04_Configuration_1 extends ZIOSpecDefault:
           .run
         rosencrantzAndGuildensternAreDead.run
         assertCompletes
-  // *Performance Begins*
-  // R: Heads
-  // R: Heads
-  // R: Heads
-  // R: Heads
-  // R: Heads
-  // G: There is an art to building suspense.
-  // R: Heads
-  // G: Though it can be done by luck alone.
-  // R: Heads
-  // G: ...probability
-  // R: Heads
   // Result: Test PASSED
 
 
@@ -60,18 +38,6 @@ object Example04_Configuration_2 extends ZIOSpecDefault:
         assertCompletes
     @@ TestAspect.withLiveRandom
     @@ TestAspect.flaky(Int.MaxValue)
-  // *Performance Begins*
-  // R: Tails
-  // *Performance Begins*
-  // R: Heads
-  // R: Heads
-  // R: Tails
-  // ...
-  // R: Heads
-  // G: Though it can be done by luck alone.
-  // R: Heads
-  // G: ...probability
-  // R: Heads
   // Result: Test PASSED
 
 
@@ -89,5 +55,4 @@ object Example04_Configuration_3 extends ZIOSpecDefault:
           .run
     
         assertCompletes
-  // Parsing CSV: ()
   // Result: Test PASSED

@@ -50,9 +50,9 @@ case class BreadFromFriend() extends Bread()
 object Friend:
   def forcedFailure(invocations: Int) =
     defer:
-      println(
+      Console.printLine(
         s"Attempt $invocations: Error(Friend Unreachable)"
-      )
+      ).run
       ZIO
         .when(true)(
           ZIO.fail("Error(Friend Unreachable)")
@@ -71,10 +71,10 @@ object Friend:
       else if invocations == 1 then
         ZIO.succeed(BreadFromFriend())
       else
-        println(
+        Console.printLine(
           s"Attempt $invocations: Succeeded"
-        )
-        ZIO.succeed(BreadFromFriend())
+        ).orDie.as:
+          BreadFromFriend()
 end Friend
 
 import zio.config.*
@@ -98,18 +98,18 @@ val config =
 
 extension (z: ZIO.type)
   def debugDemo(s: String): UIO[Unit] =
-    ZIO.succeed(println(s))
+    Console.printLine(s).orDie
 
 extension [R, E, A](z: ZIO[R, E, A])
   def debugDemo(s: String): ZIO[R, E, A] =
     z.tapBoth(
-      e => ZIO.succeed(println(s"$s: $e")),
-      r => ZIO.succeed(println(s"$s: $r"))
+      e => Console.printLine(s"$s: $e").orDie,
+      r => Console.printLine(s"$s: $r").orDie
     )
   def debugDemo: ZIO[R, E, A] =
     z.tapBoth(
-      e => ZIO.succeed(println(e)),
-      r => ZIO.succeed(println(r))
+      e => Console.printLine(e).orDie,
+      r => Console.printLine(r).orDie
     )
 
 val coinToss =
@@ -278,7 +278,6 @@ object Example04_Configuration_8 extends ZIOAppDefault:
             Schedule.recurs:
               1
   // Attempt 1: Error(Friend Unreachable)
-  // Attempt 2: Error(Friend Unreachable)
   // Result: Error(Friend Unreachable)
 
 
@@ -296,7 +295,6 @@ object Example04_Configuration_9 extends ZIOAppDefault:
               2
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
-  // Attempt 3: Succeeded
   // Result: BreadFromFriend()
 
 
@@ -337,8 +335,6 @@ object Example04_Configuration_11 extends ZIOAppDefault:
       .provide:
         config
   // Attempt 1: Error(Friend Unreachable)
-  // Attempt 2: Error(Friend Unreachable)
-  // Attempt 3: Succeeded
   // Result: BreadFromFriend()
 
 
@@ -346,13 +342,13 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Tails
-  // Tails
   // Heads
   // Heads
   // Tails
   // Heads
+  // Heads
   // Tails
   // Heads
-  // Heads
+  // Tails
   // Heads
   // Result: 6
