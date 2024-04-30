@@ -173,13 +173,7 @@ object Example03_Superpowers_2 extends ZIOAppDefault:
   def run =
     effect0
   // Log: **Database crashed!!**
-  // Result: Failure(Fail(**Database crashed!!**,Stack trace for thread "zio-fiber-352578":
-  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:74)
-  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:78)
-  // 	at repl.MdocSession.MdocApp.saveUser(<input>:105)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
-  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
+  // Result: Success(**Database crashed!!**)
 
 
 object Example03_Superpowers_3 extends ZIOAppDefault:
@@ -204,14 +198,7 @@ object Example03_Superpowers_4 extends ZIOAppDefault:
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Result: Failure(Fail(**Database crashed!!**,Stack trace for thread "zio-fiber-352586":
-  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:74)
-  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:78)
-  // 	at repl.MdocSession.MdocApp.saveUser(<input>:105)
-  // 	at repl.MdocSession.MdocApp.effect1(<input>:193)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
-  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
+  // Result: Success(**Database crashed!!**)
 
 
 object Example03_Superpowers_5 extends ZIOAppDefault:
@@ -224,11 +211,7 @@ object Example03_Superpowers_5 extends ZIOAppDefault:
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Result: Failure(Fail(ERROR: User could not be saved,Stack trace for thread "zio-fiber-352590":
-  // 	at repl.MdocSession.MdocApp.effect2(<input>:231)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
-  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
+  // Result: Success(ERROR: User could not be saved)
 
 
 object Example03_Superpowers_6 extends ZIOAppDefault:
@@ -238,11 +221,7 @@ object Example03_Superpowers_6 extends ZIOAppDefault:
   def run =
     effect3
   // Log: Interrupting slow request
-  // Result: Failure(Fail(Save timed out,Stack trace for thread "zio-fiber-352594":
-  // 	at repl.MdocSession.MdocApp.effect3(<input>:254)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
-  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
+  // Result: Success(Save timed out)
 
 
 object Example03_Superpowers_7 extends ZIOAppDefault:
@@ -264,8 +243,8 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   
   def run =
     effect5
-  // Log: Signup initiated for Morty
   // Result: Success(User sent to manual setup queue)
+  // Log: Signup initiated for Morty
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -275,7 +254,10 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: Success((PT0.120468404S,User sent to manual setup queue))
+  // TODO Handle long line. 
+  // Truncating for now: 
+  // (PT5.008269627S,User sent to manual setup queue)
+  // Result: Success((PT5.008269627S,User sent to manual setup queu)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
