@@ -243,8 +243,8 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   
   def run =
     effect5
-  // Result: Success(User sent to manual setup queue)
   // Log: Signup initiated for Morty
+  // Result: Success(User sent to manual setup queue)
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -256,8 +256,8 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   // Log: Signup initiated for Morty
   // TODO Handle long line. 
   // Truncating for now: 
-  // (PT5.008269627S,User sent to manual setup queue)
-  // Result: Success((PT5.008269627S,User sent to manual setup queu)
+  // (PT0.053624922S,User sent to manual setup queue)
+  // Result: Success((PT0.053624922S,User sent to manual setup queu)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:

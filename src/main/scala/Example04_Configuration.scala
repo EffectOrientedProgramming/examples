@@ -330,20 +330,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Heads
-  // Heads
-  // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200542":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:68)
-  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:69)
-  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:74))
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200542":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -355,7 +342,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:69)
   // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:74))
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200542":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -367,7 +354,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:69)
   // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:74))
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200542":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -379,4 +366,27 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:69)
   // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:74))
   // Heads
-  // Result: Success(6)
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:68)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:69)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:74))
+  // Heads
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:68)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:69)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:74))
+  // Result: Success(5)
