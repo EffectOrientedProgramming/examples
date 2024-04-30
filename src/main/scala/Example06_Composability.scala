@@ -166,7 +166,7 @@ object Example06_Composability_0 extends ZIOAppDefault:
         topStory
       .run
   // Texting story: Battery Breakthrough
-  // Result: ()
+  // Result: Success(())
 
 
 object Example06_Composability_1 extends ZIOAppDefault:
@@ -186,13 +186,13 @@ object Example06_Composability_1 extends ZIOAppDefault:
       .catchAll:
         logAndProvideDefault
   // an implementation is missing
-  // Result: default value
+  // Result: Success(default value)
 
 
 object Example06_Composability_2 extends ZIOAppDefault:
   def run =
     getHeadlineZ
-  // Result: stock market crash!
+  // Result: Success(stock market crash!)
 
 
 object Example06_Composability_3 extends ZIOAppDefault:
@@ -202,7 +202,12 @@ object Example06_Composability_3 extends ZIOAppDefault:
   
   def run =
     getHeadlineZ
-  // Result: HeadlineNotAvailable()
+  // Result: Failure(Fail(HeadlineNotAvailable(),Stack trace for thread "zio-fiber-200376":
+  // 	at repl.MdocSession.MdocApp.getHeadlineZ(<input>:117)
+  // 	at repl.MdocSession.MdocApp.getHeadlineZ(<input>:120)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example06_Composability_4 extends ZIOAppDefault:
@@ -213,14 +218,18 @@ object Example06_Composability_4 extends ZIOAppDefault:
   def run =
     topicOfInterestZ:
       "stock market crash!"
-  // Result: stock market
+  // Result: Success(stock market)
 
 
 object Example06_Composability_5 extends ZIOAppDefault:
   def run =
     topicOfInterestZ:
       "boring and inane content"
-  // Result: NoInterestingTopic()
+  // Result: Failure(Fail(NoInterestingTopic(),Stack trace for thread "zio-fiber-200390":
+  // 	at repl.MdocSession.MdocApp.topicOfInterestZ(<input>:179)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example06_Composability_6 extends ZIOAppDefault:
@@ -228,7 +237,7 @@ object Example06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@fdd4514
+  // Result: Success(repl.MdocSession$MdocApp$$anon$19@59ada2ef)
 
 
 object Example06_Composability_7 extends ZIOAppDefault:
@@ -241,7 +250,7 @@ object Example06_Composability_7 extends ZIOAppDefault:
   // Opening file!
   // Searching file for: topicOfInterest
   // Closing file!
-  // Result: false
+  // Result: Success(false)
 
 
 object Example06_Composability_8 extends ZIOAppDefault:
@@ -253,21 +262,25 @@ object Example06_Composability_8 extends ZIOAppDefault:
   // Opening file!
   // Writing to file: New data on topic
   // Closing file!
-  // Result: New data on topic
+  // Result: Success(New data on topic)
 
 
 object Example06_Composability_9 extends ZIOAppDefault:
   def run =
     summaryForZ:
       "stock market"
-  // Result: detailed history of stock market
+  // Result: Success(detailed history of stock market)
 
 
 object Example06_Composability_10 extends ZIOAppDefault:
   def run =
     summaryForZ:
       "obscureTopic"
-  // Result: NoRecordsAvailable(obscureTopic)
+  // Result: Failure(Fail(NoRecordsAvailable(obscureTopic),Stack trace for thread "zio-fiber-200454":
+  // 	at repl.MdocSession.MdocApp.summaryForZ(<input>:380)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example06_Composability_11 extends ZIOAppDefault:
@@ -286,4 +299,4 @@ object Example06_Composability_11 extends ZIOAppDefault:
   // Searching file for: stock market
   // Writing to file: detailed history of stock market
   // Closing file!
-  // Result: detailed history of stock market
+  // Result: Success(detailed history of stock market)

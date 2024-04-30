@@ -360,7 +360,8 @@ object Example08_Reliability_0 extends ZIOAppDefault:
   def run =
     thunderingHerdsScenario
       .provide(CloudStorage.live, popularService)
-  // Result: Amount owed: $100
+  // Amount owed: $100
+  // Result: Success(Amount owed: $100)
 
 
 object Example08_Reliability_1 extends ZIOAppDefault:
@@ -369,7 +370,8 @@ object Example08_Reliability_1 extends ZIOAppDefault:
       CloudStorage.live,
       ZLayer.fromZIO(makeCachedPopularService)
     )
-  // Result: Amount owed: $1
+  // Amount owed: $1
+  // Result: Success(Amount owed: $1)
 
 
 object Example08_Reliability_2 extends ZIOAppDefault:
@@ -382,7 +384,11 @@ object Example08_Reliability_2 extends ZIOAppDefault:
           "System"
         .timedSecondsDebug("Result")
         .run
-  // Result: ()
+  // System called API [took 0s]
+  // System called API [took 1s]
+  // System called API [took 0s]
+  // Result [took 0s]
+  // Result: Success(())
 
 
 object Example08_Reliability_3 extends ZIOAppDefault:
@@ -399,7 +405,17 @@ object Example08_Reliability_3 extends ZIOAppDefault:
         .timedSecondsDebug:
           "Total time"
         .run
-  // Result: List((), (), ())
+  // Bill called API [took 0s]
+  // Bruce called API [took 0s]
+  // James called API [took 0s]
+  // Bill called API [took -1s]
+  // Bruce called API [took 0s]
+  // James called API [took 0s]
+  // Bill called API [took -1s]
+  // Bruce called API [took 1s]
+  // James called API [took 0s]
+  // Total time [took 0s]
+  // Result: Success(List((), (), ()))
 
 
 object Example08_Reliability_4 extends ZIOAppDefault:
@@ -418,7 +434,17 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Result: Killed the server!!
+  // Current requests: : List(773)
+  // Current requests: : List(218)
+  // Current requests: : List(90)
+  // Current requests: : List(533)
+  // Current requests: : List(704)
+  // Current requests: : List(657)
+  // Current requests: : List(699)
+  // Current requests: : List(994)
+  // Current requests: : List(884)
+  // Current requests: : List(668)
+  // Result: Success(All Requests Succeeded!)
 
 
 object Example08_Reliability_5 extends ZIOAppDefault:
@@ -443,7 +469,19 @@ object Example08_Reliability_5 extends ZIOAppDefault:
         .run
     .provideSome[Scope]:
       DelicateResource.live
-  // Result: All Requests Succeeded
+  // Delicate Resource constructed.
+  // Do not make more than 3 concurrent requests!
+  // Current requests: : List(280)
+  // Current requests: : List(464, 280)
+  // Current requests: : List(829)
+  // Current requests: : List(179)
+  // Current requests: : List(872)
+  // Current requests: : List(768)
+  // Current requests: : List(485)
+  // Current requests: : List(62)
+  // Current requests: : List(47)
+  // Current requests: : List(899)
+  // Result: Success(All Requests Succeeded)
 
 
 object Example08_Reliability_6 extends ZIOAppDefault:
@@ -461,7 +499,7 @@ object Example08_Reliability_6 extends ZIOAppDefault:
         numCalls.get.run
   
       s"Calls made: $made"
-  // Result: Calls made: 141
+  // Result: Success(Calls made: 141)
 
 
 object Example08_Reliability_7 extends ZIOAppDefault:
@@ -489,7 +527,7 @@ object Example08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Success(Calls prevented: 0 Calls made: 141)
 
 
 object Example08_Reliability_8 extends ZIOAppDefault:
@@ -524,4 +562,5 @@ object Example08_Reliability_8 extends ZIOAppDefault:
         .get
         .debug("Contract Breaches")
         .run
-  // Result: 0
+  // Contract Breaches: 22
+  // Result: Success(22)

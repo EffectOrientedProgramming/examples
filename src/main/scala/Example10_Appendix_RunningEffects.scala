@@ -42,4 +42,4 @@ object Example10_Appendix_RunningEffects_0 extends ZIOAppDefault:
     ZIO.debug:
       "hello, world"
   // hello, world
-  // Result: ()
+  // Result: Success(())

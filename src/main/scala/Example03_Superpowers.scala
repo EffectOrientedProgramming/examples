@@ -154,7 +154,7 @@ val effect7 =
 object Example03_Superpowers_0 extends ZIOAppDefault:
   def run =
     effect0
-  // Result: User saved
+  // Result: Success(User saved)
 
 
 object Example03_Superpowers_1 extends ZIOAppDefault:
@@ -163,7 +163,7 @@ object Example03_Superpowers_1 extends ZIOAppDefault:
   
   def run =
     effect0
-  // Result: User saved
+  // Result: Success(User saved)
 
 
 object Example03_Superpowers_2 extends ZIOAppDefault:
@@ -173,7 +173,13 @@ object Example03_Superpowers_2 extends ZIOAppDefault:
   def run =
     effect0
   // Log: **Database crashed!!**
-  // Result: **Database crashed!!**
+  // Result: Failure(Fail(**Database crashed!!**,Stack trace for thread "zio-fiber-193":
+  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:74)
+  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:78)
+  // 	at repl.MdocSession.MdocApp.saveUser(<input>:105)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example03_Superpowers_3 extends ZIOAppDefault:
@@ -183,7 +189,9 @@ object Example03_Superpowers_3 extends ZIOAppDefault:
   def run =
     effect1
   // Log: **Database crashed!!**
-  // Result: User saved
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Result: Success(User saved)
 
 
 object Example03_Superpowers_4 extends ZIOAppDefault:
@@ -193,7 +201,17 @@ object Example03_Superpowers_4 extends ZIOAppDefault:
   def run =
     effect1
   // Log: **Database crashed!!**
-  // Result: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Result: Failure(Fail(**Database crashed!!**,Stack trace for thread "zio-fiber-1040":
+  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:74)
+  // 	at repl.MdocSession.MdocApp.saveUser.fail(<input>:78)
+  // 	at repl.MdocSession.MdocApp.saveUser(<input>:105)
+  // 	at repl.MdocSession.MdocApp.effect1(<input>:193)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example03_Superpowers_5 extends ZIOAppDefault:
@@ -203,7 +221,14 @@ object Example03_Superpowers_5 extends ZIOAppDefault:
   def run =
     effect2
   // Log: **Database crashed!!**
-  // Result: ERROR: User could not be saved
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Result: Failure(Fail(ERROR: User could not be saved,Stack trace for thread "zio-fiber-1300":
+  // 	at repl.MdocSession.MdocApp.effect2(<input>:231)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example03_Superpowers_6 extends ZIOAppDefault:
@@ -212,7 +237,12 @@ object Example03_Superpowers_6 extends ZIOAppDefault:
   
   def run =
     effect3
-  // Result: Save timed out
+  // Log: Interrupting slow request
+  // Result: Failure(Fail(Save timed out,Stack trace for thread "zio-fiber-1581":
+  // 	at repl.MdocSession.MdocApp.effect3(<input>:254)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example03_Superpowers_7 extends ZIOAppDefault:
@@ -221,7 +251,11 @@ object Example03_Superpowers_7 extends ZIOAppDefault:
   
   def run =
     effect4
-  // Result: User sent to manual setup queue
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Result: Success(User sent to manual setup queue)
 
 
 object Example03_Superpowers_8 extends ZIOAppDefault:
@@ -230,7 +264,8 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   
   def run =
     effect5
-  // Result: User saved
+  // Log: Signup initiated for Morty
+  // Result: Success(User sent to manual setup queue)
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -239,7 +274,7 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT0.000451091S,User saved)
+  // Result: Success((PT0.047501388S,User sent to manual setup queue))
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
@@ -248,4 +283,4 @@ object Example03_Superpowers_10 extends ZIOAppDefault:
   
   def run =
     effect7
-  // Result: None
+  // Result: Success(None)

@@ -116,7 +116,7 @@ object Example05_Errors_0 extends ZIOAppDefault:
   def run =
     ZIO.attempt:
       temperatureApp()
-  // Result: Temperature: 35 degrees
+  // Result: Success(Temperature: 35 degrees)
 
 
 object Example05_Errors_1 extends ZIOAppDefault:
@@ -125,7 +125,11 @@ object Example05_Errors_1 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureApp()
-  // Result: Defect: NetworkException
+  // Result: Failure(Die(repl.MdocSession$MdocApp$NetworkException,Stack trace for thread "zio-fiber-20":
+  // 	at repl.MdocSession.MdocApp.Example53.run(<input>:92)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example05_Errors_2 extends ZIOAppDefault:
@@ -134,7 +138,7 @@ object Example05_Errors_2 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureCatchingApp()
-  // Result: Failure
+  // Result: Success(Failure)
 
 
 object Example05_Errors_3 extends ZIOAppDefault:
@@ -143,7 +147,7 @@ object Example05_Errors_3 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureCatchingMoreApp()
-  // Result: Network Unavailable
+  // Result: Success(Network Unavailable)
 
 
 object Example05_Errors_4 extends ZIOAppDefault:
@@ -152,7 +156,7 @@ object Example05_Errors_4 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureCatchingMoreApp()
-  // Result: GPS Hardware Failure
+  // Result: Success(GPS Hardware Failure)
 
 
 object Example05_Errors_5 extends ZIOAppDefault:
@@ -161,7 +165,7 @@ object Example05_Errors_5 extends ZIOAppDefault:
   
   def run =
     getTemperature
-  // Result: Temperature: 35 degrees
+  // Result: Success(Temperature: 35 degrees)
 
 
 object Example05_Errors_6 extends ZIOAppDefault:
@@ -170,7 +174,11 @@ object Example05_Errors_6 extends ZIOAppDefault:
   
   def run =
     getTemperature
-  // Result: repl.MdocSession$MdocApp$NetworkException
+  // Result: Failure(Fail(repl.MdocSession$MdocApp$NetworkException,Stack trace for thread "zio-fiber-497":
+  // 	at repl.MdocSession.MdocApp.getTemperature(<input>:172)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example05_Errors_7 extends ZIOAppDefault:
@@ -179,7 +187,7 @@ object Example05_Errors_7 extends ZIOAppDefault:
   
   def run =
     temperatureAppComplete
-  // Result: GPS Hardware Failure
+  // Result: Success(GPS Hardware Failure)
 
 
 object Example05_Errors_8 extends ZIOAppDefault:
@@ -187,7 +195,7 @@ object Example05_Errors_8 extends ZIOAppDefault:
   
   def run =
     displayTemperatureZWrapped
-  // Result: 35 degrees
+  // Result: Success(35 degrees)
 
 
 object Example05_Errors_9 extends ZIOAppDefault:
@@ -195,7 +203,7 @@ object Example05_Errors_9 extends ZIOAppDefault:
   
   def run =
     displayTemperatureZWrapped
-  // Result: Network Unavailable
+  // Result: Success(Network Unavailable)
 
 
 object Example05_Errors_10 extends ZIOAppDefault:
@@ -206,7 +214,11 @@ object Example05_Errors_10 extends ZIOAppDefault:
       case ex: NetworkException =>
         ZIO.succeed:
           "Network Unavailable"
-  // Result: Defect: GpsFail
+  // Result: Failure(Die(scala.MatchError: repl.MdocSession$MdocApp$GpsFail (of class repl.MdocSession$MdocApp$GpsFail),Stack trace for thread "zio-fiber-747":
+  // 	at repl.MdocSession.MdocApp.getTemperatureWrapped(<input>:265)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:63)
+  // 	at mdoctools.ToRun.runSync.e(MdocHelpers.scala:64)
+  // 	at mdoctools.ToRun.runSync(MdocHelpers.scala:69)))
 
 
 object Example05_Errors_11 extends ZIOAppDefault:
@@ -220,4 +232,4 @@ object Example05_Errors_11 extends ZIOAppDefault:
       case other =>
         ZIO.succeed:
           "Unknown Error"
-  // Result: Unknown Error
+  // Result: Success(Unknown Error)
