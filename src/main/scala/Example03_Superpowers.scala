@@ -33,7 +33,7 @@ val doesNotWorkInitially =
         Runtime
           .default
           .unsafe
-          .run(Ref.make(0))
+          .run(Ref.make(1))
           .getOrThrow()
       )
   }
@@ -96,7 +96,7 @@ end saveUser
 
 def sendToManualQueue(username: String) =
   ZIO
-    .attempt("User sent to manual setup queue")
+    .attempt(s"Please manually provision $username")
 
 val logUserSignup =
   Console.printLine:
@@ -123,18 +123,17 @@ object MyApp extends ZIOAppDefault:
   def run =
     effect0
 
-import Schedule.{recurs, spaced}
 val effect1 =
-  effect0.retry:
-    recurs(3) && spaced(1.second)
+  effect0.retryN(2)
 
 val effect2 =
   effect1.orElseFail:
     "ERROR: User could not be saved"
 
 val effect3 =
-  effect2.timeoutFail("Save timed out"):
-    5.seconds
+  effect2
+    .timeoutFail("*** Save timed out ***"):
+      5.seconds
 
 val effect4 =
   effect3.orElse:
@@ -184,7 +183,6 @@ object Example03_Superpowers_3 extends ZIOAppDefault:
     effect1
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
   // Result: User saved
 
 
@@ -194,7 +192,6 @@ object Example03_Superpowers_4 extends ZIOAppDefault:
   
   def run =
     effect1
-  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
@@ -210,7 +207,6 @@ object Example03_Superpowers_5 extends ZIOAppDefault:
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
   // Result: ERROR: User could not be saved
 
 
@@ -221,7 +217,7 @@ object Example03_Superpowers_6 extends ZIOAppDefault:
   def run =
     effect3
   // Log: Interrupting slow request
-  // Result: Save timed out
+  // Result: *** Save timed out ***
 
 
 object Example03_Superpowers_7 extends ZIOAppDefault:
@@ -231,10 +227,7 @@ object Example03_Superpowers_7 extends ZIOAppDefault:
   def run =
     effect4
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
-  // Result: User sent to manual setup queue
+  // Result: Please manually provision Morty
 
 
 object Example03_Superpowers_8 extends ZIOAppDefault:
@@ -244,7 +237,7 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   def run =
     effect5
   // Log: Signup initiated for Morty
-  // Result: User sent to manual setup queue
+  // Result: Please manually provision Morty
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -254,10 +247,7 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // TODO Handle long line. 
-  // Truncating for now: 
-  // (PT0.048351094S,User sent to manual setup queue)
-  // Result: (PT0.048351094S,User sent to manual setup queu
+  // Result: (PT0.134125378S,User saved)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
