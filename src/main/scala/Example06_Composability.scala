@@ -166,7 +166,7 @@ object Example06_Composability_0 extends ZIOAppDefault:
         topStory
       .run
   // Texting story: Battery Breakthrough
-  // Result: Success(())
+  // Result: ()
 
 
 object Example06_Composability_1 extends ZIOAppDefault:
@@ -186,13 +186,13 @@ object Example06_Composability_1 extends ZIOAppDefault:
       .catchAll:
         logAndProvideDefault
   // an implementation is missing
-  // Result: Success(default value)
+  // Result: default value
 
 
 object Example06_Composability_2 extends ZIOAppDefault:
   def run =
     getHeadlineZ
-  // Result: Success(stock market crash!)
+  // Result: stock market crash!
 
 
 object Example06_Composability_3 extends ZIOAppDefault:
@@ -202,7 +202,7 @@ object Example06_Composability_3 extends ZIOAppDefault:
   
   def run =
     getHeadlineZ
-  // Result: Success(HeadlineNotAvailable())
+  // Result: HeadlineNotAvailable()
 
 
 object Example06_Composability_4 extends ZIOAppDefault:
@@ -213,14 +213,14 @@ object Example06_Composability_4 extends ZIOAppDefault:
   def run =
     topicOfInterestZ:
       "stock market crash!"
-  // Result: Success(stock market)
+  // Result: stock market
 
 
 object Example06_Composability_5 extends ZIOAppDefault:
   def run =
     topicOfInterestZ:
       "boring and inane content"
-  // Result: Success(NoInterestingTopic())
+  // Result: NoInterestingTopic()
 
 
 object Example06_Composability_6 extends ZIOAppDefault:
@@ -228,7 +228,7 @@ object Example06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: Success(repl.MdocSession$MdocApp$$anon$19@6ffa7f39)
+  // Result: repl.MdocSession$MdocApp$$anon$19@14f249a9
 
 
 object Example06_Composability_7 extends ZIOAppDefault:
@@ -241,7 +241,7 @@ object Example06_Composability_7 extends ZIOAppDefault:
   // Opening file!
   // Searching file for: topicOfInterest
   // Closing file!
-  // Result: Success(false)
+  // Result: false
 
 
 object Example06_Composability_8 extends ZIOAppDefault:
@@ -253,21 +253,21 @@ object Example06_Composability_8 extends ZIOAppDefault:
   // Opening file!
   // Writing to file: New data on topic
   // Closing file!
-  // Result: Success(New data on topic)
+  // Result: New data on topic
 
 
 object Example06_Composability_9 extends ZIOAppDefault:
   def run =
     summaryForZ:
       "stock market"
-  // Result: Success(detailed history of stock market)
+  // Result: detailed history of stock market
 
 
 object Example06_Composability_10 extends ZIOAppDefault:
   def run =
     summaryForZ:
       "obscureTopic"
-  // Result: Success(NoRecordsAvailable(obscureTopic))
+  // Result: NoRecordsAvailable(obscureTopic)
 
 
 object Example06_Composability_11 extends ZIOAppDefault:
@@ -286,4 +286,4 @@ object Example06_Composability_11 extends ZIOAppDefault:
   // Searching file for: stock market
   // Writing to file: detailed history of stock market
   // Closing file!
-  // Result: Success(detailed history of stock market)
+  // Result: detailed history of stock market

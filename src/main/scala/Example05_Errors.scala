@@ -116,7 +116,7 @@ object Example05_Errors_0 extends ZIOAppDefault:
   def run =
     ZIO.attempt:
       temperatureApp()
-  // Result: Success(Temperature: 35 degrees)
+  // Result: Temperature: 35 degrees
 
 
 object Example05_Errors_1 extends ZIOAppDefault:
@@ -125,7 +125,7 @@ object Example05_Errors_1 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureApp()
-  // Result: Success(Defect: NetworkException)
+  // Result: Defect: NetworkException
 
 
 object Example05_Errors_2 extends ZIOAppDefault:
@@ -134,7 +134,7 @@ object Example05_Errors_2 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureCatchingApp()
-  // Result: Success(Failure)
+  // Result: Failure
 
 
 object Example05_Errors_3 extends ZIOAppDefault:
@@ -143,7 +143,7 @@ object Example05_Errors_3 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureCatchingMoreApp()
-  // Result: Success(Network Unavailable)
+  // Result: Network Unavailable
 
 
 object Example05_Errors_4 extends ZIOAppDefault:
@@ -152,7 +152,7 @@ object Example05_Errors_4 extends ZIOAppDefault:
   def run =
     ZIO.succeed:
       temperatureCatchingMoreApp()
-  // Result: Success(GPS Hardware Failure)
+  // Result: GPS Hardware Failure
 
 
 object Example05_Errors_5 extends ZIOAppDefault:
@@ -161,7 +161,7 @@ object Example05_Errors_5 extends ZIOAppDefault:
   
   def run =
     getTemperature
-  // Result: Success(Temperature: 35 degrees)
+  // Result: Temperature: 35 degrees
 
 
 object Example05_Errors_6 extends ZIOAppDefault:
@@ -170,7 +170,7 @@ object Example05_Errors_6 extends ZIOAppDefault:
   
   def run =
     getTemperature
-  // Result: Success(repl.MdocSession$MdocApp$NetworkException)
+  // Result: repl.MdocSession$MdocApp$NetworkException
 
 
 object Example05_Errors_7 extends ZIOAppDefault:
@@ -179,7 +179,7 @@ object Example05_Errors_7 extends ZIOAppDefault:
   
   def run =
     temperatureAppComplete
-  // Result: Success(GPS Hardware Failure)
+  // Result: GPS Hardware Failure
 
 
 object Example05_Errors_8 extends ZIOAppDefault:
@@ -187,7 +187,7 @@ object Example05_Errors_8 extends ZIOAppDefault:
   
   def run =
     displayTemperatureZWrapped
-  // Result: Success(35 degrees)
+  // Result: 35 degrees
 
 
 object Example05_Errors_9 extends ZIOAppDefault:
@@ -195,7 +195,7 @@ object Example05_Errors_9 extends ZIOAppDefault:
   
   def run =
     displayTemperatureZWrapped
-  // Result: Success(Network Unavailable)
+  // Result: Network Unavailable
 
 
 object Example05_Errors_10 extends ZIOAppDefault:
@@ -206,7 +206,7 @@ object Example05_Errors_10 extends ZIOAppDefault:
       case ex: NetworkException =>
         ZIO.succeed:
           "Network Unavailable"
-  // Result: Success(Defect: GpsFail)
+  // Result: Defect: GpsFail
 
 
 object Example05_Errors_11 extends ZIOAppDefault:
@@ -220,4 +220,4 @@ object Example05_Errors_11 extends ZIOAppDefault:
       case other =>
         ZIO.succeed:
           "Unknown Error"
-  // Result: Success(Unknown Error)
+  // Result: Unknown Error

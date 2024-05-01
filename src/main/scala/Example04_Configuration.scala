@@ -163,7 +163,7 @@ object Example04_Configuration_0 extends ZIOAppDefault:
       .provide:
         Dough.fresh
   // Dough is rising
-  // Result: Success(())
+  // Result: ()
 
 
 object Example04_Configuration_1 extends ZIOAppDefault:
@@ -171,7 +171,7 @@ object Example04_Configuration_1 extends ZIOAppDefault:
     ZIO
       .service[Bread]
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Result: Success(BreadHomeMade(Heat(),Dough()))
+  // Result: BreadHomeMade(Heat(),Dough())
 
 
 object Example04_Configuration_2 extends ZIOAppDefault:
@@ -184,7 +184,7 @@ object Example04_Configuration_2 extends ZIOAppDefault:
         Dough.fresh,
         oven
       )
-  // Result: Success(Toast(Heat(),BreadHomeMade(Heat(),Dough())))
+  // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
 object Example04_Configuration_3 extends ZIOAppDefault:
@@ -193,7 +193,7 @@ object Example04_Configuration_3 extends ZIOAppDefault:
       .service[Heat]
       .provide:
         toaster
-  // Result: Success(Heat())
+  // Result: Heat()
 
 
 object Example04_Configuration_4 extends ZIOAppDefault:
@@ -210,7 +210,7 @@ object Example04_Configuration_4 extends ZIOAppDefault:
                 bread
             )
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Result: Success(Toast(Heat(),BreadHomeMade(Heat(),Dough())))
+  // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
 object Example04_Configuration_5 extends ZIOAppDefault:
@@ -219,7 +219,7 @@ object Example04_Configuration_5 extends ZIOAppDefault:
       .service[Bread]
       .provide:
         storeBought
-  // Result: Success(BreadStoreBought())
+  // Result: BreadStoreBought()
 
 
 object Example04_Configuration_6 extends ZIOAppDefault:
@@ -231,7 +231,7 @@ object Example04_Configuration_6 extends ZIOAppDefault:
           3
         )
   // Attempt 1: Error(Friend Unreachable)
-  // Result: Success(Error(Friend Unreachable))
+  // Result: Error(Friend Unreachable)
 
 
 object Example04_Configuration_7 extends ZIOAppDefault:
@@ -246,7 +246,7 @@ object Example04_Configuration_7 extends ZIOAppDefault:
           .orElse:
             storeBought
   // Attempt 1: Error(Friend Unreachable)
-  // Result: Success(BreadStoreBought())
+  // Result: BreadStoreBought()
 
 
 object Example04_Configuration_8 extends ZIOAppDefault:
@@ -263,7 +263,7 @@ object Example04_Configuration_8 extends ZIOAppDefault:
               1
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
-  // Result: Success(Error(Friend Unreachable))
+  // Result: Error(Friend Unreachable)
 
 
 object Example04_Configuration_9 extends ZIOAppDefault:
@@ -281,7 +281,7 @@ object Example04_Configuration_9 extends ZIOAppDefault:
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
   // Attempt 3: Succeeded
-  // Result: Success(BreadFromFriend())
+  // Result: BreadFromFriend()
 
 
 object Example04_Configuration_10 extends ZIOAppDefault:
@@ -300,7 +300,7 @@ object Example04_Configuration_10 extends ZIOAppDefault:
             storeBought
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
-  // Result: Success(BreadStoreBought())
+  // Result: BreadStoreBought()
 
 
 object Example04_Configuration_11 extends ZIOAppDefault:
@@ -323,13 +323,16 @@ object Example04_Configuration_11 extends ZIOAppDefault:
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
   // Attempt 3: Succeeded
-  // Result: Success(BreadFromFriend())
+  // Result: BreadFromFriend()
 
 
 object Example04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
+  // Heads
+  // Heads
+  // Heads
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200456":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -341,7 +344,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
   // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200456":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -353,9 +356,18 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
   // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
   // Heads
-  // Heads
-  // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200456":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:55)
+  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
+  // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200456":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -367,16 +379,4 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
   // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
   // Heads
-  // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-200256":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:55)
-  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
-  // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
-  // Result: Success(6)
+  // Result: 6
