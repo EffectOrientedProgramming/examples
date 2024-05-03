@@ -4,7 +4,7 @@ import zio.direct.*
 enum Scenario:
   case HappyPath
   case NeverWorks
-  case NumberOfSlowCall(ref: Ref[Int])
+  case Slow
   case WorksOnTry(attempts: Int, ref: Ref[Int])
 
 // This configuration is used by effects to get the scenario that
@@ -24,6 +24,9 @@ val happyPath =
 val neverWorks =
   Runtime.setConfigProvider(StaticConfigProvider(Scenario.NeverWorks))
 
+val slow =
+  Runtime.setConfigProvider(StaticConfigProvider(Scenario.Slow))
+
 val doesNotWorkInitially =
   val scenario =
   Unsafe.unsafe {
@@ -37,20 +40,6 @@ val doesNotWorkInitially =
           .getOrThrow()
       )
   }
-  Runtime.setConfigProvider(StaticConfigProvider(scenario))
-
-val firstIsSlow =
-  val scenario =
-    Unsafe.unsafe {
-      implicit unsafe =>
-        Scenario.NumberOfSlowCall(
-          Runtime
-            .default
-            .unsafe
-            .run(Ref.make(0))
-            .getOrThrow()
-        )
-    }
   Runtime.setConfigProvider(StaticConfigProvider(scenario))
 
 def saveUser(username: String) =
@@ -74,14 +63,12 @@ def saveUser(username: String) =
       case Scenario.NeverWorks =>
         fail.run
    
-      case scenario: Scenario.NumberOfSlowCall =>
-        val numCalls =
-          scenario.ref.getAndUpdate(_ + 1).run
-        if numCalls == 0 then
-          ZIO.never.run
-        else
-          Console.printLine("Log: Database Timeout").run
-          succeed.run
+      case Scenario.Slow =>
+        ZIO.sleep(1.minute)
+          .onInterrupt:
+            ZIO.debug("Log: Interrupting slow request")
+          .run
+        succeed.run
     
       case Scenario.WorksOnTry(attempts, ref) =>
         val numCalls =
@@ -90,8 +77,6 @@ def saveUser(username: String) =
           succeed.run
         else
           fail.run
-  .onInterrupt:
-    ZIO.debug("Log: Interrupting slow request")
 end saveUser
 
 def sendToManualQueue(username: String) =
@@ -212,11 +197,10 @@ object Example03_Superpowers_5 extends ZIOAppDefault:
 
 object Example03_Superpowers_6 extends ZIOAppDefault:
   override val bootstrap =
-    firstIsSlow
+    slow
   
   def run =
     effect3
-  // Log: Interrupting slow request
   // Result: *** Save timed out ***
 
 
@@ -227,6 +211,8 @@ object Example03_Superpowers_7 extends ZIOAppDefault:
   def run =
     effect4
   // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -236,8 +222,8 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   
   def run =
     effect5
+  // Result: User saved
   // Log: Signup initiated for Morty
-  // Result: Please manually provision Morty
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -247,7 +233,7 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.134125378S,User saved)
+  // Result: (PT5.076236476S,User saved)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
