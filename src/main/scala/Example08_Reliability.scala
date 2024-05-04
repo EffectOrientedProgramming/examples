@@ -434,12 +434,11 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(686)
-  // Current requests: : List(292, 686)
-  // Current requests: : List(678, 292, 686)
-  // Current requests: : List(524, 678, 292, 686)
-  // Current requests: : List(896, 686)
-  // Result: Server was killed by another request!!
+  // Current requests: : List(541)
+  // Current requests: : List(674, 541)
+  // Current requests: : List(282, 674, 541)
+  // Current requests: : List(202, 282, 674, 541)
+  // Result: Killed the server!!
 
 
 object Example08_Reliability_5 extends ZIOAppDefault:
@@ -466,16 +465,16 @@ object Example08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(816)
-  // Current requests: : List(952, 816)
-  // Current requests: : List(934)
-  // Current requests: : List(232)
-  // Current requests: : List(538, 232)
-  // Current requests: : List(628)
-  // Current requests: : List(632, 628)
-  // Current requests: : List(698, 632, 628)
-  // Current requests: : List(936)
-  // Current requests: : List(721)
+  // Current requests: : List(495)
+  // Current requests: : List(161, 495)
+  // Current requests: : List(811, 161, 495)
+  // Current requests: : List(308, 161)
+  // Current requests: : List(540, 308)
+  // Current requests: : List(169, 540, 308)
+  // Current requests: : List(276, 169)
+  // Current requests: : List(978, 276)
+  // Current requests: : List(486, 978, 276)
+  // Current requests: : List(623, 486, 978)
   // Result: All Requests Succeeded
 
 
@@ -557,5 +556,5 @@ object Example08_Reliability_8 extends ZIOAppDefault:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 1
-  // Result: 1
+  // Contract Breaches: 0
+  // Result: 0
