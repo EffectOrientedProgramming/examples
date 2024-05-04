@@ -55,6 +55,26 @@ def topicOfInterestZ(headline: String) =
     .orElseFail:
       NoInterestingTopic()
 
+case class NoRecordsAvailable(topic: String)
+
+import scala.util.Either
+def summaryFor(
+    topic: String
+): Either[NoRecordsAvailable, String] =
+  topic match
+    case "stock market" =>
+      Right:
+        s"detailed history of $topic"
+    case "obscureTopic" =>
+      Left:
+        NoRecordsAvailable:
+          "obscureTopic"
+
+def summaryForZ(topic: String) =
+  ZIO.from:
+    summaryFor:
+      topic
+
 import scala.util.Try
 
 trait CloseableFile extends AutoCloseable:
@@ -108,26 +128,6 @@ def writeToFileZ(
       file.write:
         content
     .orDie
-
-case class NoRecordsAvailable(topic: String)
-
-import scala.util.Either
-def summaryFor(
-    topic: String
-): Either[NoRecordsAvailable, String] =
-  topic match
-    case "stock market" =>
-      Right:
-        s"detailed history of $topic"
-    case "obscureTopic" =>
-      Left:
-        NoRecordsAvailable:
-          "obscureTopic"
-
-def summaryForZ(topic: String) =
-  ZIO.from:
-    summaryFor:
-      topic
 
 val researchWorkflow =
   defer:
@@ -225,13 +225,27 @@ object Example06_Composability_5 extends ZIOAppDefault:
 
 object Example06_Composability_6 extends ZIOAppDefault:
   def run =
-    closeableFileZ
-  // Opening file!
-  // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$18@1660ce99
+    summaryForZ:
+      "stock market"
+  // Result: detailed history of stock market
 
 
 object Example06_Composability_7 extends ZIOAppDefault:
+  def run =
+    summaryForZ:
+      "obscureTopic"
+  // Result: NoRecordsAvailable(obscureTopic)
+
+
+object Example06_Composability_8 extends ZIOAppDefault:
+  def run =
+    closeableFileZ
+  // Opening file!
+  // Closing file!
+  // Result: repl.MdocSession$MdocApp$$anon$18@5932d0d2
+
+
+object Example06_Composability_9 extends ZIOAppDefault:
   def run =
     defer:
       val file =
@@ -244,7 +258,7 @@ object Example06_Composability_7 extends ZIOAppDefault:
   // Result: false
 
 
-object Example06_Composability_8 extends ZIOAppDefault:
+object Example06_Composability_10 extends ZIOAppDefault:
   def run =
     defer:
       val file =
@@ -254,20 +268,6 @@ object Example06_Composability_8 extends ZIOAppDefault:
   // Writing to file: New data on topic
   // Closing file!
   // Result: New data on topic
-
-
-object Example06_Composability_9 extends ZIOAppDefault:
-  def run =
-    summaryForZ:
-      "stock market"
-  // Result: detailed history of stock market
-
-
-object Example06_Composability_10 extends ZIOAppDefault:
-  def run =
-    summaryForZ:
-      "obscureTopic"
-  // Result: NoRecordsAvailable(obscureTopic)
 
 
 object Example06_Composability_11 extends ZIOAppDefault:
