@@ -135,9 +135,7 @@ val researchWorkflow =
       getHeadlineZ.run
 
     val topic: String =
-      topicOfInterestZ:
-        headline
-      .run
+      topicOfInterestZ(headline).run
 
     val summaryFile: CloseableFile =
       closeableFileZ.run
@@ -148,9 +146,7 @@ val researchWorkflow =
 
     if (topicIsFresh)
       val newInfo =
-        summaryForZ:
-          topic
-        .run
+        summaryForZ(topic).run
 
       writeToFileZ(summaryFile, newInfo).run
       newInfo
@@ -242,7 +238,7 @@ object Example06_Composability_8 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$18@6d771d9a
+  // Result: repl.MdocSession$MdocApp$$anon$18@33f75620
 
 
 object Example06_Composability_9 extends ZIOAppDefault:

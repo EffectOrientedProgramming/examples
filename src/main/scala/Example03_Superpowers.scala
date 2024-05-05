@@ -233,10 +233,8 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // TODO Handle long line. 
-  // Truncating for now: 
-  // (PT5.047433407S,Please manually provision Morty)
-  // Result: (PT5.047433407S,Please manually provision Mort
+  // Log: Signup initiated for Morty
+  // Result: (PT0.020023252S,User saved)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
@@ -245,5 +243,4 @@ object Example03_Superpowers_10 extends ZIOAppDefault:
   
   def run =
     effect7
-  // Log: Signup initiated for Morty
   // Result: None
