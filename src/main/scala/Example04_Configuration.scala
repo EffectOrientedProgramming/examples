@@ -330,20 +330,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Heads
-  // Heads
-  // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:55)
-  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
-  // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-882":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -355,18 +342,10 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
   // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:55)
-  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
-  // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
+  // Heads
+  // Heads
+  // Heads
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-882":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -378,7 +357,7 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
   // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-882":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
   // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
@@ -389,4 +368,15 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:55)
   // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
   // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
-  // Result: 5
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-882":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:55)
+  // 	at mdoctools.ToRun.runAndPrintOutput.e(MdocHelpers.scala:56)
+  // 	at mdoctools.ToRun.runAndPrintOutput.result(MdocHelpers.scala:63))
+  // Result: 6
