@@ -147,7 +147,7 @@ case class Live(
 
       if (currentRequests.get.run.length > 3)
         alive.set(false).run
-        ZIO.fail("Killed the server!!").run
+        ZIO.fail("Crashed the server!!").run
 
       // Add request to current requests
       currentRequests
@@ -164,7 +164,7 @@ case class Live(
       else
         ZIO
           .fail(
-            "Server was killed by another request!!"
+            "Server crashed from requests!!"
           )
           .run
 
@@ -185,6 +185,11 @@ object DelicateResource:
           Ref.make[List[Int]](List.empty).run,
           Ref.make(true).run
         )
+
+import nl.vroste.rezilience.Bulkhead
+val makeOurBulkhead =
+  Bulkhead
+    .make(maxInFlightCalls = 3)
 
 import zio.Ref
 
@@ -406,9 +411,9 @@ object Example08_Reliability_3 extends ZIOAppDefault:
           "Total time"
         .run
   // Bill called API [took 0s]
-  // Bill called API [took -1s]
   // Bill called API [took 0s]
-  // Bruce called API [took 0s]
+  // Bill called API [took 0s]
+  // Bruce called API [took -1s]
   // Bruce called API [took 0s]
   // Bruce called API [took 0s]
   // James called API [took 0s]
@@ -426,7 +431,6 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       ZIO
         .foreachPar(1 to 10):
           _ =>
-            //          bulkhead:
             delicateResource.request
         .as("All Requests Succeeded!")
         .run
@@ -434,25 +438,19 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(38)
-  // Current requests: : List(703, 38)
-  // Current requests: : List(200, 703)
-  // Current requests: : List(315, 200, 703)
-  // Current requests: : List(113, 315, 200, 703)
-  // Result: Killed the server!!
+  // Current requests: : List(60)
+  // Current requests: : List(943, 60)
+  // Current requests: : List(121, 943, 60)
+  // Current requests: : List(802, 121, 943, 60)
+  // Result: Crashed the server!!
 
 
 object Example08_Reliability_5 extends ZIOAppDefault:
-  import nl.vroste.rezilience.Bulkhead
-  
   def run =
     defer:
-      val bulkhead: Bulkhead =
-        Bulkhead
-          .make(maxInFlightCalls =
-            3
-          )
-          .run
+      val bulkhead =
+        makeOurBulkhead.run
+  
       val delicateResource =
         ZIO.service[DelicateResource].run
       ZIO
@@ -466,16 +464,16 @@ object Example08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(74)
-  // Current requests: : List(661, 74)
-  // Current requests: : List(454, 661, 74)
-  // Current requests: : List(210, 74)
-  // Current requests: : List(140)
-  // Current requests: : List(165, 140)
-  // Current requests: : List(163, 165, 140)
-  // Current requests: : List(807, 163)
-  // Current requests: : List(614, 807)
-  // Current requests: : List(969, 614)
+  // Current requests: : List(784)
+  // Current requests: : List(965, 784)
+  // Current requests: : List(576, 965, 784)
+  // Current requests: : List(163, 784)
+  // Current requests: : List(515)
+  // Current requests: : List(295, 515)
+  // Current requests: : List(393, 295, 515)
+  // Current requests: : List(341)
+  // Current requests: : List(295, 341)
+  // Current requests: : List(282, 295, 341)
   // Result: All Requests Succeeded
 
 
@@ -557,5 +555,5 @@ object Example08_Reliability_8 extends ZIOAppDefault:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 1
-  // Result: 1
+  // Contract Breaches: 0
+  // Result: 0
