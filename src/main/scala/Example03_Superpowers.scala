@@ -223,8 +223,8 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   
   def run =
     effect5
-  // Log: Signup initiated for Morty
   // Result: User saved
+  // Log: Signup initiated for Morty
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -234,7 +234,7 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT5.042563364S,User saved)
+  // Result: (PT0.031723924S,User saved)
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
