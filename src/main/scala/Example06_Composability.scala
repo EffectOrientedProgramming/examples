@@ -238,7 +238,7 @@ object Example06_Composability_8 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$18@231c8eff
+  // Result: repl.MdocSession$MdocApp$$anon$18@799b7517
 
 
 object Example06_Composability_9 extends ZIOAppDefault:
