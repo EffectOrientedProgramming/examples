@@ -107,10 +107,12 @@ extension [R, E, A](z: ZIO[R, E, A])
     z.timed
       .tap:
         (duration, _) =>
-          Console.printLine(
-            message + " [took " +
-              duration.getSeconds + "s]"
-          ).orDie
+          Console
+            .printLine(
+              message + " [took " +
+                duration.getSeconds + "s]"
+            )
+            .orDie
       .map(_._2)
 
 import nl.vroste.rezilience.RateLimiter
@@ -132,7 +134,6 @@ def makeCalls(name: String) =
 
 trait DelicateResource:
   val request: ZIO[Any, String, Int]
-end DelicateResource
 
 // It can represent any service outside of our control
 // that has usage constraints
@@ -163,24 +164,25 @@ case class Live(
         res
       else
         ZIO
-          .fail(
-            "Server crashed from requests!!"
-          )
+          .fail("Server crashed from requests!!")
           .run
 
   private def removeRequest(i: Int) =
     currentRequests.update(_ diff List(i))
+end Live
 
 object DelicateResource:
   val live =
     ZLayer.fromZIO:
       defer:
-        Console.printLine:
-          "Delicate Resource constructed."
-        .run
-        Console.printLine:
-          "Do not make more than 3 concurrent requests!"
-        .run
+        Console
+          .printLine:
+            "Delicate Resource constructed."
+          .run
+        Console
+          .printLine:
+            "Do not make more than 3 concurrent requests!"
+          .run
         Live(
           Ref.make[List[Int]](List.empty).run,
           Ref.make(true).run
@@ -188,8 +190,9 @@ object DelicateResource:
 
 import nl.vroste.rezilience.Bulkhead
 val makeOurBulkhead =
-  Bulkhead
-    .make(maxInFlightCalls = 3)
+  Bulkhead.make(maxInFlightCalls =
+    3
+  )
 
 import zio.Ref
 
@@ -385,7 +388,7 @@ object Example08_Reliability_2 extends ZIOAppDefault:
         makeCalls:
           "System"
       .timedSecondsDebug("Result")
-      .run
+        .run
   // System called API [took 0s]
   // System called API [took 0s]
   // System called API [took 0s]
@@ -409,15 +412,15 @@ object Example08_Reliability_3 extends ZIOAppDefault:
         .timedSecondsDebug:
           "Total time"
         .run
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
   // Total time [took 2s]
   // Result: List((), (), ())
 
@@ -429,19 +432,17 @@ object Example08_Reliability_4 extends ZIOAppDefault:
         ZIO.service[DelicateResource].run
       ZIO
         .foreachPar(1 to 10):
-          _ =>
-            delicateResource.request
+          _ => delicateResource.request
         .as("All Requests Succeeded!")
         .run
     .provideSome[Scope]:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(875)
-  // Current requests: : List(51, 875)
-  // Current requests: : List(96, 51, 875)
-  // Current requests: : List(797, 96, 51, 875)
-  // Current requests: : List(754, 797, 96, 51, 875)
+  // Current requests: : List(915)
+  // Current requests: : List(342, 915)
+  // Current requests: : List(17, 342, 915)
+  // Current requests: : List(866, 17, 342, 915)
   // Result: Crashed the server!!
 
 
@@ -464,16 +465,16 @@ object Example08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(823)
-  // Current requests: : List(143, 823)
-  // Current requests: : List(55, 143, 823)
-  // Current requests: : List(651)
-  // Current requests: : List(938, 651)
-  // Current requests: : List(5, 938, 651)
-  // Current requests: : List(862)
-  // Current requests: : List(346, 862)
-  // Current requests: : List(858, 346, 862)
-  // Current requests: : List(24)
+  // Current requests: : List(893)
+  // Current requests: : List(449, 893)
+  // Current requests: : List(294, 449, 893)
+  // Current requests: : List(218)
+  // Current requests: : List(818, 218)
+  // Current requests: : List(478, 818, 218)
+  // Current requests: : List(842)
+  // Current requests: : List(506, 842)
+  // Current requests: : List(837, 506, 842)
+  // Current requests: : List(313, 837, 506)
   // Result: All Requests Succeeded
 
 

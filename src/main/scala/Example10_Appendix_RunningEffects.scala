@@ -11,7 +11,7 @@ object HelloWorld extends zio.ZIOAppDefault:
 object RunningZIOs extends ZIOAppDefault:
   def run =
     Console.printLine:
-        "Hello World!"
+      "Hello World!"
 
 val logic =
   defer:

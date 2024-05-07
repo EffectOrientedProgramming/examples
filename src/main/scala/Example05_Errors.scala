@@ -12,21 +12,40 @@ class NetworkException extends Exception
 var scenario =
   ErrorsScenario.HappyPath
 
-val errorScenarioConfig: Config[Option[ErrorsScenario]] =
-  Config.Optional[ErrorsScenario](Config.fail("no default scenario"))
+val errorScenarioConfig
+    : Config[Option[ErrorsScenario]] =
+  Config.Optional[ErrorsScenario](
+    Config.fail("no default scenario")
+  )
 
-class ErrorsStaticConfigProvider(scenario: ErrorsScenario) extends ConfigProvider:
-  override def load[A](config: Config[A])(implicit trace: Trace): IO[Config.Error, A] =
+class ErrorsStaticConfigProvider(
+    scenario: ErrorsScenario
+) extends ConfigProvider:
+  override def load[A](config: Config[A])(
+      implicit trace: Trace
+  ): IO[Config.Error, A] =
     ZIO.succeed(Some(scenario).asInstanceOf[A])
 
 val errorsHappyPath =
-  Runtime.setConfigProvider(ErrorsStaticConfigProvider(ErrorsScenario.HappyPath))
+  Runtime.setConfigProvider(
+    ErrorsStaticConfigProvider(
+      ErrorsScenario.HappyPath
+    )
+  )
 
 val errorsNetworkError =
-  Runtime.setConfigProvider(ErrorsStaticConfigProvider(ErrorsScenario.NetworkError))
-  
+  Runtime.setConfigProvider(
+    ErrorsStaticConfigProvider(
+      ErrorsScenario.NetworkError
+    )
+  )
+
 val errorsGpsError =
-  Runtime.setConfigProvider(ErrorsStaticConfigProvider(ErrorsScenario.GPSError))
+  Runtime.setConfigProvider(
+    ErrorsStaticConfigProvider(
+      ErrorsScenario.GPSError
+    )
+  )
 
 // TODO Hide definition? Then we won't see the internals of the scenario stuff.
 // This would also makes the exceptions more surprising
@@ -47,12 +66,12 @@ def temperatureApp(): String =
     getTemperatureOrThrow()
 
 def temperatureCatchingApp(): String =
-    try
-      render:
-        getTemperatureOrThrow()
-    catch
-      case ex: Exception =>
-        "Failure"
+  try
+    render:
+      getTemperatureOrThrow()
+  catch
+    case ex: Exception =>
+      "Failure"
 
 def temperatureCatchingMoreApp(): String =
   try
@@ -66,23 +85,32 @@ def temperatureCatchingMoreApp(): String =
 
 // TODO We hide the original implementation of this function, but show this one.
 // Is that a problem? Seems unbalanced
-val getTemperature: ZIO[Any, GpsFail | NetworkException, String] =
+val getTemperature: ZIO[
+  Any,
+  GpsFail | NetworkException,
+  String
+] =
   defer:
-    val maybeScenario = ZIO.config(errorScenarioConfig).orDie.run
-    maybeScenario.getOrElse(ErrorsScenario.HappyPath) match
+    val maybeScenario =
+      ZIO.config(errorScenarioConfig).orDie.run
+    maybeScenario
+      .getOrElse(ErrorsScenario.HappyPath) match
       case ErrorsScenario.GPSError =>
-        ZIO.fail:
-          GpsFail()
-        .run
+        ZIO
+          .fail:
+            GpsFail()
+          .run
       case ErrorsScenario.NetworkError =>
         // TODO Use a non-exceptional error
-        ZIO.fail:
-          NetworkException()
-        .run
+        ZIO
+          .fail:
+            NetworkException()
+          .run
       case ErrorsScenario.HappyPath =>
-        ZIO.succeed:
-          "Temperature: 35 degrees"
-        .run
+        ZIO
+          .succeed:
+            "Temperature: 35 degrees"
+          .run
 
 val bad =
   getTemperature.catchAll:
@@ -120,8 +148,9 @@ object Example05_Errors_0 extends ZIOAppDefault:
 
 
 object Example05_Errors_1 extends ZIOAppDefault:
-  scenario = ErrorsScenario.NetworkError
-    
+  scenario =
+    ErrorsScenario.NetworkError
+  
   def run =
     ZIO.succeed:
       temperatureApp()
@@ -129,7 +158,8 @@ object Example05_Errors_1 extends ZIOAppDefault:
 
 
 object Example05_Errors_2 extends ZIOAppDefault:
-  scenario = ErrorsScenario.NetworkError
+  scenario =
+    ErrorsScenario.NetworkError
   
   def run =
     ZIO.succeed:
@@ -138,7 +168,8 @@ object Example05_Errors_2 extends ZIOAppDefault:
 
 
 object Example05_Errors_3 extends ZIOAppDefault:
-  scenario = ErrorsScenario.NetworkError
+  scenario =
+    ErrorsScenario.NetworkError
   
   def run =
     ZIO.succeed:
@@ -147,7 +178,8 @@ object Example05_Errors_3 extends ZIOAppDefault:
 
 
 object Example05_Errors_4 extends ZIOAppDefault:
-  scenario = ErrorsScenario.GPSError
+  scenario =
+    ErrorsScenario.GPSError
   
   def run =
     ZIO.succeed:
@@ -183,7 +215,8 @@ object Example05_Errors_7 extends ZIOAppDefault:
 
 
 object Example05_Errors_8 extends ZIOAppDefault:
-  scenario = ErrorsScenario.HappyPath
+  scenario =
+    ErrorsScenario.HappyPath
   
   def run =
     displayTemperatureZWrapped
@@ -191,7 +224,8 @@ object Example05_Errors_8 extends ZIOAppDefault:
 
 
 object Example05_Errors_9 extends ZIOAppDefault:
-  scenario = ErrorsScenario.NetworkError
+  scenario =
+    ErrorsScenario.NetworkError
   
   def run =
     displayTemperatureZWrapped
@@ -199,7 +233,8 @@ object Example05_Errors_9 extends ZIOAppDefault:
 
 
 object Example05_Errors_10 extends ZIOAppDefault:
-  scenario = ErrorsScenario.GPSError
+  scenario =
+    ErrorsScenario.GPSError
   
   def run =
     getTemperatureWrapped.catchAll:
@@ -210,7 +245,8 @@ object Example05_Errors_10 extends ZIOAppDefault:
 
 
 object Example05_Errors_11 extends ZIOAppDefault:
-  scenario = ErrorsScenario.GPSError
+  scenario =
+    ErrorsScenario.GPSError
   
   def run =
     getTemperatureWrapped.catchAll:

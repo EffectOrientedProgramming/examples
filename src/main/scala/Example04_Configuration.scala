@@ -50,9 +50,11 @@ case class BreadFromFriend() extends Bread()
 object Friend:
   def forcedFailure(invocations: Int) =
     defer:
-      Console.printLine(
-        s"Attempt $invocations: Error(Friend Unreachable)"
-      ).run
+      Console
+        .printLine(
+          s"Attempt $invocations: Error(Friend Unreachable)"
+        )
+        .run
       ZIO
         .when(true)(
           ZIO.fail("Error(Friend Unreachable)")
@@ -71,10 +73,13 @@ object Friend:
       else if invocations == 1 then
         ZIO.succeed(BreadFromFriend())
       else
-        Console.printLine(
-          s"Attempt $invocations: Succeeded"
-        ).orDie.as:
-          BreadFromFriend()
+        Console
+          .printLine(
+            s"Attempt $invocations: Succeeded"
+          )
+          .orDie
+          .as:
+            BreadFromFriend()
 end Friend
 
 import zio.config.*
@@ -329,57 +334,9 @@ object Example04_Configuration_11 extends ZIOAppDefault:
 object Example04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-794":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
@@ -387,12 +344,46 @@ object Example04_Configuration_12 extends ZIOAppDefault:
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
   // Heads
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-597":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:395)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:412)
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-794":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
   // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // Result: 2
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-794":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-794":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-794":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // Heads
+  // Heads
+  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-794":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
+  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
+  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // Result: 4
