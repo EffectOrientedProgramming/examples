@@ -48,7 +48,7 @@ val sideEffectingUpdatesSync =
 object Example07_State_0 extends ZIOAppDefault:
   def run =
     unreliableCounting
-  // Result: Final count: 99866
+  // Result: Final count: 98934
 
 
 object Example07_State_1 extends ZIOAppDefault:

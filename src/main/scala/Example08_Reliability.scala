@@ -439,10 +439,10 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(915)
-  // Current requests: : List(342, 915)
-  // Current requests: : List(17, 342, 915)
-  // Current requests: : List(866, 17, 342, 915)
+  // Current requests: : List(948)
+  // Current requests: : List(975, 948)
+  // Current requests: : List(35, 975, 948)
+  // Current requests: : List(237, 35, 975, 948)
   // Result: Crashed the server!!
 
 
@@ -465,16 +465,16 @@ object Example08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(893)
-  // Current requests: : List(449, 893)
-  // Current requests: : List(294, 449, 893)
-  // Current requests: : List(218)
-  // Current requests: : List(818, 218)
-  // Current requests: : List(478, 818, 218)
-  // Current requests: : List(842)
-  // Current requests: : List(506, 842)
-  // Current requests: : List(837, 506, 842)
-  // Current requests: : List(313, 837, 506)
+  // Current requests: : List(440)
+  // Current requests: : List(254, 440)
+  // Current requests: : List(484, 254, 440)
+  // Current requests: : List(753)
+  // Current requests: : List(48, 753)
+  // Current requests: : List(165, 48, 753)
+  // Current requests: : List(161, 165, 48)
+  // Current requests: : List(534, 161)
+  // Current requests: : List(753, 534, 161)
+  // Current requests: : List(609, 753)
   // Result: All Requests Succeeded
 
 
@@ -521,7 +521,7 @@ object Example08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 74 Calls made: 67
 
 
 object Example08_Reliability_8 extends ZIOAppDefault:

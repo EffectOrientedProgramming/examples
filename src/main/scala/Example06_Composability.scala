@@ -1,17 +1,6 @@
 import zio.*
 import zio.direct.*
 
-def saveInformation(info: String): Unit =
-  ???
-
-val findTopNewsStory =
-  ZIO.succeed:
-    "Battery Breakthrough"
-
-def textAlert(message: String) =
-  Console.printLine:
-    s"Texting story: $message"
-
 import scala.concurrent.Future
 
 var headLineAvailable =
@@ -58,7 +47,7 @@ def topicOfInterestZ(headline: String) =
 case class NoRecordsAvailable(topic: String)
 
 import scala.util.Either
-def summaryFor(
+def wikiArticle(
     topic: String
 ): Either[NoRecordsAvailable, String] =
   topic match
@@ -70,9 +59,9 @@ def summaryFor(
         NoRecordsAvailable:
           "obscureTopic"
 
-def summaryForZ(topic: String) =
+def wikiArticleZ(topic: String) =
   ZIO.from:
-    summaryFor:
+    wikiArticle:
       topic
 
 import scala.util.Try
@@ -82,6 +71,7 @@ trait CloseableFile extends AutoCloseable:
   // raw Boolean?
   def contains(searchTerm: String): Boolean
   def write(entry: String): Try[String]
+  def summaryFor(searchTerm: String): String
 
 def closeableFile() =
   new CloseableFile:
@@ -97,6 +87,14 @@ def closeableFile() =
       println:
         "Searching file for: " + searchTerm
       searchTerm == "stock market"
+      
+    override def summaryFor(searchTerm: String): String =
+      if (searchTerm == "stock market") 
+        "stock markets are neat"
+      else
+        throw Exception(s"No summary available for $searchTerm")
+      
+    
 
     override def write(
         entry: String
@@ -129,7 +127,46 @@ def writeToFileZ(
         content
     .orDie
 
-val researchWorkflow =
+case class NoSummaryAvailable(topic: String) 
+def summaryForZ(
+    file: CloseableFile,
+    // TODO Consider making a CloseableFileZ
+    topic: String
+) =
+  ZIO.attempt:
+    file.summaryFor(topic)
+  .mapError(_ => NoSummaryAvailable(topic))
+    
+
+
+
+def summarize(article: String): String =
+  println("AI summarizing: start")
+  // Represents the AI taking a long time to summarize the content
+  if (!article.contains("stock market")) 
+    Thread.sleep(1000)
+  
+  println("AI summarizing: complete")
+  s"TODO Summarized content"
+
+case class AIFailure()
+
+def summarizeZ(article: String) =
+  ZIO
+    .attemptBlockingInterrupt:
+      summarize(article)
+    .onInterrupt(ZIO.debug("Interrupted summarize"))
+    .mapError(_ => AIFailure())
+
+val findTopNewsStory =
+  ZIO.succeed:
+    "Battery Breakthrough"
+
+def textAlert(message: String) =
+  Console.printLine:
+    s"Texting story: $message"
+
+val researchHeadline =
   defer:
     val headline: String =
       getHeadlineZ.run
@@ -145,27 +182,135 @@ val researchWorkflow =
         topic
 
     if (topicIsFresh)
-      val newInfo =
-        summaryForZ(topic).run
+      val wikiArticle =
+        wikiArticleZ(topic).run
 
-      writeToFileZ(summaryFile, newInfo).run
-      newInfo
+      val summary = summarizeZ(wikiArticle).run
+      writeToFileZ(summaryFile, summary).run
+      summary
     else
-      "Topic was already covered"
+      summaryForZ(summaryFile, topic).run
+
+def saveInformation(info: String): Unit =
+  ???
 
 object Example06_Composability_0 extends ZIOAppDefault:
+  def run =
+    getHeadlineZ
+  // Result: stock market crash!
+
+
+object Example06_Composability_1 extends ZIOAppDefault:
+  // This controls some invisible machinery
+  headLineAvailable =
+    false
+  
+  def run =
+    getHeadlineZ
+  // Result: HeadlineNotAvailable()
+
+
+object Example06_Composability_2 extends ZIOAppDefault:
+  // This controls some invisible machinery
+  headLineAvailable =
+    true
+  
+  def run =
+    topicOfInterestZ:
+      "stock market crash!"
+  // Result: stock market
+
+
+object Example06_Composability_3 extends ZIOAppDefault:
+  def run =
+    topicOfInterestZ:
+      "boring and inane content"
+  // Result: NoInterestingTopic()
+
+
+object Example06_Composability_4 extends ZIOAppDefault:
+  def run =
+    wikiArticleZ:
+      "stock market"
+  // Result: detailed history of stock market
+
+
+object Example06_Composability_5 extends ZIOAppDefault:
+  def run =
+    wikiArticleZ:
+      "obscureTopic"
+  // Result: NoRecordsAvailable(obscureTopic)
+
+
+object Example06_Composability_6 extends ZIOAppDefault:
+  def run =
+    closeableFileZ
+  // Opening file!
+  // Closing file!
+  // Result: repl.MdocSession$MdocApp$$anon$18@7f077c4c
+
+
+object Example06_Composability_7 extends ZIOAppDefault:
+  def run =
+    defer:
+      val file =
+        closeableFileZ.run
+      file.contains:
+        "topicOfInterest"
+  // Opening file!
+  // Searching file for: topicOfInterest
+  // Closing file!
+  // Result: false
+
+
+object Example06_Composability_8 extends ZIOAppDefault:
+  def run =
+    defer:
+      val file =
+        closeableFileZ.run
+      writeToFileZ(file, "New data on topic").run
+  // Opening file!
+  // Writing to file: New data on topic
+  // Closing file!
+  // Result: New data on topic
+
+
+object Example06_Composability_9 extends ZIOAppDefault:
   def run =
     defer:
       val topStory =
         findTopNewsStory.run
-      textAlert:
-        topStory
-      .run
+      textAlert(topStory).run
   // Texting story: Battery Breakthrough
   // Result: ()
 
 
-object Example06_Composability_1 extends ZIOAppDefault:
+object Example06_Composability_10 extends ZIOAppDefault:
+  def run =
+    researchHeadline
+      // todo: some error handling to show that
+      // the errors weren't lost along the way
+      .mapError:
+        case HeadlineNotAvailable() =>
+          "Could not fetch headline"
+        case NoRecordsAvailable(topic) =>
+          s"No records for $topic"
+        case NoInterestingTopic() =>
+          "No Interesting topic found"
+        case AIFailure() =>
+          "Error during AI summary"
+        case NoSummaryAvailable(topic) =>
+          s"No summary available for $topic"
+  // Opening file!
+  // Searching file for: stock market
+  // AI summarizing: start
+  // AI summarizing: complete
+  // Writing to file: TODO Summarized content
+  // Closing file!
+  // Result: TODO Summarized content
+
+
+object Example06_Composability_11 extends ZIOAppDefault:
   // TODO Consider deleting .as
   //   The problem is we can't return literals in zio-direct.
   def logAndProvideDefault(e: Throwable) =
@@ -183,103 +328,3 @@ object Example06_Composability_1 extends ZIOAppDefault:
         logAndProvideDefault
   // an implementation is missing
   // Result: default value
-
-
-object Example06_Composability_2 extends ZIOAppDefault:
-  def run =
-    getHeadlineZ
-  // Result: stock market crash!
-
-
-object Example06_Composability_3 extends ZIOAppDefault:
-  // This controls some invisible machinery
-  headLineAvailable =
-    false
-  
-  def run =
-    getHeadlineZ
-  // Result: HeadlineNotAvailable()
-
-
-object Example06_Composability_4 extends ZIOAppDefault:
-  // This controls some invisible machinery
-  headLineAvailable =
-    true
-  
-  def run =
-    topicOfInterestZ:
-      "stock market crash!"
-  // Result: stock market
-
-
-object Example06_Composability_5 extends ZIOAppDefault:
-  def run =
-    topicOfInterestZ:
-      "boring and inane content"
-  // Result: NoInterestingTopic()
-
-
-object Example06_Composability_6 extends ZIOAppDefault:
-  def run =
-    summaryForZ:
-      "stock market"
-  // Result: detailed history of stock market
-
-
-object Example06_Composability_7 extends ZIOAppDefault:
-  def run =
-    summaryForZ:
-      "obscureTopic"
-  // Result: NoRecordsAvailable(obscureTopic)
-
-
-object Example06_Composability_8 extends ZIOAppDefault:
-  def run =
-    closeableFileZ
-  // Opening file!
-  // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$18@3d4ff50a
-
-
-object Example06_Composability_9 extends ZIOAppDefault:
-  def run =
-    defer:
-      val file =
-        closeableFileZ.run
-      file.contains:
-        "topicOfInterest"
-  // Opening file!
-  // Searching file for: topicOfInterest
-  // Closing file!
-  // Result: false
-
-
-object Example06_Composability_10 extends ZIOAppDefault:
-  def run =
-    defer:
-      val file =
-        closeableFileZ.run
-      writeToFileZ(file, "New data on topic").run
-  // Opening file!
-  // Writing to file: New data on topic
-  // Closing file!
-  // Result: New data on topic
-
-
-object Example06_Composability_11 extends ZIOAppDefault:
-  def run =
-    researchWorkflow
-      // todo: some error handling to show that
-      // the errors weren't lost along the way
-      .mapError:
-        case HeadlineNotAvailable() =>
-          "Could not fetch headline"
-        case NoRecordsAvailable(topic) =>
-          s"No records for $topic"
-        case NoInterestingTopic() =>
-          "No Interesting topic found"
-  // Opening file!
-  // Searching file for: stock market
-  // Writing to file: detailed history of stock market
-  // Closing file!
-  // Result: detailed history of stock market
