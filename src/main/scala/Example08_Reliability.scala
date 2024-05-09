@@ -4,7 +4,7 @@ import zio.direct.*
 import zio.{ZIO, ZLayer}
 import zio.cache.{Cache, Lookup}
 
-import java.nio.file.Path
+import java.nio.file.{Path, Paths}
 
 case class FSLive(requests: Ref[Int])
     extends CloudStorage:
@@ -62,7 +62,7 @@ val thunderingHerdsScenario =
       .collectAllPar:
         List.fill(100):
           popularService.retrieve:
-            Path.of("awesomeMemes")
+            Paths.get("awesomeMemes")
       .run
 
     val cloudStorage =
@@ -412,15 +412,15 @@ object Example08_Reliability_3 extends ZIOAppDefault:
         .timedSecondsDebug:
           "Total time"
         .run
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
   // Total time [took 2s]
   // Result: List((), (), ())
 
@@ -439,10 +439,11 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(795)
-  // Current requests: : List(293, 795)
-  // Current requests: : List(406, 293, 795)
-  // Current requests: : List(722, 406, 293, 795)
+  // Current requests: : List(715)
+  // Current requests: : List(846, 715)
+  // Current requests: : List(762, 305, 846, 715)
+  // Current requests: : List(305, 846, 715)
+  // Current requests: : List(195, 762, 305, 846, 715)
   // Result: Crashed the server!!
 
 
@@ -465,16 +466,16 @@ object Example08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(759)
-  // Current requests: : List(160, 759)
-  // Current requests: : List(161, 160, 759)
-  // Current requests: : List(243)
-  // Current requests: : List(994, 243)
-  // Current requests: : List(262, 994, 243)
-  // Current requests: : List(289, 262, 994)
-  // Current requests: : List(725, 289)
-  // Current requests: : List(40, 725, 289)
-  // Current requests: : List(649, 725)
+  // Current requests: : List(49)
+  // Current requests: : List(408, 49)
+  // Current requests: : List(84, 408, 49)
+  // Current requests: : List(807)
+  // Current requests: : List(451, 807)
+  // Current requests: : List(454, 451, 807)
+  // Current requests: : List(228, 454, 451)
+  // Current requests: : List(975, 228)
+  // Current requests: : List(391, 975, 228)
+  // Current requests: : List(180, 391)
   // Result: All Requests Succeeded
 
 
@@ -521,7 +522,7 @@ object Example08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 object Example08_Reliability_8 extends ZIOAppDefault:
