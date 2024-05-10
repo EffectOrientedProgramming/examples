@@ -232,8 +232,6 @@ object Example03_Superpowers_7 extends ZIOAppDefault:
   def run =
     effect4
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -243,8 +241,7 @@ object Example03_Superpowers_8 extends ZIOAppDefault:
   
   def run =
     effect5
-  // Log: Signup initiated for Morty
-  // Result: Please manually provision Morty
+  // Result: User saved
 
 
 object Example03_Superpowers_9 extends ZIOAppDefault:
@@ -253,7 +250,12 @@ object Example03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT5.012995008S,User saved)
+  // Log: Signup initiated for Morty
+  // TODO Handle long line. 
+  // Truncating for now: 
+  // (PT5.016724345S,Please manually provision Morty)
+  // Result: (PT5.016724345S,Please manually provision Mort
+  // Log: Signup initiated for Morty
 
 
 object Example03_Superpowers_10 extends ZIOAppDefault:
