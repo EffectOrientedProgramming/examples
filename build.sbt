@@ -15,3 +15,11 @@ libraryDependencies ++= Seq(
 )
 
 fork := true
+
+// running the examples requires Java 11 or newer
+initialize := {
+  initialize.value
+  val required = VersionNumber("11")
+  val current = VersionNumber(sys.props("java.specification.version"))
+  assert(current.get(0).get >= required.get(0).get, s"Java $required or above required")
+}
