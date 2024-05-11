@@ -439,10 +439,10 @@ object Example08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(898)
-  // Current requests: : List(595, 898)
-  // Current requests: : List(41, 595, 898)
-  // Current requests: : List(324, 41, 595, 898)
+  // Current requests: : List(464)
+  // Current requests: : List(377, 464)
+  // Current requests: : List(362, 377, 464)
+  // Current requests: : List(164, 362, 377, 464)
   // Result: Crashed the server!!
 
 
@@ -465,16 +465,16 @@ object Example08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(168)
-  // Current requests: : List(424, 168)
-  // Current requests: : List(151, 424, 168)
-  // Current requests: : List(264)
-  // Current requests: : List(68, 264)
-  // Current requests: : List(413, 68, 264)
-  // Current requests: : List(55)
-  // Current requests: : List(208, 55)
-  // Current requests: : List(372, 208, 55)
-  // Current requests: : List(826)
+  // Current requests: : List(963, 604)
+  // Current requests: : List(604)
+  // Current requests: : List(362, 963, 604)
+  // Current requests: : List(850)
+  // Current requests: : List(420, 850)
+  // Current requests: : List(858, 420, 850)
+  // Current requests: : List(92)
+  // Current requests: : List(377, 92)
+  // Current requests: : List(214, 377, 92)
+  // Current requests: : List(548)
   // Result: All Requests Succeeded
 
 

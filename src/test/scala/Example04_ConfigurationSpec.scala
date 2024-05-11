@@ -23,7 +23,7 @@ object Example04_Configuration_0 extends ZIOSpecDefault:
   // Heads
   // Heads
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.05629S)
+  // Result: Summary(1,0,0,,PT0.057552S)
 
 
 object Example04_Configuration_1 extends ZIOSpecDefault:
@@ -53,7 +53,7 @@ object Example04_Configuration_1 extends ZIOSpecDefault:
   // G: ...probability
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.052854S)
+  // Result: Summary(1,0,0,,PT0.044686S)
 
 
 object Example04_Configuration_2 extends ZIOSpecDefault:
@@ -65,18 +65,18 @@ object Example04_Configuration_2 extends ZIOSpecDefault:
     @@ TestAspect.withLiveRandom @@
       TestAspect.flaky(Int.MaxValue)
   // *Performance Begins*
-  // R: Heads
-  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1512243419":
+  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1972568787":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
   // 	at repl.MdocSession.MdocApp.rosencrantzCoinToss(<input>:462)
   // 	at repl.MdocSession.MdocApp.rosencrantzAndGuildensternAreDead(<input>:467)
+  // 	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
   // ...
   // G: Though it can be done by luck alone.
   // R: Heads
   // G: ...probability
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.029838S)
+  // Result: Summary(1,0,0,,PT0.037264S)
 
 
 object Example04_Configuration_3 extends ZIOSpecDefault:
@@ -95,4 +95,4 @@ object Example04_Configuration_3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.040139S)
+  // Result: Summary(1,0,0,,PT0.032381S)
