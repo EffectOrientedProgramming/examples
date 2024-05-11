@@ -275,11 +275,13 @@ object Chapter04_Configuration_11 extends ZIOAppDefault:
 val coinToss =
   defer:
     if Random.nextBoolean.run then
+      ZIO.debug("Heads").run
       ZIO
         .succeed:
           "Heads"
         .run
     else
+      ZIO.debug("Tails").run
       ZIO
         .fail:
           "Tails"
@@ -287,68 +289,30 @@ val coinToss =
 
 val flipTen =
   defer:
-    ZIO
-      .collectAllSuccesses:
-        List.fill(10):
-          coinToss.debug
-      .run
-      .size
+    val numHeads =
+      ZIO
+        .collectAllSuccesses:
+          List.fill(10):
+            coinToss
+        .run
+        .size
+    ZIO.debug(s"Num Heads = $numHeads").run
+    numHeads
 
 object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-939778664":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-939778664":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-939778664":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
   // Heads
   // Heads
+  // Tails
   // Heads
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-939778664":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-939778664":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
-  // <FAIL> Fail(Tails,Stack trace for thread "zio-fiber-939778664":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.flipTen(<input>:417)
-  // 	at zio.direct.ZioMonad.Success.$anon.map(ZioMonad.scala:18)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+  // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 4
   // Result: 4
 
 

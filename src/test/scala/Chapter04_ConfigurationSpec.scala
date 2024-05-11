@@ -22,8 +22,9 @@ object Chapter04_Configuration_0 extends ZIOSpecDefault:
   // Heads
   // Heads
   // Heads
+  // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.055423S)
+  // Result: Summary(1,0,0,,PT0.057946S)
 
 
 object Chapter04_Configuration_1 extends ZIOSpecDefault:
@@ -41,19 +42,18 @@ object Chapter04_Configuration_1 extends ZIOSpecDefault:
         rosencrantzAndGuildensternAreDead.run
         assertCompletes
   // *Performance Begins*
+  // Heads
   // R: Heads
+  // Heads
   // R: Heads
-  // R: Heads
-  // R: Heads
-  // R: Heads
-  // G: There is an art to building suspense.
-  // R: Heads
-  // G: Though it can be done by luck alone.
+  // Heads
+  // ...
   // R: Heads
   // G: ...probability
+  // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.063351S)
+  // Result: Summary(1,0,0,,PT0.052889S)
 
 
 object Chapter04_Configuration_2 extends ZIOSpecDefault:
@@ -65,18 +65,18 @@ object Chapter04_Configuration_2 extends ZIOSpecDefault:
     @@ TestAspect.withLiveRandom @@
       TestAspect.flaky(Int.MaxValue)
   // *Performance Begins*
+  // Heads
   // R: Heads
+  // Heads
   // R: Heads
-  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1557652809":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
-  // 	at repl.MdocSession.MdocApp.rosencrantzCoinToss(<input>:462)
+  // Heads
   // ...
-  // G: Though it can be done by luck alone.
   // R: Heads
   // G: ...probability
+  // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.027538S)
+  // Result: Summary(1,0,0,,PT0.02399S)
 
 
 object Chapter04_Configuration_3 extends ZIOSpecDefault:
@@ -95,4 +95,4 @@ object Chapter04_Configuration_3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.024657S)
+  // Result: Summary(1,0,0,,PT0.04134S)

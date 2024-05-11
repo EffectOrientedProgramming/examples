@@ -251,7 +251,10 @@ object Chapter03_Superpowers_9 extends ZIOAppDefault:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT5.026953027S,User saved)
+  // TODO Handle long line. 
+  // Truncating for now: 
+  // (PT5.042099726S,Please manually provision Morty)
+  // Result: (PT5.042099726S,Please manually provision Mort
 
 
 val effect7 =
