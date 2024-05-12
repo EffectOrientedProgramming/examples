@@ -5,6 +5,7 @@ enum Scenario: // TODO Could these instances _also_ be the error types??
   case StockMarketHeadline
   case HeadlineUnavailable
   case NoWikiArticleAvailable()
+  case AITooSlow()
 
 import scala.concurrent.Future
 
@@ -19,6 +20,8 @@ def getHeadLine(scenario: Scenario): Future[String] =
         Future.successful("stock market crash!")
       case Scenario.NoWikiArticleAvailable() =>
         Future.successful("Fred built a barn.")
+      case Scenario.AITooSlow() =>
+        Future.successful("space is big!")
     
 def findTopicOfInterest(
     content: String
@@ -46,8 +49,6 @@ def wikiArticle(
     case "barn" =>
       Left:
         Scenario.NoWikiArticleAvailable()
-//        NoRecordsAvailable:
-//          "obscureTopic"
 
 case class HeadlineNotAvailable()
 def getHeadlineZ(scenario: Scenario) =
@@ -142,20 +143,21 @@ def closeableFile() =
     ): Boolean =
       println:
         "Searching file for: " + searchTerm
-      searchTerm == "stock market" || searchTerm == "barn"
+      searchTerm == "stock market" || searchTerm == "barn" || searchTerm == "space"
       
       
     override def summaryFor(searchTerm: String): String =
       if (searchTerm == "stock market") 
         "stock markets are neat"
+      else if (searchTerm == "space")
+        "space is huge"
       else
         throw Exception(s"No summary available for $searchTerm")
-      
-    
 
     override def write(
         entry: String
-    ): Try[String] =
+    ): Try[String] ={
+      // TODO Properly error for an enum case
       if (entry == "stock market")
         Try(
           throw new Exception(
@@ -168,6 +170,7 @@ def closeableFile() =
           entry :: contents
         Try(entry)
       }
+}
 
 val closeableFileZ =
   ZIO.fromAutoCloseable:
@@ -179,7 +182,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$18@3bc40fe2
+  // Result: repl.MdocSession$MdocApp$$anon$19@2f89e657
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -233,20 +236,22 @@ def summaryForZ(
 def summarize(article: String): String =
   println("AI summarizing: start")
   // Represents the AI taking a long time to summarize the content
-  if (!article.contains("stock market")) 
+  if (article.contains("space")) 
     Thread.sleep(1000)
   
   println("AI summarizing: complete")
   s"TODO Summarized content"
 
-case class AIFailure()
 
 def summarizeZ(article: String) =
   ZIO
     .attemptBlockingInterrupt:
       summarize(article)
-    .onInterrupt(ZIO.debug("Interrupted summarize"))
-    .mapError(_ => AIFailure())
+    .onInterrupt:
+      ZIO.debug("Interrupt AI!")
+    .orDie // TODO Confirm we don't care about this case. 
+    .timeoutFail(Scenario.AITooSlow())(50.millis)
+      
 
 val findTopNewsStory =
   ZIO.succeed:
@@ -298,7 +303,7 @@ def researchHeadline(scenario: Scenario) =
         "Could not fetch headline"
       case NoInterestingTopic() =>
         "No Interesting topic found"
-      case AIFailure() =>
+      case Scenario.AITooSlow() =>
         "Error during AI summary"
       case NoSummaryAvailable(topic) =>
         s"No summary available for $topic"
@@ -313,9 +318,9 @@ object Chapter06_Composability_10 extends ZIOAppDefault:
   // Searching file for: stock market
   // AI summarizing: start
   // AI summarizing: complete
-  // Writing to file: TODO Summarized content
+  // Interrupt AI!
   // Closing file!
-  // Result: TODO Summarized content
+  // Result: Error during AI summary
 
 
 object Chapter06_Composability_11 extends ZIOAppDefault:
@@ -335,10 +340,22 @@ object Chapter06_Composability_12 extends ZIOAppDefault:
   // Result: No wiki article available
 
 
+object Chapter06_Composability_13 extends ZIOAppDefault:
+  def run =
+    researchHeadline:
+      Scenario.AITooSlow()
+  // Opening file!
+  // Searching file for: space
+  // AI summarizing: start
+  // Interrupt AI!
+  // Closing file!
+  // Result: Error during AI summary
+
+
 def saveInformation(info: String): Unit =
   ???
 
-object Chapter06_Composability_13 extends ZIOAppDefault:
+object Chapter06_Composability_14 extends ZIOAppDefault:
   // TODO Consider deleting .as
   //   The problem is we can't return literals in zio-direct.
   def logAndProvideDefault(e: Throwable) =
