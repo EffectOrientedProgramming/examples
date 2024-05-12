@@ -306,14 +306,14 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   // Heads
   // Tails
   // Heads
+  // Tails
   // Heads
   // Tails
   // Tails
   // Tails
-  // Tails
-  // Tails
-  // Num Heads = 3
-  // Result: 3
+  // Heads
+  // Num Heads = 4
+  // Result: 4
 
 
 val rosencrantzCoinToss =
