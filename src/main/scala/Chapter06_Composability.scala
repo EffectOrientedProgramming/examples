@@ -1,3 +1,5 @@
+package Chapter06_Composability
+
 import zio.*
 import zio.direct.*
 
@@ -183,7 +185,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@74c46129
+  // Result: repl.MdocSession$MdocApp$$anon$19@616bcdcf
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -327,9 +329,9 @@ object Chapter06_Composability_10 extends ZIOAppDefault:
   // Searching file for: stock market
   // AI summarizing: start
   // AI summarizing: complete
-  // Interrupt AI!
+  // Writing to file: market is not rational
   // Closing file!
-  // Result: Error during AI summary
+  // Result: market is not rational
 
 
 object Chapter06_Composability_11 extends ZIOAppDefault:

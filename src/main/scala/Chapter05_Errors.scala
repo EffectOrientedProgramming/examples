@@ -1,3 +1,5 @@
+package Chapter05_Errors
+
 import zio.*
 import zio.direct.*
 
