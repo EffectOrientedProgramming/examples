@@ -1,21 +1,53 @@
 import zio.*
 import zio.direct.*
 
-enum Scenario:
+enum Scenario: // TODO Could these instances _also_ be the error types??
   case StockMarketHeadline
   case HeadlineUnavailable
+  case NoWikiArticleAvailable()
 
 import scala.concurrent.Future
 
 // TODO If we make this function accept the "mock" result and return that, then
 //  we can leverage that to hit all of the possible paths in AllTheThings.
 def getHeadLine(scenario: Scenario): Future[String] =
-  if (scenario == Scenario.StockMarketHeadline)
-    Future.successful("stock market crash!")
-  else
-    Future.failed(
-      new Exception("Headline not available")
-    )
+  scenario match
+      case Scenario.HeadlineUnavailable =>
+        Future.failed:
+          new Exception("Headline not available")
+      case Scenario.StockMarketHeadline => 
+        Future.successful("stock market crash!")
+      case Scenario.NoWikiArticleAvailable() =>
+        Future.successful("Fred built a barn.")
+    
+def findTopicOfInterest(
+    content: String
+): Option[String] =
+  Option.when(content.contains("stock market")):
+    "stock market"
+  .orElse(
+      Option.when(content.contains("space")):
+        "space"
+  )
+  .orElse(
+      Option.when(content.contains("barn")):
+        "barn"
+  )
+  
+import scala.util.Either
+def wikiArticle(
+    topic: String
+): Either[Scenario.NoWikiArticleAvailable, String] =
+  topic match
+    case "stock market" | "space" =>
+      Right:
+        s"detailed history of $topic"
+    
+    case "barn" =>
+      Left:
+        Scenario.NoWikiArticleAvailable()
+//        NoRecordsAvailable:
+//          "obscureTopic"
 
 case class HeadlineNotAvailable()
 def getHeadlineZ(scenario: Scenario) =
@@ -37,12 +69,6 @@ object Chapter06_Composability_1 extends ZIOAppDefault:
     getHeadlineZ(Scenario.HeadlineUnavailable)
   // Result: HeadlineNotAvailable()
 
-
-def findTopicOfInterest(
-    content: String
-): Option[String] =
-  Option.when(content.contains("stock market")):
-    "stock market"
 
 // TODO Discuss colon clashing in this example
 val _: Option[String] =
@@ -72,21 +98,6 @@ object Chapter06_Composability_3 extends ZIOAppDefault:
   // Result: NoInterestingTopic()
 
 
-case class NoRecordsAvailable(topic: String)
-
-import scala.util.Either
-def wikiArticle(
-    topic: String
-): Either[NoRecordsAvailable, String] =
-  topic match
-    case "stock market" =>
-      Right:
-        s"detailed history of $topic"
-    case "obscureTopic" =>
-      Left:
-        NoRecordsAvailable:
-          "obscureTopic"
-
 def wikiArticleZ(topic: String) =
   ZIO.from:
     wikiArticle:
@@ -103,7 +114,10 @@ object Chapter06_Composability_5 extends ZIOAppDefault:
   def run =
     wikiArticleZ:
       "obscureTopic"
-  // Result: NoRecordsAvailable(obscureTopic)
+  // TODO Handle long line. 
+  // Truncating for now: 
+  // Defect: scala.MatchError: obscureTopic (of clas
+  // Result: Defect: scala.MatchError: obscureTopic (of cla
 
 
 import scala.util.Try
@@ -128,7 +142,8 @@ def closeableFile() =
     ): Boolean =
       println:
         "Searching file for: " + searchTerm
-      searchTerm == "stock market"
+      searchTerm == "stock market" || searchTerm == "barn"
+      
       
     override def summaryFor(searchTerm: String): String =
       if (searchTerm == "stock market") 
@@ -164,7 +179,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$17@7c7630ec
+  // Result: repl.MdocSession$MdocApp$$anon$18@3bc40fe2
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -281,14 +296,14 @@ def researchHeadline(scenario: Scenario) =
     .mapError:
       case HeadlineNotAvailable() =>
         "Could not fetch headline"
-      case NoRecordsAvailable(topic) =>
-        s"No records for $topic"
       case NoInterestingTopic() =>
         "No Interesting topic found"
       case AIFailure() =>
         "Error during AI summary"
       case NoSummaryAvailable(topic) =>
         s"No summary available for $topic"
+      case Scenario.NoWikiArticleAvailable() =>
+        "No wiki article available"
 
 object Chapter06_Composability_10 extends ZIOAppDefault:
   def run =
@@ -310,10 +325,20 @@ object Chapter06_Composability_11 extends ZIOAppDefault:
   // Result: Could not fetch headline
 
 
+object Chapter06_Composability_12 extends ZIOAppDefault:
+  def run =
+    researchHeadline:
+      Scenario.NoWikiArticleAvailable()
+  // Opening file!
+  // Searching file for: barn
+  // Closing file!
+  // Result: No wiki article available
+
+
 def saveInformation(info: String): Unit =
   ???
 
-object Chapter06_Composability_12 extends ZIOAppDefault:
+object Chapter06_Composability_13 extends ZIOAppDefault:
   // TODO Consider deleting .as
   //   The problem is we can't return literals in zio-direct.
   def logAndProvideDefault(e: Throwable) =
