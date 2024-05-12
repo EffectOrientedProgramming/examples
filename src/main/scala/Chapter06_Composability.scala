@@ -5,7 +5,8 @@ import zio.direct.*
 
 enum Scenario: // TODO Could these instances _also_ be the error types??
   case StockMarketHeadline
-  case HeadlineUnavailable
+  case HeadlineNotAvailable()
+  case NoInterestingTopic()
   case NoWikiArticleAvailable()
   case AITooSlow()
 
@@ -15,7 +16,7 @@ import scala.concurrent.Future
 //  we can leverage that to hit all of the possible paths in AllTheThings.
 def getHeadLine(scenario: Scenario): Future[String] =
   scenario match
-      case Scenario.HeadlineUnavailable =>
+      case Scenario.HeadlineNotAvailable() =>
         Future.failed:
           new Exception("Headline not available")
       case Scenario.StockMarketHeadline => 
@@ -52,14 +53,13 @@ def wikiArticle(
       Left:
         Scenario.NoWikiArticleAvailable()
 
-case class HeadlineNotAvailable()
 def getHeadlineZ(scenario: Scenario) =
   ZIO
     .from:
       getHeadLine(scenario)
     .mapError:
       case _: Throwable =>
-        HeadlineNotAvailable()
+        Scenario.HeadlineNotAvailable()
 
 object Chapter06_Composability_0 extends ZIOAppDefault:
   def run =
@@ -69,7 +69,7 @@ object Chapter06_Composability_0 extends ZIOAppDefault:
 
 object Chapter06_Composability_1 extends ZIOAppDefault:
   def run =
-    getHeadlineZ(Scenario.HeadlineUnavailable)
+    getHeadlineZ(Scenario.HeadlineNotAvailable())
   // Result: HeadlineNotAvailable()
 
 
@@ -78,14 +78,13 @@ val _: Option[String] =
   findTopicOfInterest:
     "content"
 
-case class NoInterestingTopic()
 def topicOfInterestZ(headline: String) =
   ZIO
     .from:
       findTopicOfInterest:
         headline
     .orElseFail:
-      NoInterestingTopic()
+      Scenario.NoInterestingTopic()
 
 object Chapter06_Composability_2 extends ZIOAppDefault:
   def run =
@@ -185,7 +184,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@616bcdcf
+  // Result: repl.MdocSession$MdocApp$$anon$19@24a2eef7
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -310,9 +309,9 @@ def researchHeadlineRaw(scenario: Scenario) =
 def researchHeadline(scenario: Scenario) =
   researchHeadlineRaw(scenario)
     .mapError:
-      case HeadlineNotAvailable() =>
+      case Scenario.HeadlineNotAvailable() =>
         "Could not fetch headline"
-      case NoInterestingTopic() =>
+      case Scenario.NoInterestingTopic() =>
         "No Interesting topic found"
       case Scenario.AITooSlow() =>
         "Error during AI summary"
@@ -329,15 +328,15 @@ object Chapter06_Composability_10 extends ZIOAppDefault:
   // Searching file for: stock market
   // AI summarizing: start
   // AI summarizing: complete
-  // Writing to file: market is not rational
+  // Interrupt AI!
   // Closing file!
-  // Result: market is not rational
+  // Result: Error during AI summary
 
 
 object Chapter06_Composability_11 extends ZIOAppDefault:
   def run =
     researchHeadline:
-      Scenario.HeadlineUnavailable
+      Scenario.HeadlineNotAvailable()
   // Result: Could not fetch headline
 
 
