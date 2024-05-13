@@ -12,7 +12,6 @@ enum Scenario: // TODO Could these instances _also_ be the error types??
   case SummaryReadThrows()
 
 import scala.concurrent.Future
-
 // TODO If we make this function accept the "mock" result and return that, then
 //  we can leverage that to hit all of the possible paths in AllTheThings.
 def getHeadLine(scenario: Scenario): Future[String] =
@@ -51,6 +50,7 @@ import scala.util.Either
 def wikiArticle(
     topic: String
 ): Either[Scenario.NoWikiArticleAvailable, String] =
+  println(s"Wiki - articleFor $topic")
   topic match
     case "stock market" | "space" =>
       Right:
@@ -116,6 +116,7 @@ object Chapter06_Composability_4 extends ZIOAppDefault:
   def run =
     wikiArticleZ:
       "stock market"
+  // Wiki - articleFor stock market
   // Result: detailed history of stock market
 
 
@@ -123,6 +124,7 @@ object Chapter06_Composability_5 extends ZIOAppDefault:
   def run =
     wikiArticleZ:
       "obscureTopic"
+  // Wiki - articleFor obscureTopic
   // TODO Handle long line. 
   // Truncating for now: 
   // Defect: scala.MatchError: obscureTopic (of clas
@@ -143,21 +145,22 @@ def closeableFile() =
   new CloseableFile:
     var contents: List[String] =
       List("Medical Breakthrough!")
-    println("Opening file!")
+    println("File - OPEN")
     override def close =
-      println("Closing file!")
+      println("File - CLOSE")
 
     override def contains(
         searchTerm: String
     ): Boolean =
       println:
-        "Searching file for: " + searchTerm
+        s"File - contains($searchTerm)"
       searchTerm match
         case "wheel" | "unicode" => true
         case _ => false
       
       
     override def summaryFor(searchTerm: String): String ={
+      println(s"File - summaryFor($searchTerm)")
       if (searchTerm == "unicode")
         throw Exception(s"No summary available for $searchTerm")
       else if (searchTerm == "stock market") 
@@ -179,7 +182,7 @@ def closeableFile() =
           )
         )
       else {
-        println("Writing to file: " + entry)
+        println("File - write: " + entry)
         contents =
           entry :: contents
         Try(entry)
@@ -194,9 +197,9 @@ val closeableFileZ =
 object Chapter06_Composability_6 extends ZIOAppDefault:
   def run =
     closeableFileZ
-  // Opening file!
-  // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@2d2d7f93
+  // File - OPEN
+  // File - CLOSE
+  // Result: repl.MdocSession$MdocApp$$anon$19@696c0cff
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -206,9 +209,9 @@ object Chapter06_Composability_7 extends ZIOAppDefault:
         closeableFileZ.run
       file.contains:
         "topicOfInterest"
-  // Opening file!
-  // Searching file for: topicOfInterest
-  // Closing file!
+  // File - OPEN
+  // File - contains(topicOfInterest)
+  // File - CLOSE
   // Result: false
 
 
@@ -228,9 +231,9 @@ object Chapter06_Composability_8 extends ZIOAppDefault:
       val file =
         closeableFileZ.run
       writeToFileZ(file, "New data on topic").run
-  // Opening file!
-  // Writing to file: New data on topic
-  // Closing file!
+  // File - OPEN
+  // File - write: New data on topic
+  // File - CLOSE
   // Result: New data on topic
 
 
@@ -248,13 +251,12 @@ def summaryForZ(
 
 
 def summarize(article: String): String =
-  println("AI summarizing: start")
+  println(s"AI - summarize - start")
   // Represents the AI taking a long time to summarize the content
   if (article.contains("space")) 
     Thread.sleep(1000)
   
-  
-  println("AI summarizing: complete")
+  println(s"AI - summarize - end")
   if (article.contains("stock market"))
      s"market is not rational"
   else 
@@ -266,7 +268,7 @@ def summarizeZ(article: String) =
     .attemptBlockingInterrupt:
       summarize(article)
     .onInterrupt:
-      ZIO.debug("Interrupt AI!")
+      ZIO.debug("AI **INTERRUPTED**")
     .orDie // TODO Confirm we don't care about this case. 
     .timeoutFail(Scenario.AITooSlow())(50.millis)
       
@@ -343,9 +345,10 @@ object Chapter06_Composability_11 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.SummaryReadThrows()
-  // Opening file!
-  // Searching file for: unicode
-  // Closing file!
+  // File - OPEN
+  // File - contains(unicode)
+  // File - summaryFor(unicode)
+  // File - CLOSE
   // Result: No summary available for unicode
 
 
@@ -353,9 +356,10 @@ object Chapter06_Composability_12 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.NoWikiArticleAvailable()
-  // Opening file!
-  // Searching file for: barn
-  // Closing file!
+  // File - OPEN
+  // File - contains(barn)
+  // Wiki - articleFor barn
+  // File - CLOSE
   // Result: No wiki article available
 
 
@@ -363,11 +367,12 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.AITooSlow()
-  // Opening file!
-  // Searching file for: space
-  // AI summarizing: start
-  // Interrupt AI!
-  // Closing file!
+  // File - OPEN
+  // File - contains(space)
+  // Wiki - articleFor space
+  // AI - summarize - start
+  // AI **INTERRUPTED**
+  // File - CLOSE
   // Result: Error during AI summary
 
 
@@ -375,12 +380,13 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.StockMarketHeadline()
-  // Opening file!
-  // Searching file for: stock market
-  // AI summarizing: start
-  // AI summarizing: complete
-  // Writing to file: market is not rational
-  // Closing file!
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor stock market
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
+  // File - CLOSE
   // Result: market is not rational
 
 
