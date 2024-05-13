@@ -145,7 +145,7 @@ def closeableFile() =
     ): Boolean =
       println:
         "Searching file for: " + searchTerm
-      searchTerm == "stock market" || searchTerm == "barn" || searchTerm == "space"
+      searchTerm == "wheel"
       
       
     override def summaryFor(searchTerm: String): String =
@@ -184,7 +184,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@24a2eef7
+  // Result: repl.MdocSession$MdocApp$$anon$19@36a03b63
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -288,11 +288,14 @@ def researchHeadlineRaw(scenario: Scenario) =
     val summaryFile: CloseableFile = // Was an AutoCloseable
       closeableFileZ.run
 
-    val topicIsFresh: Boolean =
+    val knownTopic: Boolean =
       summaryFile.contains:
         topic
 
-    if (topicIsFresh)
+    if (knownTopic)
+      // Was throwing
+      summaryForZ(summaryFile, topic).run
+    else
       val wikiArticle = // Was an Either
         wikiArticleZ(topic).run
 
@@ -302,9 +305,6 @@ def researchHeadlineRaw(scenario: Scenario) =
       // Was a Try
       writeToFileZ(summaryFile, summary).run
       summary
-    else
-      // Was throwing
-      summaryForZ(summaryFile, topic).run
 
 def researchHeadline(scenario: Scenario) =
   researchHeadlineRaw(scenario)
@@ -328,9 +328,9 @@ object Chapter06_Composability_10 extends ZIOAppDefault:
   // Searching file for: stock market
   // AI summarizing: start
   // AI summarizing: complete
-  // Interrupt AI!
+  // Writing to file: market is not rational
   // Closing file!
-  // Result: Error during AI summary
+  // Result: market is not rational
 
 
 object Chapter06_Composability_11 extends ZIOAppDefault:

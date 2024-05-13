@@ -306,16 +306,16 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
     flipTen
   // Heads
   // Tails
-  // Heads
   // Tails
   // Tails
-  // Heads
-  // Heads
   // Tails
-  // Heads
-  // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 1
+  // Result: 1
 
 
 val rosencrantzCoinToss =
