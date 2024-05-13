@@ -4,7 +4,7 @@ import zio.*
 import zio.direct.*
 
 enum Scenario: // TODO Could these instances _also_ be the error types??
-  case StockMarketHeadline
+  case StockMarketHeadline()
   case HeadlineNotAvailable()
   case NoInterestingTopic()
   case NoWikiArticleAvailable()
@@ -20,7 +20,7 @@ def getHeadLine(scenario: Scenario): Future[String] =
       case Scenario.HeadlineNotAvailable() =>
         Future.failed:
           new Exception("Headline not available")
-      case Scenario.StockMarketHeadline => 
+      case Scenario.StockMarketHeadline() => 
         Future.successful("stock market crash!")
       case Scenario.NoWikiArticleAvailable() =>
         Future.successful("Fred built a barn.")
@@ -70,7 +70,7 @@ def getHeadlineZ(scenario: Scenario) =
 
 object Chapter06_Composability_0 extends ZIOAppDefault:
   def run =
-    getHeadlineZ(Scenario.StockMarketHeadline)
+    getHeadlineZ(Scenario.StockMarketHeadline())
   // Result: stock market crash!
 
 
@@ -196,7 +196,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$20@21243cdb
+  // Result: repl.MdocSession$MdocApp$$anon$19@2d2d7f93
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -335,24 +335,11 @@ def researchHeadline(scenario: Scenario) =
 object Chapter06_Composability_10 extends ZIOAppDefault:
   def run =
     researchHeadline:
-      Scenario.StockMarketHeadline
-  // Opening file!
-  // Searching file for: stock market
-  // AI summarizing: start
-  // AI summarizing: complete
-  // Writing to file: market is not rational
-  // Closing file!
-  // Result: market is not rational
-
-
-object Chapter06_Composability_11 extends ZIOAppDefault:
-  def run =
-    researchHeadline:
       Scenario.HeadlineNotAvailable()
   // Result: Could not fetch headline
 
 
-object Chapter06_Composability_12 extends ZIOAppDefault:
+object Chapter06_Composability_11 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.SummaryReadThrows()
@@ -362,7 +349,7 @@ object Chapter06_Composability_12 extends ZIOAppDefault:
   // Result: No summary available for unicode
 
 
-object Chapter06_Composability_13 extends ZIOAppDefault:
+object Chapter06_Composability_12 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.NoWikiArticleAvailable()
@@ -372,7 +359,7 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   // Result: No wiki article available
 
 
-object Chapter06_Composability_14 extends ZIOAppDefault:
+object Chapter06_Composability_13 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.AITooSlow()
@@ -382,6 +369,19 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // Interrupt AI!
   // Closing file!
   // Result: Error during AI summary
+
+
+object Chapter06_Composability_14 extends ZIOAppDefault:
+  def run =
+    researchHeadline:
+      Scenario.StockMarketHeadline()
+  // Opening file!
+  // Searching file for: stock market
+  // AI summarizing: start
+  // AI summarizing: complete
+  // Writing to file: market is not rational
+  // Closing file!
+  // Result: market is not rational
 
 
 def saveInformation(info: String): Unit =
