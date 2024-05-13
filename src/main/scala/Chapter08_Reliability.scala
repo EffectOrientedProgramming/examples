@@ -268,10 +268,12 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(471)
-  // Current requests: : List(445, 471)
-  // Current requests: : List(631, 445, 471)
-  // Current requests: : List(701, 631, 445, 471)
+  // Current requests: : List(975)
+  // Current requests: : List(327, 975)
+  // Current requests: : List(928, 327, 975)
+  // Current requests: : List(263, 928, 327, 975)
+  // Current requests: : List(330, 263, 928, 327, 975)
+  // Current requests: : List(283, 330, 263, 928, 327, 975)
   // Result: Crashed the server!!
 
 
@@ -300,16 +302,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(527)
-  // Current requests: : List(300, 527)
-  // Current requests: : List(698, 300, 527)
-  // Current requests: : List(387)
-  // Current requests: : List(168, 387)
-  // Current requests: : List(956, 168, 387)
-  // Current requests: : List(681)
-  // Current requests: : List(612, 681)
-  // Current requests: : List(25, 612, 681)
-  // Current requests: : List(403)
+  // Current requests: : List(554, 834)
+  // Current requests: : List(834)
+  // Current requests: : List(335, 554, 834)
+  // Current requests: : List(225)
+  // Current requests: : List(539, 225)
+  // Current requests: : List(780, 539, 225)
+  // Current requests: : List(918, 780, 539)
+  // Current requests: : List(784, 918)
+  // Current requests: : List(625, 784, 918)
+  // Current requests: : List(212)
   // Result: All Requests Succeeded
 
 
@@ -506,7 +508,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 74 Calls made: 67
 
 
 val logicThatSporadicallyLocksUp =

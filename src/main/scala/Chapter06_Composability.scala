@@ -199,7 +199,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // File - OPEN
   // File - CLOSE
-  // Result: repl.MdocSession$MdocApp$$anon$19@696c0cff
+  // Result: repl.MdocSession$MdocApp$$anon$19@5e11fe5c
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -320,6 +320,7 @@ def researchHeadlineRaw(scenario: Scenario) =
       writeToFileZ(summaryFile, summary).run
       summary
 
+// TODO Should the error-handling completeness be shown later?
 def researchHeadline(scenario: Scenario) =
   researchHeadlineRaw(scenario)
     .mapError:
@@ -371,7 +372,6 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   // File - contains(space)
   // Wiki - articleFor space
   // AI - summarize - start
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: Error during AI summary
 
