@@ -9,6 +9,7 @@ enum Scenario: // TODO Could these instances _also_ be the error types??
   case NoInterestingTopic()
   case NoWikiArticleAvailable()
   case AITooSlow()
+  case SummaryReadThrows()
 
 import scala.concurrent.Future
 
@@ -25,6 +26,8 @@ def getHeadLine(scenario: Scenario): Future[String] =
         Future.successful("Fred built a barn.")
       case Scenario.AITooSlow() =>
         Future.successful("space is big!")
+      case Scenario.SummaryReadThrows() =>
+        Future.successful("new unicode released!")
     
 def findTopicOfInterest(
     content: String
@@ -38,6 +41,10 @@ def findTopicOfInterest(
   .orElse(
       Option.when(content.contains("barn")):
         "barn"
+  )
+  .orElse(
+      Option.when(content.contains("unicode")):
+        "unicode"
   )
   
 import scala.util.Either
@@ -145,16 +152,21 @@ def closeableFile() =
     ): Boolean =
       println:
         "Searching file for: " + searchTerm
-      searchTerm == "wheel"
+      searchTerm match
+        case "wheel" | "unicode" => true
+        case _ => false
       
       
-    override def summaryFor(searchTerm: String): String =
-      if (searchTerm == "stock market") 
+    override def summaryFor(searchTerm: String): String ={
+      if (searchTerm == "unicode")
+        throw Exception(s"No summary available for $searchTerm")
+      else if (searchTerm == "stock market") 
         "stock markets are neat"
       else if (searchTerm == "space")
         "space is huge"
       else
-        throw Exception(s"No summary available for $searchTerm")
+        ???
+}
 
     override def write(
         entry: String
@@ -184,7 +196,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
     closeableFileZ
   // Opening file!
   // Closing file!
-  // Result: repl.MdocSession$MdocApp$$anon$19@36a03b63
+  // Result: repl.MdocSession$MdocApp$$anon$20@21243cdb
 
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -343,6 +355,16 @@ object Chapter06_Composability_11 extends ZIOAppDefault:
 object Chapter06_Composability_12 extends ZIOAppDefault:
   def run =
     researchHeadline:
+      Scenario.SummaryReadThrows()
+  // Opening file!
+  // Searching file for: unicode
+  // Closing file!
+  // Result: No summary available for unicode
+
+
+object Chapter06_Composability_13 extends ZIOAppDefault:
+  def run =
+    researchHeadline:
       Scenario.NoWikiArticleAvailable()
   // Opening file!
   // Searching file for: barn
@@ -350,7 +372,7 @@ object Chapter06_Composability_12 extends ZIOAppDefault:
   // Result: No wiki article available
 
 
-object Chapter06_Composability_13 extends ZIOAppDefault:
+object Chapter06_Composability_14 extends ZIOAppDefault:
   def run =
     researchHeadline:
       Scenario.AITooSlow()
@@ -365,7 +387,7 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
 def saveInformation(info: String): Unit =
   ???
 
-object Chapter06_Composability_14 extends ZIOAppDefault:
+object Chapter06_Composability_15 extends ZIOAppDefault:
   // TODO Consider deleting .as
   //   The problem is we can't return literals in zio-direct.
   def logAndProvideDefault(e: Throwable) =
