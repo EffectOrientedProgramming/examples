@@ -369,6 +369,8 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
 object Chapter06_Composability_14 extends ZIOAppDefault:
   def run =
     researchHeadline:
+      // TODO Handle inconsistency in this example
+      // AI keeps timing out
       Scenario.DiskFull()
   // File - OPEN
   // File - contains(genome)

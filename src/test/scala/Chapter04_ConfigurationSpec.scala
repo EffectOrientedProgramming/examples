@@ -26,7 +26,7 @@ object Chapter04_Configuration_0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.061148S)
+  // Result: Summary(1,0,0,,PT0.074199S)
 
 
 object Chapter04_Configuration_1 extends ZIOSpecDefault:
@@ -55,7 +55,7 @@ object Chapter04_Configuration_1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.046951S)
+  // Result: Summary(1,0,0,,PT0.050097S)
 
 
 object Chapter04_Configuration_2 extends ZIOSpecDefault:
@@ -69,16 +69,16 @@ object Chapter04_Configuration_2 extends ZIOSpecDefault:
   // *Performance Begins*
   // Heads
   // R: Heads
-  // Heads
-  // R: Heads
-  // Heads
+  // Tails
+  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1851810409":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:400)
   // ...
   // R: Heads
   // G: ...probability
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.026293S)
+  // Result: Summary(1,0,0,,PT0.027066S)
 
 
 object Chapter04_Configuration_3 extends ZIOSpecDefault:
@@ -97,4 +97,4 @@ object Chapter04_Configuration_3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.024229S)
+  // Result: Summary(1,0,0,,PT0.039197S)

@@ -188,12 +188,12 @@ object Chapter08_Reliability_3 extends ZIOAppDefault:
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
   // James called API [took 0s]
   // James called API [took 0s]
   // James called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
   // Total time [took 2s]
   // Result: List((), (), ())
 
@@ -268,10 +268,13 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(647)
-  // Current requests: : List(428, 647)
-  // Current requests: : List(405, 428, 647)
-  // Current requests: : List(105, 405, 428, 647)
+  // Current requests: : List(753, 532)
+  // Current requests: : List(532)
+  // Current requests: : List(441, 753, 532)
+  // Current requests: : List(184, 441, 753, 532)
+  // Current requests: : List(404, 184, 441, 753, 532)
+  // Current requests: : List(608, 404, 184, 441, 753, 532)
+  // Current requests: : List(753, 608, 404, 184, 441, 753, 532)
   // Result: Crashed the server!!
 
 
@@ -300,16 +303,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(383)
-  // Current requests: : List(413, 383)
-  // Current requests: : List(399, 413, 383)
-  // Current requests: : List(769)
-  // Current requests: : List(940, 769)
-  // Current requests: : List(547, 940, 769)
-  // Current requests: : List(67, 547, 940)
-  // Current requests: : List(376, 67)
-  // Current requests: : List(142, 376, 67)
-  // Current requests: : List(924)
+  // Current requests: : List(380)
+  // Current requests: : List(651, 380)
+  // Current requests: : List(76, 651, 380)
+  // Current requests: : List(529)
+  // Current requests: : List(686, 529)
+  // Current requests: : List(569, 686, 529)
+  // Current requests: : List(97)
+  // Current requests: : List(703, 97)
+  // Current requests: : List(62, 703, 97)
+  // Current requests: : List(827)
   // Result: All Requests Succeeded
 
 
@@ -558,5 +561,5 @@ object Chapter08_Reliability_8 extends ZIOAppDefault:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 1
-  // Result: 1
+  // Contract Breaches: 0
+  // Result: 0
