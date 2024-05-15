@@ -23,7 +23,7 @@ val unreliableCounting =
 object Chapter07_State_0 extends ZIOAppDefault:
   def run =
     unreliableCounting
-  // Result: Final count: 99958
+  // Result: Final count: 99963
 
 
 object Chapter07_State_1 extends ZIOAppDefault:

@@ -194,28 +194,6 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
   // Result: false
 
 
-def writeToFileZ(
-    file: File,
-    content: String
-) =
-  ZIO
-    .from:
-      file.write:
-        content
-    .mapError( _ => Scenario.DiskFull())
-
-object Chapter06_Composability_7 extends ZIOAppDefault:
-  def run =
-    defer:
-      val file =
-        closeableFileZ.run
-      writeToFileZ(file, "New data on topic").run
-  // File - OPEN
-  // File - write: New data on topic
-  // File - CLOSE
-  // Result: New data on topic
-
-
 import scala.util.Using
 import java.io.FileReader
 
@@ -225,7 +203,7 @@ Using(openFile()) { file1 =>
   }
 }
 
-object Chapter06_Composability_8 extends ZIOAppDefault:
+object Chapter06_Composability_7 extends ZIOAppDefault:
   def run =
     defer:
       val file1 =
@@ -237,6 +215,28 @@ object Chapter06_Composability_8 extends ZIOAppDefault:
   // File - CLOSE
   // File - CLOSE
   // Result: ()
+
+
+def writeToFileZ(
+    file: File,
+    content: String
+) =
+  ZIO
+    .from:
+      file.write:
+        content
+    .mapError( _ => Scenario.DiskFull())
+
+object Chapter06_Composability_8 extends ZIOAppDefault:
+  def run =
+    defer:
+      val file =
+        closeableFileZ.run
+      writeToFileZ(file, "New data on topic").run
+  // File - OPEN
+  // File - write: New data on topic
+  // File - CLOSE
+  // Result: New data on topic
 
 
 case class NoSummaryAvailable(topic: String) 
@@ -362,7 +362,6 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   // Wiki - articleFor(space)
   // AI - summarize - start
   // printing because our test clock is insane
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -377,7 +376,7 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object Chapter06_Composability_15 extends ZIOAppDefault:
