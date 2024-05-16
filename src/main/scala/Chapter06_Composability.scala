@@ -15,37 +15,48 @@ enum Scenario: // TODO Could these instances _also_ be the error types??
 import scala.concurrent.Future
 // TODO If we make this function accept the "mock" result and return that, then
 //  we can leverage that to hit all of the possible paths in AllTheThings.
-def getHeadLine(scenario: Scenario): Future[String] =
+def getHeadLine(
+    scenario: Scenario
+): Future[String] =
   scenario match
-      case Scenario.HeadlineNotAvailable() =>
-        Future.failed:
-          new Exception("Headline not available")
-      case Scenario.StockMarketHeadline() => 
-        Future.successful("stock market rising!")
-      case Scenario.NoWikiArticleAvailable() =>
-        Future.successful("Fred built a barn.")
-      case Scenario.AITooSlow() =>
-        Future.successful("space is big!")
-      case Scenario.SummaryReadThrows() =>
-        Future.successful("new unicode released!")
-      case Scenario.DiskFull() =>
-        Future.successful("human genome sequenced")
-    
-def findTopicOfInterest(content: String): Option[String] = {
-  val topics = List("stock market", "space", "barn", "unicode", "genome")
+    case Scenario.HeadlineNotAvailable() =>
+      Future.failed:
+        new Exception("Headline not available")
+    case Scenario.StockMarketHeadline() =>
+      Future.successful("stock market rising!")
+    case Scenario.NoWikiArticleAvailable() =>
+      Future.successful("Fred built a barn.")
+    case Scenario.AITooSlow() =>
+      Future.successful("space is big!")
+    case Scenario.SummaryReadThrows() =>
+      Future.successful("new unicode released!")
+    case Scenario.DiskFull() =>
+      Future.successful("human genome sequenced")
+
+def findTopicOfInterest(
+    content: String
+): Option[String] =
+  val topics =
+    List(
+      "stock market",
+      "space",
+      "barn",
+      "unicode",
+      "genome"
+    )
   topics.find(content.contains)
-}
-  
+
 import scala.util.Either
-def wikiArticle(
-    topic: String
-): Either[Scenario.NoWikiArticleAvailable, String] =
+def wikiArticle(topic: String): Either[
+  Scenario.NoWikiArticleAvailable,
+  String
+] =
   println(s"Wiki - articleFor($topic)")
   topic match
     case "stock market" | "space" | "genome" =>
       Right:
         s"detailed history of $topic"
-    
+
     case "barn" =>
       Left:
         Scenario.NoWikiArticleAvailable()
@@ -143,25 +154,29 @@ def openFile() =
       println:
         s"File - contains($searchTerm)"
       searchTerm match
-        case "wheel" | "unicode" => true
-        case _ => false
-      
-      
-    override def summaryFor(searchTerm: String): String ={
+        case "wheel" | "unicode" =>
+          true
+        case _ =>
+          false
+
+    override def summaryFor(
+        searchTerm: String
+    ): String =
       println(s"File - summaryFor($searchTerm)")
       if (searchTerm == "unicode")
-        throw Exception(s"No summary available for $searchTerm")
-      else if (searchTerm == "stock market") 
+        throw Exception(
+          s"No summary available for $searchTerm"
+        )
+      else if (searchTerm == "stock market")
         "stock markets are neat"
       else if (searchTerm == "space")
         "space is huge"
       else
         ???
-}
 
     override def write(
         entry: String
-    ): Try[String] ={
+    ): Try[String] =
       if (entry.contains("genome"))
         Try(
           throw new Exception(
@@ -174,7 +189,6 @@ def openFile() =
           entry :: contents
         Try(entry)
       }
-}
 
 val closeableFileZ =
   ZIO.fromAutoCloseable:
@@ -197,10 +211,12 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
 import scala.util.Using
 import java.io.FileReader
 
-Using(openFile()) { file1 =>
-  Using(openFile()) { file2 =>
-    // TODO Use reader1 and reader2
-  }
+Using(openFile()) {
+  file1 =>
+    Using(openFile()) {
+      file2 =>
+        // TODO Use reader1 and reader2
+    }
 }
 
 object Chapter06_Composability_7 extends ZIOAppDefault:
@@ -217,15 +233,14 @@ object Chapter06_Composability_7 extends ZIOAppDefault:
   // Result: ()
 
 
-def writeToFileZ(
-    file: File,
-    content: String
-) =
+def writeToFileZ(file: File, content: String) =
   ZIO
     .from:
       file.write:
         content
-    .mapError( _ => Scenario.DiskFull())
+    .mapError(
+      _ => Scenario.DiskFull()
+    )
 
 object Chapter06_Composability_8 extends ZIOAppDefault:
   def run =
@@ -239,35 +254,38 @@ object Chapter06_Composability_8 extends ZIOAppDefault:
   // Result: New data on topic
 
 
-case class NoSummaryAvailable(topic: String) 
+case class NoSummaryAvailable(topic: String)
 def summaryForZ(
     file: File,
     // TODO Consider making a CloseableFileZ
     topic: String
 ) =
-  ZIO.attempt:
-    file.summaryFor(topic)
-  .mapError(_ => NoSummaryAvailable(topic))
-    
-
-
+  ZIO
+    .attempt:
+      file.summaryFor(topic)
+    .mapError(
+      _ => NoSummaryAvailable(topic)
+    )
 
 def summarize(article: String): String =
   println(s"AI - summarize - start")
-  // Represents the AI taking a long time to summarize the content
-  if (article.contains("space")) 
-    // This should go away when our clock is less dumb
-    println("printing because our test clock is insane")
+  // Represents the AI taking a long time to
+  // summarize the content
+  if (article.contains("space"))
+    // This should go away when our clock is less
+    // dumb
+    println(
+      "printing because our test clock is insane"
+    )
     Thread.sleep(1000)
-  
+
   println(s"AI - summarize - end")
   if (article.contains("stock market"))
-     s"market is not rational"
+    s"market is not rational"
   else if (article.contains("genome"))
     "The human genome is huge!"
   else
     ???
-
 
 def summarizeZ(article: String) =
   ZIO
@@ -275,9 +293,8 @@ def summarizeZ(article: String) =
       summarize(article)
     .onInterrupt:
       ZIO.debug("AI **INTERRUPTED**")
-    .orDie // TODO Confirm we don't care about this case. 
+    .orDie // TODO Confirm we don't care about this case.
     .timeoutFail(Scenario.AITooSlow())(50.millis)
-      
 
 val findTopNewsStory =
   ZIO.succeed:
@@ -302,10 +319,10 @@ def researchHeadline(scenario: Scenario) =
     val headline: String =
       getHeadlineZ(scenario).run
 
-    val topic: String = 
-      topicOfInterestZ(headline).run 
+    val topic: String =
+      topicOfInterestZ(headline).run
 
-    val summaryFile: File = 
+    val summaryFile: File =
       closeableFileZ.run
 
     val knownTopic: Boolean =
@@ -315,12 +332,12 @@ def researchHeadline(scenario: Scenario) =
     if (knownTopic)
       summaryForZ(summaryFile, topic).run
     else
-      val wikiArticle: String = 
+      val wikiArticle: String =
         wikiArticleZ(topic).run
 
-      val summary: String =  
+      val summary: String =
         summarizeZ(wikiArticle).run
-        
+
       writeToFileZ(summaryFile, summary).run
       summary
 
@@ -362,6 +379,7 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   // Wiki - articleFor(space)
   // AI - summarize - start
   // printing because our test clock is insane
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -397,22 +415,3 @@ object Chapter06_Composability_15 extends ZIOAppDefault:
 
 def saveInformation(info: String): Unit =
   ???
-
-object Chapter06_Composability_16 extends ZIOAppDefault:
-  // TODO Consider deleting .as
-  //   The problem is we can't return literals in zio-direct.
-  def logAndProvideDefault(e: Throwable) =
-    Console
-      .printLine:
-        e.getMessage
-      .as:
-        "default value"
-  
-  def run =
-    ZIO
-      .attempt:
-        ???
-      .catchAll:
-        logAndProvideDefault
-  // an implementation is missing
-  // Result: default value

@@ -188,12 +188,12 @@ object Chapter08_Reliability_3 extends ZIOAppDefault:
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
   // Bruce called API [took 0s]
   // Bruce called API [took 0s]
   // Bruce called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
   // Total time [took 2s]
   // Result: List((), (), ())
 
@@ -268,13 +268,11 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(753, 532)
-  // Current requests: : List(532)
-  // Current requests: : List(441, 753, 532)
-  // Current requests: : List(184, 441, 753, 532)
-  // Current requests: : List(404, 184, 441, 753, 532)
-  // Current requests: : List(608, 404, 184, 441, 753, 532)
-  // Current requests: : List(753, 608, 404, 184, 441, 753, 532)
+  // Current requests: : List(515)
+  // Current requests: : List(196, 478, 515)
+  // Current requests: : List(478, 515)
+  // Current requests: : List(904, 196, 478, 515)
+  // Current requests: : List(148, 904, 196, 478, 515)
   // Result: Crashed the server!!
 
 
@@ -303,16 +301,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
       DelicateResource.live
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(380)
-  // Current requests: : List(651, 380)
-  // Current requests: : List(76, 651, 380)
-  // Current requests: : List(529)
-  // Current requests: : List(686, 529)
-  // Current requests: : List(569, 686, 529)
-  // Current requests: : List(97)
-  // Current requests: : List(703, 97)
-  // Current requests: : List(62, 703, 97)
-  // Current requests: : List(827)
+  // Current requests: : List(797)
+  // Current requests: : List(105, 797)
+  // Current requests: : List(808, 105, 797)
+  // Current requests: : List(867)
+  // Current requests: : List(57, 867)
+  // Current requests: : List(841, 57, 867)
+  // Current requests: : List(134)
+  // Current requests: : List(294, 134)
+  // Current requests: : List(585, 294, 134)
+  // Current requests: : List(556)
   // Result: All Requests Succeeded
 
 
@@ -489,6 +487,8 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
     defer:
       val cb =
         makeCircuitBreaker.run
+      // TODO Can we move these Refs into the
+      // external system?
       val numCalls =
         Ref.make[Int](0).run
       val numPrevented =
@@ -509,7 +509,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =

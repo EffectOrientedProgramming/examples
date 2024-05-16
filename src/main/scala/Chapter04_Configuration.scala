@@ -275,6 +275,9 @@ object Chapter04_Configuration_11 extends ZIOAppDefault:
 
 
 val coinToss =
+  // TODO: This is the first place we use defer.
+  // We need to deliberately, and explicitly,
+  // introduce it.
   defer:
     if Random.nextBoolean.run then
       ZIO.debug("Heads").run
@@ -305,17 +308,17 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Tails
-  // Heads
-  // Tails
   // Tails
   // Heads
-  // Tails
-  // Tails
   // Heads
   // Tails
+  // Heads
+  // Heads
   // Tails
-  // Num Heads = 3
-  // Result: 3
+  // Heads
+  // Heads
+  // Num Heads = 6
+  // Result: 6
 
 
 val rosencrantzCoinToss =
