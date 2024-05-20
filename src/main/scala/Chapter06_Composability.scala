@@ -208,17 +208,6 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
   // Result: false
 
 
-import scala.util.Using
-import java.io.FileReader
-
-Using(openFile()) {
-  file1 =>
-    Using(openFile()) {
-      file2 =>
-        // TODO Use reader1 and reader2
-    }
-}
-
 object Chapter06_Composability_7 extends ZIOAppDefault:
   def run =
     defer:
@@ -396,7 +385,7 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object Chapter06_Composability_15 extends ZIOAppDefault:
