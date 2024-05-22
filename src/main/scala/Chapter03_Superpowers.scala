@@ -225,7 +225,6 @@ object Chapter03_Superpowers_7 extends ZIOAppDefault:
     effect4
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -240,7 +239,7 @@ object Chapter03_Superpowers_8 extends ZIOAppDefault:
   def run =
     effect5
   // Log: Signup initiated for Morty
-  // Result: Please manually provision Morty
+  // Result: User saved
 
 
 val effect6 =
@@ -252,7 +251,7 @@ object Chapter03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT5.032807209S,User saved)
+  // Result: (PT5.035507147S,User saved)
 
 
 val effect7 =
@@ -285,7 +284,6 @@ val surroundedProgram =
 
 object Chapter03_Superpowers_11 extends ZIOAppDefault:
   def run = surroundedProgram
-  // Log: Signup initiated for Morty
   // **Before**
   // Hello
   // world
