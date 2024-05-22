@@ -70,7 +70,7 @@ val thunderingHerdsScenario =
     val cloudStorage =
       ZIO.service[CloudStorage].run
 
-    cloudStorage.invoice.debug.run
+    cloudStorage.invoice.run
 
 val makePopularService =
   defer:
@@ -85,7 +85,6 @@ object Chapter08_Reliability_0 extends ZIOAppDefault:
   def run =
     thunderingHerdsScenario
       .provide(CloudStorage.live, popularService)
-  // Amount owed: $100
   // Result: Amount owed: $100
 
 
@@ -113,7 +112,6 @@ object Chapter08_Reliability_1 extends ZIOAppDefault:
       CloudStorage.live,
       ZLayer.fromZIO(makeCachedPopularService)
     )
-  // Amount owed: $1
   // Result: Amount owed: $1
 
 
@@ -188,12 +186,12 @@ object Chapter08_Reliability_3 extends ZIOAppDefault:
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
   // James called API [took 0s]
   // James called API [took 0s]
   // James called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
   // Total time [took 2s]
   // Result: List((), (), ())
 
@@ -264,15 +262,16 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
           _ => delicateResource.request
         .as("All Requests Succeeded!")
         .run
-    .provideSome[Scope]:
+    .provide(
       DelicateResource.live
+    )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(418)
-  // Current requests: : List(86, 418)
-  // Current requests: : List(524, 86, 418)
-  // Current requests: : List(714, 524, 86, 418)
-  // Current requests: : List(797, 714, 524, 86, 418)
+  // Current requests: : List(881)
+  // Current requests: : List(989, 881)
+  // Current requests: : List(108, 989, 881)
+  // Current requests: : List(673, 108, 989, 881)
+  // Current requests: : List(458, 673, 108, 989, 881)
   // Result: Crashed the server!!
 
 
@@ -297,20 +296,22 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
               delicateResource.request
         .as("All Requests Succeeded")
         .run
-    .provideSome[Scope]:
-      DelicateResource.live
+    .provide(
+      DelicateResource.live,
+      Scope.default
+    )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(645)
-  // Current requests: : List(12, 645)
-  // Current requests: : List(337, 12, 645)
-  // Current requests: : List(452)
-  // Current requests: : List(68, 452)
-  // Current requests: : List(956, 68, 452)
-  // Current requests: : List(913, 956)
-  // Current requests: : List(72, 913)
-  // Current requests: : List(846, 72, 913)
-  // Current requests: : List(114)
+  // Current requests: : List(955)
+  // Current requests: : List(122, 955)
+  // Current requests: : List(630, 122, 955)
+  // Current requests: : List(142)
+  // Current requests: : List(503, 142)
+  // Current requests: : List(302, 503, 142)
+  // Current requests: : List(494)
+  // Current requests: : List(898, 494)
+  // Current requests: : List(186, 898, 494)
+  // Current requests: : List(905)
   // Result: All Requests Succeeded
 
 
@@ -470,7 +471,6 @@ import nl.vroste.rezilience.{
   TrippingStrategy,
   Retry
 }
-import nl.vroste.rezilience.CircuitBreaker.CircuitBreakerOpen
 
 val makeCircuitBreaker =
   CircuitBreaker.make(
@@ -483,6 +483,7 @@ val makeCircuitBreaker =
   )
 
 object Chapter08_Reliability_7 extends ZIOAppDefault:
+  import CircuitBreaker.CircuitBreakerOpen
   def run =
     defer:
       val cb =
@@ -509,7 +510,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
