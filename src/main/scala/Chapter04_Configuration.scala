@@ -309,13 +309,13 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
     flipTen
   // Heads
   // Heads
-  // Tails
   // Heads
   // Tails
   // Heads
+  // Heads
+  // Heads
   // Tails
-  // Heads
-  // Heads
+  // Tails
   // Tails
   // Num Heads = 6
   // Result: 6

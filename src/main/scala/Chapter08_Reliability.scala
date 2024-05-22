@@ -60,7 +60,8 @@ val thunderingHerdsScenario =
     val popularService =
       ZIO.service[PopularService].run
 
-    ZIO // All requests arrives nearly at once
+    // All requests arrive at once
+    ZIO
       .collectAllPar:
         List.fill(100):
           popularService.retrieve:
@@ -78,13 +79,13 @@ val makePopularService =
       ZIO.service[CloudStorage].run
     PopularService(cloudStorage.retrieve)
 
-val popularService =
-  ZLayer.fromZIO(makePopularService)
-
 object Chapter08_Reliability_0 extends ZIOAppDefault:
   def run =
     thunderingHerdsScenario
-      .provide(CloudStorage.live, popularService)
+      .provide(
+        CloudStorage.live, 
+        ZLayer.fromZIO(makePopularService)
+      )
   // Result: Amount owed: $100
 
 
@@ -183,16 +184,16 @@ object Chapter08_Reliability_3 extends ZIOAppDefault:
         .timedSecondsDebug:
           "Total time"
         .run
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
-  // Total time [took 2s]
+  // Bruce called API [took -1s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
+  // James called API [took 0s]
+  // Total time [took 0s]
   // Result: List((), (), ())
 
 
@@ -262,16 +263,16 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
           _ => delicateResource.request
         .as("All Requests Succeeded!")
         .run
-    .provide(
-      DelicateResource.live
-    )
+    .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(217)
-  // Current requests: : List(528, 217)
-  // Current requests: : List(884, 528, 217)
-  // Current requests: : List(413, 884, 528, 217)
-  // Result: Crashed the server!!
+  // Current requests: : List(161)
+  // Current requests: : List(762, 161)
+  // Current requests: : List(664, 762, 161)
+  // Current requests: : List(688, 664, 762)
+  // Current requests: : List(498, 688, 664, 762)
+  // Current requests: : List(318, 498, 688, 664)
+  // Result: Server crashed from requests!!
 
 
 import nl.vroste.rezilience.Bulkhead
@@ -295,22 +296,19 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
               delicateResource.request
         .as("All Requests Succeeded")
         .run
-    .provide(
-      DelicateResource.live,
-      Scope.default
-    )
+    .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(470)
-  // Current requests: : List(415, 470)
-  // Current requests: : List(679, 415, 470)
-  // Current requests: : List(270)
-  // Current requests: : List(939, 270)
-  // Current requests: : List(694, 939, 270)
-  // Current requests: : List(537)
-  // Current requests: : List(52, 537)
-  // Current requests: : List(167, 52, 537)
-  // Current requests: : List(689)
+  // Current requests: : List(322)
+  // Current requests: : List(287, 322)
+  // Current requests: : List(918, 287, 322)
+  // Current requests: : List(680)
+  // Current requests: : List(346, 680)
+  // Current requests: : List(879, 346, 680)
+  // Current requests: : List(888, 879, 346)
+  // Current requests: : List(107, 888)
+  // Current requests: : List(840, 107, 888)
+  // Current requests: : List(301, 840, 107)
   // Result: All Requests Succeeded
 
 
@@ -509,7 +507,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 0 Calls made: 141
 
 
 val logicThatSporadicallyLocksUp =
@@ -561,5 +559,5 @@ object Chapter08_Reliability_8 extends ZIOAppDefault:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 1
-  // Result: 1
+  // Contract Breaches: 0
+  // Result: 0
