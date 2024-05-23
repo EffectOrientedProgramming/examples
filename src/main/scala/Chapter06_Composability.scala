@@ -368,6 +368,7 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   // Wiki - articleFor(space)
   // AI - summarize - start
   // printing because our test clock is insane
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -384,7 +385,7 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object Chapter06_Composability_15 extends ZIOAppDefault:

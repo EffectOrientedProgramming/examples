@@ -187,12 +187,12 @@ object Chapter08_Reliability_3 extends ZIOAppDefault:
   // Bill called API [took 0s]
   // Bill called API [took 0s]
   // Bill called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
   // James called API [took 0s]
   // James called API [took 0s]
   // James called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
+  // Bruce called API [took 0s]
   // Total time [took 2s]
   // Result: List((), (), ())
 
@@ -266,11 +266,12 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(636)
-  // Current requests: : List(454, 636)
-  // Current requests: : List(878, 454, 636)
-  // Current requests: : List(657, 878, 454, 636)
-  // Current requests: : List(222, 657, 878, 454, 636)
+  // Current requests: : List(913)
+  // Current requests: : List(779, 913)
+  // Current requests: : List(765, 779, 913)
+  // Current requests: : List(746, 640, 765, 779, 913)
+  // Current requests: : List(274, 746, 640, 765, 779, 913)
+  // Current requests: : List(640, 765, 779, 913)
   // Result: Crashed the server!!
 
 
@@ -298,16 +299,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(457)
-  // Current requests: : List(588, 457)
-  // Current requests: : List(148, 588, 457)
-  // Current requests: : List(674)
-  // Current requests: : List(91, 674)
-  // Current requests: : List(265, 91, 674)
-  // Current requests: : List(930)
-  // Current requests: : List(109, 930)
-  // Current requests: : List(673, 109, 930)
-  // Current requests: : List(589)
+  // Current requests: : List(911)
+  // Current requests: : List(242, 911)
+  // Current requests: : List(9, 242, 911)
+  // Current requests: : List(868)
+  // Current requests: : List(983, 868)
+  // Current requests: : List(633, 983, 868)
+  // Current requests: : List(97)
+  // Current requests: : List(559, 97)
+  // Current requests: : List(331, 559, 97)
+  // Current requests: : List(409, 331, 559)
   // Result: All Requests Succeeded
 
 
@@ -506,7 +507,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
