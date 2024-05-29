@@ -219,7 +219,6 @@ object Chapter06_Composability_7 extends ZIOAppDefault:
   // File - OPEN
   // File - CLOSE
   // File - CLOSE
-  // Result: ()
 
 
 def writeToFileZ(file: File, content: String) =
@@ -300,7 +299,6 @@ object Chapter06_Composability_9 extends ZIOAppDefault:
         findTopNewsStory.run
       textAlert(topStory).run
   // Texting story: Battery Breakthrough
-  // Result: ()
 
 
 def researchHeadline(scenario: Scenario) =
@@ -385,7 +383,7 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object Chapter06_Composability_15 extends ZIOAppDefault:

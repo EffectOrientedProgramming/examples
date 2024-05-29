@@ -21,7 +21,6 @@ object Chapter04_Configuration_0 extends ZIOAppDefault:
       .provide:
         Dough.fresh
   // Dough is rising
-  // Result: ()
 
 
 case class Heat()
@@ -308,17 +307,17 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Heads
-  // Heads
-  // Tails
   // Tails
   // Heads
   // Heads
-  // Tails
-  // Heads
   // Heads
   // Tails
-  // Num Heads = 6
-  // Result: 6
+  // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 5
+  // Result: 5
 
 
 val rosencrantzCoinToss =
