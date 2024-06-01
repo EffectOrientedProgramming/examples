@@ -26,7 +26,7 @@ object Chapter04_Configuration_0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.029473S)
+  // Result: Summary(1,0,0,,PT0.050158S)
 
 
 object Chapter04_Configuration_1 extends ZIOSpecDefault:
@@ -55,7 +55,7 @@ object Chapter04_Configuration_1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.030479S)
+  // Result: Summary(1,0,0,,PT0.051663S)
 
 
 object Chapter04_Configuration_2 extends ZIOSpecDefault:
@@ -78,7 +78,7 @@ object Chapter04_Configuration_2 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.052678S)
+  // Result: Summary(1,0,0,,PT0.035496S)
 
 
 object Chapter04_Configuration_3 extends ZIOSpecDefault:
@@ -97,4 +97,4 @@ object Chapter04_Configuration_3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.040265S)
+  // Result: Summary(1,0,0,,PT0.102503S)

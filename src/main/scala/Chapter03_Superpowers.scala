@@ -208,6 +208,7 @@ object Chapter03_Superpowers_6 extends ZIOAppDefault:
   
   def run =
     effect3
+  // Log: Interrupting slow request
   // Result: *** Save timed out ***
 
 
@@ -251,8 +252,8 @@ object Chapter03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT5.040672476S,User saved)
   // Log: Signup initiated for Morty
+  // Result: (PT5.027519337S,User saved)
 
 
 val effect7 =

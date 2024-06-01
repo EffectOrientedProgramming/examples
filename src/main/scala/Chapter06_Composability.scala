@@ -4,9 +4,11 @@ import zio.*
 import zio.direct.*
 
 enum Scenario: // TODO Could these instances _also_ be the error types??
-  case StockMarketHeadline()
-  case HeadlineNotAvailable()
+  case StockMarketHeadline
+  case HeadlineNotAvailable
   case NoInterestingTopic()
+  // There is an Either[NoWikiArticleAvailable,_] in visible code, so if we make it an object,
+  // It will be Either[NoWikiArticleAvailable.type,_] :(
   case NoWikiArticleAvailable()
   case AITooSlow()
   case SummaryReadThrows()
@@ -19,10 +21,10 @@ def getHeadLine(
     scenario: Scenario
 ): Future[String] =
   scenario match
-    case Scenario.HeadlineNotAvailable() =>
+    case Scenario.HeadlineNotAvailable =>
       Future.failed:
         new Exception("Headline not available")
-    case Scenario.StockMarketHeadline() =>
+    case Scenario.StockMarketHeadline =>
       Future.successful("stock market rising!")
     case Scenario.NoWikiArticleAvailable() =>
       Future.successful("Fred built a barn.")
@@ -30,6 +32,8 @@ def getHeadLine(
       Future.successful("space is big!")
     case Scenario.SummaryReadThrows() =>
       Future.successful("new unicode released!")
+    case Scenario.NoInterestingTopic() =>
+      Future.successful("TODO Use boring content here")
     case Scenario.DiskFull() =>
       Future.successful("human genome sequenced")
 
@@ -69,18 +73,18 @@ def getHeadlineZ(scenario: Scenario) =
       getHeadLine(scenario)
     .mapError:
       case _: Throwable =>
-        Scenario.HeadlineNotAvailable()
+        Scenario.HeadlineNotAvailable
 
 object Chapter06_Composability_0 extends ZIOAppDefault:
   def run =
-    getHeadlineZ(Scenario.StockMarketHeadline())
+    getHeadlineZ(Scenario.StockMarketHeadline)
   // Result: stock market rising!
 
 
 object Chapter06_Composability_1 extends ZIOAppDefault:
   def run =
-    getHeadlineZ(Scenario.HeadlineNotAvailable())
-  // Result: HeadlineNotAvailable()
+    getHeadlineZ(Scenario.HeadlineNotAvailable)
+  // Result: HeadlineNotAvailable
 
 
 val result: Option[String] =
@@ -139,12 +143,24 @@ trait File extends AutoCloseable:
   def contains(searchTerm: String): Boolean
   def write(entry: String): Try[String]
   def summaryFor(searchTerm: String): String
+  def sameContent(other: File): Boolean
+  def content(): String
 
-def openFile() =
+def openFile(path: String) =
   new File:
     var contents: List[String] =
       List("Medical Breakthrough!")
     println("File - OPEN")
+    
+    override def content() =
+      path match
+        case "file1.txt" | "file2.txt"=> "hot dog"
+        case _ => "not hot dog"
+    
+    override def sameContent(other: File): Boolean =
+      println("side-effect print: comparing content")
+      content() == other.content()
+    
     override def close =
       println("File - CLOSE")
 
@@ -153,6 +169,8 @@ def openFile() =
     ): Boolean =
       println:
         s"File - contains($searchTerm)"
+        
+      // todo use path to determine behavior?
       searchTerm match
         case "wheel" | "unicode" =>
           true
@@ -190,16 +208,16 @@ def openFile() =
         Try(entry)
       }
 
-val closeableFileZ =
+def openFileZ(path: String) =
   ZIO.fromAutoCloseable:
     ZIO.succeed:
-      openFile()
+      openFile(path)
 
 object Chapter06_Composability_6 extends ZIOAppDefault:
   def run =
     defer:
       val file =
-        closeableFileZ.run
+        openFileZ("file1.txt").run
       file.contains:
         "topicOfInterest"
   // File - OPEN
@@ -208,17 +226,36 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
   // Result: false
 
 
+// This was previously-compile only
+// The output is too long to fit on a page, 
+// and beyond our ability to control
+// without resorting to something like pprint.
+
+import scala.util.Using
+import java.io.FileReader
+
+Using(openFile("file1.txt")) {
+  file1 =>
+    Using(openFile("file2.txt")) {
+      file2 =>
+        file1.sameContent(file2)
+    }
+}
+
 object Chapter06_Composability_7 extends ZIOAppDefault:
   def run =
     defer:
       val file1 =
-        closeableFileZ.run
+        openFileZ("file1.txt").run
       val file2 =
-        closeableFileZ.run
+        openFileZ("file2.txt").run
+      file1.sameContent(file2)
   // File - OPEN
   // File - OPEN
+  // side-effect print: comparing content
   // File - CLOSE
   // File - CLOSE
+  // Result: true
 
 
 def writeToFileZ(file: File, content: String) =
@@ -226,15 +263,14 @@ def writeToFileZ(file: File, content: String) =
     .from:
       file.write:
         content
-    .mapError(
+    .mapError:
       _ => Scenario.DiskFull()
-    )
 
 object Chapter06_Composability_8 extends ZIOAppDefault:
   def run =
     defer:
       val file =
-        closeableFileZ.run
+        openFileZ("file1").run
       writeToFileZ(file, "New data on topic").run
   // File - OPEN
   // File - write: New data on topic
@@ -251,9 +287,8 @@ def summaryForZ(
   ZIO
     .attempt:
       file.summaryFor(topic)
-    .mapError(
+    .mapError:
       _ => NoSummaryAvailable(topic)
-    )
 
 def summarize(article: String): String =
   println(s"AI - summarize - start")
@@ -272,8 +307,14 @@ def summarize(article: String): String =
     s"market is not rational"
   else if (article.contains("genome"))
     "The human genome is huge!"
+  else if (article.contains("topic"))
+    "topic summary"
   else
     ???
+
+
+// TODO Can we use silent instead of compile-only above?
+val summary: String = summarize("topic")
 
 def summarizeZ(article: String) =
   ZIO
@@ -310,7 +351,12 @@ def researchHeadline(scenario: Scenario) =
       topicOfInterestZ(headline).run
 
     val summaryFile: File =
-      closeableFileZ.run
+      // TODO Use Scenario to determine file?
+      openFileZ("file1.txt").run
+      
+    // TODO Use 2 files at once, to further highlight the dynamic scoping?
+    // Not sure if that is too noisy for this flow
+    // Maybe something like a cache check if time has passed?
 
     val knownTopic: Boolean =
       summaryFile.contains:
@@ -331,8 +377,8 @@ def researchHeadline(scenario: Scenario) =
 object Chapter06_Composability_10 extends ZIOAppDefault:
   def run =
     researchHeadline:
-      Scenario.HeadlineNotAvailable()
-  // Result: HeadlineNotAvailable()
+      Scenario.HeadlineNotAvailable
+  // Result: HeadlineNotAvailable
 
 
 object Chapter06_Composability_11 extends ZIOAppDefault:
@@ -383,13 +429,13 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object Chapter06_Composability_15 extends ZIOAppDefault:
   def run =
     researchHeadline:
-      Scenario.StockMarketHeadline()
+      Scenario.StockMarketHeadline
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
