@@ -3,40 +3,38 @@ package Chapter05_Errors
 import zio.*
 import zio.direct.*
 
-def canFail(doIt: Boolean) =
-  if doIt then
+def canFail(succeeds: Boolean) =
+  if succeeds then
     ZIO.succeed("it works")
   else
     ZIO.fail("*** FAIL ***")
 
 object Chapter05_Errors_0 extends ZIOAppDefault:
   def run =
-    defer:
-      val success = canFail(doIt = true).run
-      Console.printLine:
-        success
-      .run
+    canFail(succeeds = true)
+       .debug
   // it works
+  // Result: it works
 
 
 object Chapter05_Errors_1 extends ZIOAppDefault:
   def run =
-    defer:
-      val failure = canFail(doIt = false).run
-      Console.printLine:
-        s"Things went wrong: $failure"
-      .run
+    canFail(succeeds = false)
+     .debug("Things went wrong")
+  // <FAIL> Things went wrong: Fail(*** FAIL ***,Stack trace for thread "zio-fiber-829735460":
+  // 	at repl.MdocSession.MdocApp.canFail(<input>:11)
+  // 	at repl.MdocSession.MdocApp.Chapter23.run(<input>:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
+  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
   // Result: *** FAIL ***
 
 
 object Chapter05_Errors_2 extends ZIOAppDefault:
   def run =
-    defer:
-      val failure = canFail(doIt = false).flip.run
-      Console.printLine:
-        s"Things went wrong: $failure"
-      .run
-  // Things went wrong: *** FAIL ***
+    canFail(succeeds = false).flip
+  // Result: *** FAIL ***
 
 
 enum ErrorsScenario:
