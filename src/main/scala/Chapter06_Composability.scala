@@ -429,7 +429,7 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object Chapter06_Composability_15 extends ZIOAppDefault:
