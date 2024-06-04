@@ -11,7 +11,7 @@ object Chapter10_Appendix_RunningEffects_0 extends ZIOSpecDefault:
         assertTrue:
           Random.nextIntBounded(10).run < 10
   // + random is random
-  // Result: Summary(1,0,0,,PT0.445931S)
+  // Result: Summary(1,0,0,,PT0.42179S)
 
 
 object Chapter10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
@@ -24,7 +24,7 @@ object Chapter10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
             20 &&
             Random.nextIntBetween(20, 30).run <= 30
   // + random is still random
-  // Result: Summary(1,0,0,,PT0.149395S)
+  // Result: Summary(1,0,0,,PT0.083306S)
 
 
 object Chapter10_Appendix_RunningEffects_2 extends ZIOSpecDefault:
@@ -47,7 +47,7 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-612460033" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-356033566" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
@@ -57,7 +57,7 @@ Hello Zeb
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
   //   	at repl.MdocSession.MdocApp.logic(<input>:93)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.Chapter70Spec.spec(<input>:127)
+  //   	at repl.MdocSession.MdocApp.Chapter69Spec.spec(<input>:127)
   // Result: 
   // - console works
   //   Exception i
