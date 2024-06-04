@@ -226,22 +226,6 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
   // Result: false
 
 
-// This was previously-compile only
-// The output is too long to fit on a page, 
-// and beyond our ability to control
-// without resorting to something like pprint.
-
-import scala.util.Using
-import java.io.FileReader
-
-Using(openFile("file1.txt")) {
-  file1 =>
-    Using(openFile("file2.txt")) {
-      file2 =>
-        file1.sameContent(file2)
-    }
-}
-
 object Chapter06_Composability_7 extends ZIOAppDefault:
   def run =
     defer:
