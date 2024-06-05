@@ -81,11 +81,10 @@ val makePopularService =
 
 object Chapter08_Reliability_0 extends ZIOAppDefault:
   def run =
-    thunderingHerdsScenario
-      .provide(
-        CloudStorage.live, 
-        ZLayer.fromZIO(makePopularService)
-      )
+    thunderingHerdsScenario.provide(
+      CloudStorage.live,
+      ZLayer.fromZIO(makePopularService)
+    )
   // Result: Amount owed: $100
 
 
@@ -266,9 +265,9 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
   // Current requests: : List(551)
-  // Current requests: : List(875, 551)
-  // Current requests: : List(971, 875, 551)
-  // Current requests: : List(656, 971, 875, 551)
+  // Current requests: : List(803, 551)
+  // Current requests: : List(137, 803, 551)
+  // Current requests: : List(26, 137, 803, 551)
   // Result: Crashed the server!!
 
 
@@ -296,16 +295,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(924)
-  // Current requests: : List(172, 924)
-  // Current requests: : List(890, 172, 924)
-  // Current requests: : List(360)
-  // Current requests: : List(332, 360)
-  // Current requests: : List(696, 332, 360)
-  // Current requests: : List(197, 696)
-  // Current requests: : List(617, 197)
-  // Current requests: : List(298, 617, 197)
-  // Current requests: : List(794)
+  // Current requests: : List(295)
+  // Current requests: : List(575, 295)
+  // Current requests: : List(575, 575, 295)
+  // Current requests: : List(903)
+  // Current requests: : List(286, 903)
+  // Current requests: : List(189, 286, 903)
+  // Current requests: : List(343)
+  // Current requests: : List(558, 343)
+  // Current requests: : List(396, 558, 343)
+  // Current requests: : List(465)
   // Result: All Requests Succeeded
 
 

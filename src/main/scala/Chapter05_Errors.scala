@@ -11,19 +11,21 @@ def canFail(succeeds: Boolean) =
 
 object Chapter05_Errors_0 extends ZIOAppDefault:
   def run =
-    canFail(succeeds = true)
-       .debug
+    canFail(succeeds =
+      true
+    ).debug
   // it works
   // Result: it works
 
 
 object Chapter05_Errors_1 extends ZIOAppDefault:
   def run =
-    canFail(succeeds = false)
-     .debug("Things went wrong")
-  // <FAIL> Things went wrong: Fail(*** FAIL ***,Stack trace for thread "zio-fiber-796608864":
+    canFail(succeeds =
+      false
+    ).debug("Things went wrong")
+  // <FAIL> Things went wrong: Fail(*** FAIL ***,Stack trace for thread "zio-fiber-1464474192":
   // 	at repl.MdocSession.MdocApp.canFail(<input>:11)
-  // 	at repl.MdocSession.MdocApp.Chapter23.run(<input>:32)
+  // 	at repl.MdocSession.MdocApp.Chapter23.run(<input>:34)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
@@ -33,7 +35,9 @@ object Chapter05_Errors_1 extends ZIOAppDefault:
 
 object Chapter05_Errors_2 extends ZIOAppDefault:
   def run =
-    canFail(succeeds = false).flip
+    canFail(succeeds =
+      false
+    ).flip
   // Result: *** FAIL ***
 
 
