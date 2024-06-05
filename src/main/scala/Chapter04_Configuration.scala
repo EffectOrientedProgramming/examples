@@ -6,12 +6,13 @@ import zio.direct.*
 // Explain private constructor approach
 case class Dough():
   val letRise =
-    ZIO.debug:
+    Console.printLine:
       "Dough is rising"
 
 object Dough:
   val fresh =
     ZLayer.derive[Dough]
+      .tap(_ => Console.printLine("Dough: Mixed"))
 
 object Chapter04_Configuration_0 extends ZIOAppDefault:
   def run =
@@ -20,6 +21,7 @@ object Chapter04_Configuration_0 extends ZIOAppDefault:
         dough => dough.letRise
       .provide:
         Dough.fresh
+  // Dough: Mixed
   // Dough is rising
 
 
@@ -27,8 +29,12 @@ case class Heat()
 
 val oven =
   ZLayer.derive[Heat]
+    .tap(_ => Console.printLine("Oven: Heated"))
 
-trait Bread
+trait Bread {
+  def eat =
+    Console.printLine("Bread: Eating")
+}
 
 case class BreadHomeMade(
     heat: Heat,
@@ -38,13 +44,18 @@ case class BreadHomeMade(
 object Bread:
   val homemade =
     ZLayer.derive[BreadHomeMade]
+      .tap(_ => Console.printLine("BreadHomeMade: Baked"))
 
 object Chapter04_Configuration_1 extends ZIOAppDefault:
   def run =
     ZIO
-      .service[Bread]
+      .serviceWithZIO[Bread]:
+        bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Result: BreadHomeMade(Heat(),Dough())
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Bread: Eating
 
 
 case class Toast(heat: Heat, bread: Bread)
@@ -52,6 +63,7 @@ case class Toast(heat: Heat, bread: Bread)
 object Toast:
   val make =
     ZLayer.derive[Toast]
+      .tap(_ => Console.printLine("Toast: Made"))
 
 object Chapter04_Configuration_2 extends ZIOAppDefault:
   def run =
@@ -63,11 +75,16 @@ object Chapter04_Configuration_2 extends ZIOAppDefault:
         Dough.fresh,
         oven
       )
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Toast: Made
   // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
 val toaster =
   ZLayer.derive[Heat]
+   .tap(_ => Console.printLine("Toaster: Heated"))
 
 object Chapter04_Configuration_3 extends ZIOAppDefault:
   def run =
@@ -75,6 +92,7 @@ object Chapter04_Configuration_3 extends ZIOAppDefault:
       .service[Heat]
       .provide:
         toaster
+  // Toaster: Heated
   // Result: Heat()
 
 
@@ -92,6 +110,11 @@ object Chapter04_Configuration_4 extends ZIOAppDefault:
                 bread
             )
       .provide(Bread.homemade, Dough.fresh, oven)
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Toaster: Heated
+  // Toast: Made
   // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
@@ -104,6 +127,7 @@ val buyBread =
 val storeBought =
   ZLayer.fromZIO:
     buyBread
+  .tap(_ => Console.printLine("BreadStoreBought: Bought"))
 
 object Chapter04_Configuration_5 extends ZIOAppDefault:
   def run =
@@ -111,6 +135,7 @@ object Chapter04_Configuration_5 extends ZIOAppDefault:
       .service[Bread]
       .provide:
         storeBought
+  // BreadStoreBought: Bought
   // Result: BreadStoreBought()
 
 
@@ -174,6 +199,7 @@ object Chapter04_Configuration_7 extends ZIOAppDefault:
           .orElse:
             storeBought
   // Attempt 1: Error(Friend Unreachable)
+  // BreadStoreBought: Bought
   // Result: BreadStoreBought()
 
 
@@ -228,6 +254,7 @@ object Chapter04_Configuration_10 extends ZIOAppDefault:
             storeBought
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
+  // BreadStoreBought: Bought
   // Result: BreadStoreBought()
 
 
@@ -306,16 +333,16 @@ val flipTen =
 object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
-  // Heads
-  // Heads
-  // Heads
-  // Tails
-  // Heads
-  // Heads
   // Tails
   // Tails
   // Tails
+  // Heads
+  // Heads
   // Tails
+  // Tails
+  // Heads
+  // Heads
+  // Heads
   // Num Heads = 5
   // Result: 5
 
