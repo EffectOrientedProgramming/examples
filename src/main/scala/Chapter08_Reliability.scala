@@ -264,12 +264,10 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(697)
-  // Current requests: : List(972, 697)
-  // Current requests: : List(555, 972, 697)
-  // Current requests: : List(509, 555, 972, 697)
-  // Current requests: : List(198, 509, 555, 972, 697)
-  // Current requests: : List(854, 198, 509, 555, 972, 697)
+  // Current requests: : List(965)
+  // Current requests: : List(11, 965)
+  // Current requests: : List(824, 11, 965)
+  // Current requests: : List(551, 824, 11, 965)
   // Result: Crashed the server!!
 
 
@@ -297,16 +295,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(232)
-  // Current requests: : List(710, 326, 232)
-  // Current requests: : List(326, 232)
-  // Current requests: : List(475)
-  // Current requests: : List(255, 475)
-  // Current requests: : List(467, 255, 475)
-  // Current requests: : List(634)
-  // Current requests: : List(489, 634)
-  // Current requests: : List(837, 489, 634)
-  // Current requests: : List(546)
+  // Current requests: : List(924)
+  // Current requests: : List(296, 924)
+  // Current requests: : List(239, 296, 924)
+  // Current requests: : List(220)
+  // Current requests: : List(149, 220)
+  // Current requests: : List(969, 149, 220)
+  // Current requests: : List(465)
+  // Current requests: : List(511, 465)
+  // Current requests: : List(781, 511, 465)
+  // Current requests: : List(165)
   // Result: All Requests Succeeded
 
 
@@ -505,7 +503,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 74 Calls made: 67
 
 
 val logicThatSporadicallyLocksUp =

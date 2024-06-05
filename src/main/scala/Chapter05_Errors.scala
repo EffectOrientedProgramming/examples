@@ -23,7 +23,7 @@ object Chapter05_Errors_1 extends ZIOAppDefault:
     canFail(succeeds =
       false
     ).debug("Things went wrong")
-  // <FAIL> Things went wrong: Fail(*** FAIL ***,Stack trace for thread "zio-fiber-577994243":
+  // <FAIL> Things went wrong: Fail(*** FAIL ***,Stack trace for thread "zio-fiber-481599455":
   // 	at repl.MdocSession.MdocApp.canFail(<input>:11)
   // 	at repl.MdocSession.MdocApp.Chapter23.run(<input>:34)
   // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
