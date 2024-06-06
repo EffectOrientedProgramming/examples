@@ -259,13 +259,16 @@ object Chapter04_Configuration_10 extends ZIOAppDefault:
 
 
 import zio.config.*
-import zio.config.magnolia.deriveConfig
-import zio.config.typesafe.*
 
 case class RetryConfig(times: Int)
 
+
+import zio.config.magnolia.deriveConfig
+
 val configDescriptor: Config[RetryConfig] =
   deriveConfig[RetryConfig]
+
+import zio.config.typesafe.*
 
 val configProvider =
   ConfigProvider.fromHoconString:
@@ -334,17 +337,17 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Heads
+  // Heads
+  // Heads
+  // Tails
+  // Heads
   // Tails
   // Tails
   // Heads
   // Tails
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Num Heads = 7
-  // Result: 7
+  // Tails
+  // Num Heads = 5
+  // Result: 5
 
 
 val rosencrantzCoinToss =
