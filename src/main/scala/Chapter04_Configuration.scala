@@ -110,8 +110,8 @@ object Chapter04_Configuration_4 extends ZIOAppDefault:
                 bread
             )
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Toaster: Heated
   // Toast: Made
@@ -334,17 +334,17 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
   // Tails
+  // Heads
+  // Tails
+  // Tails
   // Tails
   // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
   // Heads
-  // Tails
   // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 4
+  // Result: 4
 
 
 val rosencrantzCoinToss =

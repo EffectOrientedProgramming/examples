@@ -5,7 +5,7 @@ import zio.direct.*
 
 def canFail(succeeds: Boolean) =
   if succeeds then
-    ZIO.succeed("it works")
+    ZIO.succeed("Success!")
   else
     ZIO.fail("*** FAIL ***")
 
@@ -13,23 +13,15 @@ object Chapter05_Errors_0 extends ZIOAppDefault:
   def run =
     canFail(succeeds =
       true
-    ).debug
-  // it works
-  // Result: it works
+    )
+  // Result: Success!
 
 
 object Chapter05_Errors_1 extends ZIOAppDefault:
   def run =
     canFail(succeeds =
       false
-    ).debug("Things went wrong")
-  // <FAIL> Things went wrong: Fail(*** FAIL ***,Stack trace for thread "zio-fiber-481599455":
-  // 	at repl.MdocSession.MdocApp.canFail(<input>:11)
-  // 	at repl.MdocSession.MdocApp.Chapter23.run(<input>:34)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:22)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:32)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:39)
-  // 	at mdoctools.Rendering.renderEveryPossibleOutcomeZio(Rendering.scala:46)
+    )
   // Result: *** FAIL ***
 
 
@@ -66,26 +58,28 @@ class ErrorsStaticConfigProvider(
   ): IO[Config.Error, A] =
     ZIO.succeed(Some(scenario).asInstanceOf[A])
 
-val errorsHappyPath =
-  Runtime.setConfigProvider(
-    ErrorsStaticConfigProvider(
-      ErrorsScenario.HappyPath
-    )
-  )
+object Scenario:
 
-val errorsNetworkError =
-  Runtime.setConfigProvider(
-    ErrorsStaticConfigProvider(
-      ErrorsScenario.NetworkError
+  val happyPath =
+    Runtime.setConfigProvider(
+      ErrorsStaticConfigProvider(
+        ErrorsScenario.HappyPath
+      )
     )
-  )
 
-val errorsGpsError =
-  Runtime.setConfigProvider(
-    ErrorsStaticConfigProvider(
-      ErrorsScenario.GPSError
+  val networkError =
+    Runtime.setConfigProvider(
+      ErrorsStaticConfigProvider(
+        ErrorsScenario.NetworkError
+      )
     )
-  )
+
+  val gpsError =
+    Runtime.setConfigProvider(
+      ErrorsStaticConfigProvider(
+        ErrorsScenario.GPSError
+      )
+    )
 
 // TODO Hide definition? Then we won't see the internals of the scenario stuff.
 // This would also makes the exceptions more surprising
@@ -201,7 +195,7 @@ val getTemperature: ZIO[
 
 object Chapter05_Errors_8 extends ZIOAppDefault:
   override val bootstrap =
-    errorsHappyPath
+    Scenario.happyPath
   
   def run =
     getTemperature
@@ -210,7 +204,7 @@ object Chapter05_Errors_8 extends ZIOAppDefault:
 
 object Chapter05_Errors_9 extends ZIOAppDefault:
   override val bootstrap =
-    errorsNetworkError
+    Scenario.networkError
   
   def run =
     getTemperature
@@ -234,7 +228,7 @@ val temperatureAppComplete =
 
 object Chapter05_Errors_10 extends ZIOAppDefault:
   override val bootstrap =
-    errorsGpsError
+    Scenario.gpsError
   
   def run =
     temperatureAppComplete
