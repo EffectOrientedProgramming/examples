@@ -21,6 +21,8 @@ object Chapter04_Configuration_0 extends ZIOAppDefault:
         dough => dough.letRise
       .provide:
         Dough.fresh
+  // Dough: Mixed
+  // Dough is rising
 
 
 case class Heat()
@@ -52,9 +54,15 @@ object Chapter04_Configuration_1 extends ZIOAppDefault:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Bread: Eating
 
 
-case class Toast(heat: Heat, bread: Bread)
+case class Toast(heat: Heat, bread: Bread):
+  val eat =
+    Console.printLine("Toast: Eating")
 
 object Toast:
   val make =
@@ -69,8 +77,13 @@ object Chapter04_Configuration_2 extends ZIOAppDefault:
         Toast.make,
         Bread.homemade,
         Dough.fresh,
-        oven
+        oven,
       )
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Toast: Made
+  // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
 val toaster =
@@ -83,22 +96,44 @@ object Chapter04_Configuration_3 extends ZIOAppDefault:
       .service[Heat]
       .provide:
         toaster
+  // Toaster: Heated
+  // Result: Heat()
 
+
+case class Toaster()
+object Toaster:
+  val layer =
+    ZLayer.derive[Toaster]
+      .tap(_ => Console.printLine("Toaster: Heating"))
+
+case class ToastZ(heat: Toaster, bread: Bread):
+  val eat =
+    Console.printLine("Toast: Eating")
+
+object ToastZ:
+  val make =
+    ZLayer.derive[ToastZ]
+      .tap(_ => Console.printLine("ToastZ: Made"))
 
 object Chapter04_Configuration_4 extends ZIOAppDefault:
   def run =
     ZIO
-      .serviceWithZIO[Bread]:
-        bread =>
-          ZIO
-            .service[Toast]
-            .provide(
-              Toast.make,
-              toaster,
-              ZLayer.succeed:
-                bread
-            )
-      .provide(Bread.homemade, Dough.fresh, oven)
+      .serviceWithZIO[ToastZ]:
+        toast => toast.eat
+      .provide(
+        ToastZ.make,
+        Toaster.layer,
+        Bread.homemade, 
+        Dough.fresh, 
+        oven,
+        ZLayer.Debug.tree
+      )
+  // Toaster: Heating
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // ToastZ: Made
+  // Toast: Eating
 
 
 case class BreadStoreBought() extends Bread
@@ -118,6 +153,8 @@ object Chapter04_Configuration_5 extends ZIOAppDefault:
       .service[Bread]
       .provide:
         storeBought
+  // BreadStoreBought: Bought
+  // Result: BreadStoreBought()
 
 
 case class BreadFromFriend() extends Bread()
@@ -164,6 +201,8 @@ object Chapter04_Configuration_6 extends ZIOAppDefault:
         Friend.bread(worksOnAttempt =
           3
         )
+  // Attempt 1: Error(Friend Unreachable)
+  // Result: Error(Friend Unreachable)
 
 
 object Chapter04_Configuration_7 extends ZIOAppDefault:
@@ -177,6 +216,9 @@ object Chapter04_Configuration_7 extends ZIOAppDefault:
           )
           .orElse:
             storeBought
+  // Attempt 1: Error(Friend Unreachable)
+  // BreadStoreBought: Bought
+  // Result: BreadStoreBought()
 
 
 def logicWithRetries(retries: Int) = 
@@ -196,11 +238,18 @@ def logicWithRetries(retries: Int) =
 object Chapter04_Configuration_8 extends ZIOAppDefault:
   def run =
     logicWithRetries(retries = 1)
+  // Attempt 1: Error(Friend Unreachable)
+  // Attempt 2: Error(Friend Unreachable)
+  // Result: Error(Friend Unreachable)
 
 
 object Chapter04_Configuration_9 extends ZIOAppDefault:
   def run =
     logicWithRetries(retries = 2)
+  // Attempt 1: Error(Friend Unreachable)
+  // Attempt 2: Error(Friend Unreachable)
+  // Attempt 3: Succeeded
+  // Bread: Eating
 
 
 import zio.config.*
@@ -235,23 +284,25 @@ object Chapter04_Configuration_10 extends ZIOAppDefault:
           )
       .provide:
         config
+  // Attempt 1: Error(Friend Unreachable)
+  // Attempt 2: Error(Friend Unreachable)
+  // Attempt 3: Succeeded
+  // Bread: Eating
 
+
+// TODO Split this up? It's pretty busy.
+// TODO Can we introduce acquireRelease in isolation in superpowers?
+val ovenSafe =
+  ZLayer.fromZIO:
+    ZIO.acquireRelease(
+      ZIO.succeed(Heat())
+        .tap(_ => Console.printLine("Oven: Heated"))
+    )(
+      oven => 
+        Console.printLine("Oven: Turning off!").orDie
+    )
 
 object Chapter04_Configuration_11 extends ZIOAppDefault:
-  // TODO Split this up? It's pretty busy.
-  // TODO Can we introduce acquireRelease in isolation in superpowers?
-  val ovenSafe =
-    ZLayer.fromZIO:
-      ZIO.acquireRelease(
-        ZIO.succeed(Heat())
-          .tap(_ => Console.printLine("Oven: Heated"))
-      )(
-        oven => 
-          Console.printLine("Oven: Turning off!").orDie
-      )
-
-
-object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     ZIO
       .serviceWithZIO[Bread]:
@@ -262,6 +313,11 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
         ovenSafe, 
         Scope.default
       )
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Bread: Eating
+  // Oven: Turning off!
 
 
 val coinToss =
@@ -294,9 +350,21 @@ val flipTen =
     ZIO.debug(s"Num Heads = $numHeads").run
     numHeads
 
-object Chapter04_Configuration_13 extends ZIOAppDefault:
+object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
+  // Heads
+  // Tails
+  // Heads
+  // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Heads
+  // Tails
+  // Heads
+  // Num Heads = 5
+  // Result: 5
 
 
 val rosencrantzCoinToss =
