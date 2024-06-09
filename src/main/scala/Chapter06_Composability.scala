@@ -354,13 +354,6 @@ def researchHeadline(scenario: Scenario) =
       // TODO Use Scenario to determine file?
       openFileZ("file1.txt").run
 
-    // TODO Use 2 files at once, to further
-    // highlight the dynamic scoping?
-    // Not sure if that is too noisy for this
-    // flow
-    // Maybe something like a cache check if time
-    // has passed?
-
     val knownTopic: Boolean =
       summaryFile.contains:
         topic
@@ -449,9 +442,8 @@ object Chapter06_Composability_15 extends ZIOAppDefault:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object Chapter06_Composability_16 extends ZIOAppDefault:

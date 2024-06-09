@@ -250,8 +250,7 @@ object Chapter03_Superpowers_9 extends ZIOAppDefault:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Log: Signup initiated for Morty
-  // Result: (PT5.065708004S,User saved)
+  // Result: (PT5.006952278S,User saved)
 
 
 val effect7 =
@@ -286,6 +285,7 @@ val surroundedProgram =
 object Chapter03_Superpowers_11 extends ZIOAppDefault:
   def run =
     surroundedProgram
+  // Log: Signup initiated for Morty
   // **Before**
   // Hello
   // world

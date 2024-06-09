@@ -264,10 +264,11 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(876, 475)
   // Current requests: : List(475)
-  // Current requests: : List(508, 876, 475)
-  // Current requests: : List(260, 508, 876, 475)
+  // Current requests: : List(276, 818, 669, 475)
+  // Current requests: : List(669, 475)
+  // Current requests: : List(818, 669, 475)
+  // Current requests: : List(699, 276, 818, 669, 475)
   // Result: Crashed the server!!
 
 
@@ -295,16 +296,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(406)
-  // Current requests: : List(646, 406)
-  // Current requests: : List(482, 646, 406)
-  // Current requests: : List(523)
-  // Current requests: : List(637, 523)
-  // Current requests: : List(483, 637, 523)
-  // Current requests: : List(298)
-  // Current requests: : List(55, 298)
-  // Current requests: : List(175, 55, 298)
-  // Current requests: : List(2)
+  // Current requests: : List(707)
+  // Current requests: : List(588, 707)
+  // Current requests: : List(868, 588, 707)
+  // Current requests: : List(316)
+  // Current requests: : List(791, 316)
+  // Current requests: : List(253, 791, 316)
+  // Current requests: : List(625)
+  // Current requests: : List(612, 625)
+  // Current requests: : List(890, 612, 625)
+  // Current requests: : List(281)
   // Result: All Requests Succeeded
 
 
