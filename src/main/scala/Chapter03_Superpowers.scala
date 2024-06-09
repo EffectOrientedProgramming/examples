@@ -111,15 +111,6 @@ val logUserSignup =
       s"Log: Signup initiated for $userName"
     .orDie
 
-// TODO Decide how much to explain this in the
-// prose,
-// without revealing the implementation
-extension [R, E, A](z: ZIO[R, E, A])
-  def fireAndForget(
-      background: ZIO[R, Nothing, Any]
-  ) =
-    z.zipParLeft(background.forkDaemon)
-
 val userName =
   "Morty"
 
@@ -230,8 +221,8 @@ object Chapter03_Superpowers_7 extends ZIOAppDefault:
 
 
 val effect5 =
-  effect4.fireAndForget:
-    logUserSignup
+  effect4.withFinalizer:
+    _ => logUserSignup
 
 object Chapter03_Superpowers_8 extends ZIOAppDefault:
   override val bootstrap =
@@ -251,9 +242,7 @@ object Chapter03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Log: Signup initiated for Morty
-  // Result: (PT5.003384947S,User saved)
-  // Log: Signup initiated for Morty
+  // Result: (PT0.017393137S,User saved)
 
 
 val effect7 =

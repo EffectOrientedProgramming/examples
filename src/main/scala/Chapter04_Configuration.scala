@@ -126,7 +126,6 @@ object Chapter04_Configuration_4 extends ZIOAppDefault:
         Bread.homemade, 
         Dough.fresh, 
         oven,
-        ZLayer.Debug.tree
       )
   // Toaster: Heating
   // Oven: Heated
@@ -294,13 +293,9 @@ object Chapter04_Configuration_10 extends ZIOAppDefault:
 // TODO Can we introduce acquireRelease in isolation in superpowers?
 val ovenSafe =
   ZLayer.fromZIO:
-    ZIO.acquireRelease(
-      ZIO.succeed(Heat())
-        .tap(_ => Console.printLine("Oven: Heated"))
-    )(
-      oven => 
-        Console.printLine("Oven: Turning off!").orDie
-    )
+    ZIO.succeed(Heat())
+      .tap(_ => Console.printLine("Oven: Heated"))
+      .withFinalizer(_ => Console.printLine("Oven: Turning off!").orDie)
 
 object Chapter04_Configuration_11 extends ZIOAppDefault:
   def run =
@@ -358,13 +353,13 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   // Heads
   // Heads
   // Tails
-  // Tails
-  // Tails
+  // Heads
+  // Heads
+  // Heads
   // Heads
   // Tails
-  // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 7
+  // Result: 7
 
 
 val rosencrantzCoinToss =
