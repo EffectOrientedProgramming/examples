@@ -264,10 +264,10 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(238)
-  // Current requests: : List(427, 891, 238)
-  // Current requests: : List(891, 238)
-  // Current requests: : List(104, 427, 891, 238)
+  // Current requests: : List(924)
+  // Current requests: : List(543, 924)
+  // Current requests: : List(88, 543, 924)
+  // Current requests: : List(388, 88, 543, 924)
   // Result: Crashed the server!!
 
 
@@ -295,16 +295,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(57)
-  // Current requests: : List(615, 57)
-  // Current requests: : List(226, 615, 57)
-  // Current requests: : List(444)
-  // Current requests: : List(809, 444)
-  // Current requests: : List(468, 809, 444)
-  // Current requests: : List(116)
-  // Current requests: : List(265, 116)
-  // Current requests: : List(94, 265, 116)
-  // Current requests: : List(64)
+  // Current requests: : List(982)
+  // Current requests: : List(167, 982)
+  // Current requests: : List(57, 167, 982)
+  // Current requests: : List(624, 679)
+  // Current requests: : List(679)
+  // Current requests: : List(876, 624, 679)
+  // Current requests: : List(293)
+  // Current requests: : List(273, 293)
+  // Current requests: : List(150, 273, 293)
+  // Current requests: : List(240)
   // Result: All Requests Succeeded
 
 
@@ -503,7 +503,7 @@ object Chapter08_Reliability_7 extends ZIOAppDefault:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =

@@ -308,8 +308,8 @@ object Chapter04_Configuration_11 extends ZIOAppDefault:
         ovenSafe, 
         Scope.default
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -348,18 +348,18 @@ val flipTen =
 object Chapter04_Configuration_12 extends ZIOAppDefault:
   def run =
     flipTen
-  // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
-  // Heads
   // Heads
   // Heads
   // Heads
   // Tails
-  // Num Heads = 7
-  // Result: 7
+  // Tails
+  // Heads
+  // Heads
+  // Tails
+  // Num Heads = 5
+  // Result: 5
 
 
 val rosencrantzCoinToss =

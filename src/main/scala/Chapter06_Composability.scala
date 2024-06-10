@@ -442,8 +442,9 @@ object Chapter06_Composability_15 extends ZIOAppDefault:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object Chapter06_Composability_16 extends ZIOAppDefault:

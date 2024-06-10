@@ -10,10 +10,8 @@ object Chapter10_Appendix_RunningEffects_0 extends ZIOSpecDefault:
       defer:
         assertTrue:
           Random.nextIntBounded(10).run < 10
-  // Log: Signup initiated for Morty
-  // Log: Signup initiated for Morty
   // + random is random
-  // Result: Summary(1,0,0,,PT0.274516S)
+  // Result: Summary(1,0,0,,PT0.380951S)
 
 
 object Chapter10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
@@ -26,7 +24,7 @@ object Chapter10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
             20 &&
             Random.nextIntBetween(20, 30).run <= 30
   // + random is still random
-  // Result: Summary(1,0,0,,PT0.082371S)
+  // Result: Summary(1,0,0,,PT0.102022S)
 
 
 object Chapter10_Appendix_RunningEffects_2 extends ZIOSpecDefault:
@@ -49,7 +47,7 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-1471437513" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-212509731" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)

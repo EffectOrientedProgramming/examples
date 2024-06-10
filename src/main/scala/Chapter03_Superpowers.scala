@@ -242,7 +242,7 @@ object Chapter03_Superpowers_9 extends ZIOAppDefault:
   
   def run =
     effect6
-  // Result: (PT0.017393137S,User saved)
+  // Result: (PT0.001207515S,User saved)
 
 
 val effect7 =
