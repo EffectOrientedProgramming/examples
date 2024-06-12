@@ -23,7 +23,7 @@ val unreliableCounting =
 object Chapter07_State_0 extends helpers.ZIOAppDebug:
   def run =
     unreliableCounting
-  // Result: Final count: 99971
+  // Result: Final count: 99953
 
 
 object Chapter07_State_1 extends helpers.ZIOAppDebug:
@@ -45,7 +45,6 @@ object Chapter07_State_1 extends helpers.ZIOAppDebug:
   
   def run =
     reliableCounting
-  // Log: Interrupting slow request
   // Result: Final count: 100000
 
 

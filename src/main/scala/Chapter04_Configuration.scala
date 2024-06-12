@@ -53,8 +53,8 @@ object Chapter04_Configuration_1 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -347,18 +347,18 @@ val flipTen =
 object Chapter04_Configuration_12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Heads
-  // Heads
-  // Tails
-  // Tails
   // Heads
   // Tails
   // Heads
+  // Heads
+  // Tails
   // Tails
   // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 4
+  // Result: 4
 
 
 val rosencrantzCoinToss =

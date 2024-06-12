@@ -199,6 +199,7 @@ object Chapter03_Superpowers_6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
+  // Log: Interrupting slow request
   // Result: *** Save timed out ***
 
 
@@ -213,6 +214,8 @@ object Chapter03_Superpowers_7 extends helpers.ZIOAppDebug:
   
   def run =
     effect4
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
@@ -239,7 +242,7 @@ object Chapter03_Superpowers_9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT5.039673886S,User saved)
+  // Result: (PT0.00215909S,User saved)
 
 
 val effect7 =
