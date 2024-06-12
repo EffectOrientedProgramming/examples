@@ -349,16 +349,16 @@ object Chapter04_Configuration_12 extends helpers.ZIOAppDebug:
     flipTen
   // Heads
   // Tails
-  // Heads
-  // Heads
-  // Tails
   // Tails
   // Heads
   // Tails
   // Tails
-  // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Num Heads = 6
+  // Result: 6
 
 
 val rosencrantzCoinToss =
