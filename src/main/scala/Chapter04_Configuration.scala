@@ -31,7 +31,6 @@ case class Heat()
 val oven =
   ZLayer.derive[Heat]
     .tap(_ => Console.printLine("Oven: Heated"))
-    
 
 trait Bread {
   def eat =
@@ -54,8 +53,8 @@ object Chapter04_Configuration_1 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -127,9 +126,9 @@ object Chapter04_Configuration_4 extends helpers.ZIOAppDebug:
         Dough.fresh, 
         oven,
       )
-  // Dough: Mixed
   // Toaster: Heating
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -348,16 +347,16 @@ val flipTen =
 object Chapter04_Configuration_12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Heads
-  // Tails
-  // Heads
   // Tails
   // Heads
   // Heads
   // Tails
   // Tails
+  // Heads
   // Tails
+  // Heads
+  // Tails
+  // Heads
   // Num Heads = 5
   // Result: 5
 
