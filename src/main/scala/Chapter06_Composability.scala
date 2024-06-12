@@ -83,14 +83,14 @@ def getHeadlineZ(scenario: Scenario) =
       case _: Throwable =>
         Scenario.HeadlineNotAvailable
 
-object Chapter06_Composability_0 extends ZIOAppDefault:
+object Chapter06_Composability_0 extends helpers.ZIOAppDebug:
   def run =
     getHeadlineZ(Scenario.StockMarketHeadline)
   // Network - Getting headline
   // Result: stock market rising!
 
 
-object Chapter06_Composability_1 extends ZIOAppDefault:
+object Chapter06_Composability_1 extends helpers.ZIOAppDebug:
   def run =
     getHeadlineZ(Scenario.HeadlineNotAvailable)
   // Network - Getting headline
@@ -109,7 +109,7 @@ def topicOfInterestZ(headline: String) =
     .orElseFail:
       Scenario.NoInterestingTopic()
 
-object Chapter06_Composability_2 extends ZIOAppDefault:
+object Chapter06_Composability_2 extends helpers.ZIOAppDebug:
   def run =
     topicOfInterestZ:
       "stock market rising!"
@@ -117,7 +117,7 @@ object Chapter06_Composability_2 extends ZIOAppDefault:
   // Result: stock market
 
 
-object Chapter06_Composability_3 extends ZIOAppDefault:
+object Chapter06_Composability_3 extends helpers.ZIOAppDebug:
   def run =
     topicOfInterestZ:
       "boring and inane content"
@@ -130,7 +130,7 @@ def wikiArticleZ(topic: String) =
     wikiArticle:
       topic
 
-object Chapter06_Composability_4 extends ZIOAppDefault:
+object Chapter06_Composability_4 extends helpers.ZIOAppDebug:
   def run =
     wikiArticleZ:
       "stock market"
@@ -138,7 +138,7 @@ object Chapter06_Composability_4 extends ZIOAppDefault:
   // Result: detailed history of stock market
 
 
-object Chapter06_Composability_5 extends ZIOAppDefault:
+object Chapter06_Composability_5 extends helpers.ZIOAppDebug:
   def run =
     wikiArticleZ:
       "barn"
@@ -228,7 +228,7 @@ def openFileZ(path: String) =
     ZIO.succeed:
       openFile(path)
 
-object Chapter06_Composability_6 extends ZIOAppDefault:
+object Chapter06_Composability_6 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val file =
@@ -241,7 +241,7 @@ object Chapter06_Composability_6 extends ZIOAppDefault:
   // Result: false
 
 
-object Chapter06_Composability_7 extends ZIOAppDefault:
+object Chapter06_Composability_7 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val file1 =
@@ -265,7 +265,7 @@ def writeToFileZ(file: File, content: String) =
     .mapError:
       _ => Scenario.DiskFull()
 
-object Chapter06_Composability_8 extends ZIOAppDefault:
+object Chapter06_Composability_8 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val file =
@@ -333,7 +333,7 @@ def textAlert(message: String) =
   Console.printLine:
     s"Texting story: $message"
 
-object Chapter06_Composability_9 extends ZIOAppDefault:
+object Chapter06_Composability_9 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val topStory =
@@ -370,7 +370,7 @@ def researchHeadline(scenario: Scenario) =
       writeToFileZ(summaryFile, summary).run
       summary
 
-object Chapter06_Composability_10 extends ZIOAppDefault:
+object Chapter06_Composability_10 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       Scenario.HeadlineNotAvailable
@@ -378,7 +378,7 @@ object Chapter06_Composability_10 extends ZIOAppDefault:
   // Result: HeadlineNotAvailable
 
 
-object Chapter06_Composability_11 extends ZIOAppDefault:
+object Chapter06_Composability_11 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       Scenario.NoInterestingTopic()
@@ -387,7 +387,7 @@ object Chapter06_Composability_11 extends ZIOAppDefault:
   // Result: NoInterestingTopic()
 
 
-object Chapter06_Composability_12 extends ZIOAppDefault:
+object Chapter06_Composability_12 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       Scenario.SummaryReadThrows()
@@ -400,7 +400,7 @@ object Chapter06_Composability_12 extends ZIOAppDefault:
   // Result: NoSummaryAvailable(unicode)
 
 
-object Chapter06_Composability_13 extends ZIOAppDefault:
+object Chapter06_Composability_13 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       Scenario.NoWikiArticleAvailable()
@@ -413,7 +413,7 @@ object Chapter06_Composability_13 extends ZIOAppDefault:
   // Result: NoWikiArticleAvailable()
 
 
-object Chapter06_Composability_14 extends ZIOAppDefault:
+object Chapter06_Composability_14 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       Scenario.AITooSlow()
@@ -422,14 +422,12 @@ object Chapter06_Composability_14 extends ZIOAppDefault:
   // File - OPEN
   // File - contains(space)
   // Wiki - articleFor(space)
-  // AI - summarize - start
-  // printing because our test clock is insane
   // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
 
-object Chapter06_Composability_15 extends ZIOAppDefault:
+object Chapter06_Composability_15 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       // TODO Handle inconsistency in this example
@@ -442,12 +440,12 @@ object Chapter06_Composability_15 extends ZIOAppDefault:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
+  // AI **INTERRUPTED**
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
-object Chapter06_Composability_16 extends ZIOAppDefault:
+object Chapter06_Composability_16 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline:
       Scenario.StockMarketHeadline

@@ -8,7 +8,7 @@ object HelloWorld extends zio.ZIOAppDefault:
     ZIO.debug:
       "hello, world"
 
-object Chapter10_Appendix_RunningEffects_0 extends ZIOAppDefault:
+object Chapter10_Appendix_RunningEffects_0 extends helpers.ZIOAppDebug:
   def run =
     ZIO.debug:
       "hello, world"

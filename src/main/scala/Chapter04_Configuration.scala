@@ -14,7 +14,7 @@ object Dough:
     ZLayer.derive[Dough]
       .tap(_ => Console.printLine("Dough: Mixed"))
 
-object Chapter04_Configuration_0 extends ZIOAppDefault:
+object Chapter04_Configuration_0 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[Dough]:
@@ -48,14 +48,14 @@ object Bread:
     ZLayer.derive[BreadHomeMade]
       .tap(_ => Console.printLine("BreadHomeMade: Baked"))
 
-object Chapter04_Configuration_1 extends ZIOAppDefault:
+object Chapter04_Configuration_1 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -69,7 +69,7 @@ object Toast:
     ZLayer.derive[Toast]
       .tap(_ => Console.printLine("Toast: Made"))
 
-object Chapter04_Configuration_2 extends ZIOAppDefault:
+object Chapter04_Configuration_2 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Toast]
@@ -90,7 +90,7 @@ val toaster =
   ZLayer.derive[Heat]
    .tap(_ => Console.printLine("Toaster: Heated"))
 
-object Chapter04_Configuration_3 extends ZIOAppDefault:
+object Chapter04_Configuration_3 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Heat]
@@ -115,7 +115,7 @@ object ToastZ:
     ZLayer.derive[ToastZ]
       .tap(_ => Console.printLine("ToastZ: Made"))
 
-object Chapter04_Configuration_4 extends ZIOAppDefault:
+object Chapter04_Configuration_4 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[ToastZ]:
@@ -146,7 +146,7 @@ val storeBought =
     buyBread
   .tap(_ => Console.printLine("BreadStoreBought: Bought"))
 
-object Chapter04_Configuration_5 extends ZIOAppDefault:
+object Chapter04_Configuration_5 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -192,7 +192,7 @@ object Friend:
             BreadFromFriend()
 end Friend
 
-object Chapter04_Configuration_6 extends ZIOAppDefault:
+object Chapter04_Configuration_6 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -204,7 +204,7 @@ object Chapter04_Configuration_6 extends ZIOAppDefault:
   // Result: Error(Friend Unreachable)
 
 
-object Chapter04_Configuration_7 extends ZIOAppDefault:
+object Chapter04_Configuration_7 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -234,7 +234,7 @@ def logicWithRetries(retries: Int) =
             retries
   
 
-object Chapter04_Configuration_8 extends ZIOAppDefault:
+object Chapter04_Configuration_8 extends helpers.ZIOAppDebug:
   def run =
     logicWithRetries(retries = 1)
   // Attempt 1: Error(Friend Unreachable)
@@ -242,7 +242,7 @@ object Chapter04_Configuration_8 extends ZIOAppDefault:
   // Result: Error(Friend Unreachable)
 
 
-object Chapter04_Configuration_9 extends ZIOAppDefault:
+object Chapter04_Configuration_9 extends helpers.ZIOAppDebug:
   def run =
     logicWithRetries(retries = 2)
   // Attempt 1: Error(Friend Unreachable)
@@ -273,7 +273,7 @@ val config =
       configDescriptor.from:
         configProvider
 
-object Chapter04_Configuration_10 extends ZIOAppDefault:
+object Chapter04_Configuration_10 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[RetryConfig]:
@@ -297,7 +297,7 @@ val ovenSafe =
       .tap(_ => Console.printLine("Oven: Heated"))
       .withFinalizer(_ => Console.printLine("Oven: Turning off!").orDie)
 
-object Chapter04_Configuration_11 extends ZIOAppDefault:
+object Chapter04_Configuration_11 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[Bread]:
@@ -345,19 +345,19 @@ val flipTen =
     ZIO.debug(s"Num Heads = $numHeads").run
     numHeads
 
-object Chapter04_Configuration_12 extends ZIOAppDefault:
+object Chapter04_Configuration_12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Tails
   // Heads
   // Tails
-  // Heads
-  // Heads
-  // Heads
+  // Tails
+  // Tails
   // Tails
   // Heads
   // Tails
+  // Heads
+  // Heads
+  // Heads
   // Num Heads = 5
   // Result: 5
 

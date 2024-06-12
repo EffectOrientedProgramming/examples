@@ -9,7 +9,7 @@ def canFail(succeeds: Boolean) =
   else
     ZIO.fail("*** FAIL ***")
 
-object Chapter05_Errors_0 extends ZIOAppDefault:
+object Chapter05_Errors_0 extends helpers.ZIOAppDebug:
   def run =
     canFail(succeeds =
       true
@@ -17,7 +17,7 @@ object Chapter05_Errors_0 extends ZIOAppDefault:
   // Result: Success!
 
 
-object Chapter05_Errors_1 extends ZIOAppDefault:
+object Chapter05_Errors_1 extends helpers.ZIOAppDebug:
   def run =
     canFail(succeeds =
       false
@@ -25,7 +25,7 @@ object Chapter05_Errors_1 extends ZIOAppDefault:
   // Result: *** FAIL ***
 
 
-object Chapter05_Errors_2 extends ZIOAppDefault:
+object Chapter05_Errors_2 extends helpers.ZIOAppDebug:
   def run =
     canFail(succeeds =
       false
@@ -99,14 +99,14 @@ def temperatureApp(): String =
   render:
     getTemperatureOrThrow()
 
-object Chapter05_Errors_3 extends ZIOAppDefault:
+object Chapter05_Errors_3 extends helpers.ZIOAppDebug:
   def run =
     ZIO.attempt:
       temperatureApp()
   // Result: Temperature: 35 degrees
 
 
-object Chapter05_Errors_4 extends ZIOAppDefault:
+object Chapter05_Errors_4 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.NetworkError
   
@@ -124,7 +124,7 @@ def temperatureCatchingApp(): String =
     case ex: Exception =>
       "Failure"
 
-object Chapter05_Errors_5 extends ZIOAppDefault:
+object Chapter05_Errors_5 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.NetworkError
   
@@ -144,7 +144,7 @@ def temperatureCatchingMoreApp(): String =
     case ex: GpsFail =>
       "GPS Hardware Failure"
 
-object Chapter05_Errors_6 extends ZIOAppDefault:
+object Chapter05_Errors_6 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.NetworkError
   
@@ -154,7 +154,7 @@ object Chapter05_Errors_6 extends ZIOAppDefault:
   // Result: Network Unavailable
 
 
-object Chapter05_Errors_7 extends ZIOAppDefault:
+object Chapter05_Errors_7 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.GPSError
   
@@ -193,7 +193,7 @@ val getTemperature: ZIO[
             "Temperature: 35 degrees"
           .run
 
-object Chapter05_Errors_8 extends ZIOAppDefault:
+object Chapter05_Errors_8 extends helpers.ZIOAppDebug:
   override val bootstrap =
     Scenario.happyPath
   
@@ -202,7 +202,7 @@ object Chapter05_Errors_8 extends ZIOAppDefault:
   // Result: Temperature: 35 degrees
 
 
-object Chapter05_Errors_9 extends ZIOAppDefault:
+object Chapter05_Errors_9 extends helpers.ZIOAppDebug:
   override val bootstrap =
     Scenario.networkError
   
@@ -226,7 +226,7 @@ val temperatureAppComplete =
       ZIO.succeed:
         "GPS Hardware Failure"
 
-object Chapter05_Errors_10 extends ZIOAppDefault:
+object Chapter05_Errors_10 extends helpers.ZIOAppDebug:
   override val bootstrap =
     Scenario.gpsError
   
@@ -248,7 +248,7 @@ val displayTemperatureZWrapped =
       ZIO.succeed:
         "GPS problem"
 
-object Chapter05_Errors_11 extends ZIOAppDefault:
+object Chapter05_Errors_11 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.HappyPath
   
@@ -257,7 +257,7 @@ object Chapter05_Errors_11 extends ZIOAppDefault:
   // Result: 35 degrees
 
 
-object Chapter05_Errors_12 extends ZIOAppDefault:
+object Chapter05_Errors_12 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.NetworkError
   
@@ -266,7 +266,7 @@ object Chapter05_Errors_12 extends ZIOAppDefault:
   // Result: Network Unavailable
 
 
-object Chapter05_Errors_13 extends ZIOAppDefault:
+object Chapter05_Errors_13 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.GPSError
   
@@ -278,7 +278,7 @@ object Chapter05_Errors_13 extends ZIOAppDefault:
   // Result: Defect: GpsFail
 
 
-object Chapter05_Errors_14 extends ZIOAppDefault:
+object Chapter05_Errors_14 extends helpers.ZIOAppDebug:
   scenario =
     ErrorsScenario.GPSError
   

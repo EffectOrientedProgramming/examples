@@ -122,13 +122,13 @@ object MyApp extends ZIOAppDefault:
   def run =
     effect0
 
-object Chapter03_Superpowers_0 extends ZIOAppDefault:
+object Chapter03_Superpowers_0 extends helpers.ZIOAppDebug:
   def run =
     effect0
   // Result: User saved
 
 
-object Chapter03_Superpowers_1 extends ZIOAppDefault:
+object Chapter03_Superpowers_1 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
@@ -137,7 +137,7 @@ object Chapter03_Superpowers_1 extends ZIOAppDefault:
   // Result: User saved
 
 
-object Chapter03_Superpowers_2 extends ZIOAppDefault:
+object Chapter03_Superpowers_2 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
@@ -150,7 +150,7 @@ object Chapter03_Superpowers_2 extends ZIOAppDefault:
 val effect1 =
   effect0.retryN(2)
 
-object Chapter03_Superpowers_3 extends ZIOAppDefault:
+object Chapter03_Superpowers_3 extends helpers.ZIOAppDebug:
   override val bootstrap =
     doesNotWorkInitially
   
@@ -161,7 +161,7 @@ object Chapter03_Superpowers_3 extends ZIOAppDefault:
   // Result: User saved
 
 
-object Chapter03_Superpowers_4 extends ZIOAppDefault:
+object Chapter03_Superpowers_4 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
@@ -177,7 +177,7 @@ val effect2 =
   effect1.orElseFail:
     "ERROR: User could not be saved"
 
-object Chapter03_Superpowers_5 extends ZIOAppDefault:
+object Chapter03_Superpowers_5 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
@@ -193,7 +193,7 @@ val effect3 =
   effect2.timeoutFail("*** Save timed out ***"):
     5.seconds
 
-object Chapter03_Superpowers_6 extends ZIOAppDefault:
+object Chapter03_Superpowers_6 extends helpers.ZIOAppDebug:
   override val bootstrap =
     slow
   
@@ -208,12 +208,14 @@ val effect4 =
     sendToManualQueue:
       userName
 
-object Chapter03_Superpowers_7 extends ZIOAppDefault:
+object Chapter03_Superpowers_7 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
   def run =
     effect4
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
@@ -222,7 +224,7 @@ val effect5 =
   effect4.withFinalizer:
     _ => logUserSignup
 
-object Chapter03_Superpowers_8 extends ZIOAppDefault:
+object Chapter03_Superpowers_8 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
@@ -234,19 +236,19 @@ object Chapter03_Superpowers_8 extends ZIOAppDefault:
 val effect6 =
   effect5.timed
 
-object Chapter03_Superpowers_9 extends ZIOAppDefault:
+object Chapter03_Superpowers_9 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
   def run =
     effect6
-  // Result: (PT5.056511644S,User saved)
+  // Result: (PT5.003882714S,User saved)
 
 
 val effect7 =
   effect6.when(userName != "Morty")
 
-object Chapter03_Superpowers_10 extends ZIOAppDefault:
+object Chapter03_Superpowers_10 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
@@ -272,7 +274,7 @@ val surroundedProgram =
     program.run
     Console.printLine("**After**").run
 
-object Chapter03_Superpowers_11 extends ZIOAppDefault:
+object Chapter03_Superpowers_11 extends helpers.ZIOAppDebug:
   def run =
     surroundedProgram
   // **Before**
