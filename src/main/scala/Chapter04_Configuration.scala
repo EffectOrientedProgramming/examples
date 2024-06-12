@@ -351,11 +351,11 @@ object Chapter04_Configuration_12 extends ZIOAppDefault:
   // Tails
   // Tails
   // Heads
+  // Tails
+  // Heads
   // Heads
   // Heads
   // Tails
-  // Tails
-  // Heads
   // Heads
   // Tails
   // Num Heads = 5

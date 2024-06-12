@@ -143,27 +143,22 @@ val makeRateLimiter =
       1.second
   )
 
-// TODO explain timedSecondsDebug
-def makeCalls(name: String) =
-  expensiveApiCall
-    .timedSecondsDebug:
-      s"$name called API"
-    .repeatN(2) // Repeats as fast as allowed
-
 object Chapter08_Reliability_2 extends ZIOAppDefault:
   def run =
     defer:
       val rateLimiter =
         makeRateLimiter.run
       rateLimiter:
-        makeCalls:
-          "System"
+        expensiveApiCall
+      .timedSecondsDebug:
+         s"called API"
+      .repeatN(2) // Repeats as fast as allowed
       .timedSecondsDebug("Result")
-        .run
-  // System called API [took 0s]
-  // System called API [took 0s]
-  // System called API [took 0s]
-  // Result [took 0s]
+      .run
+  // called API [took 0s]
+  // called API [took 1s]
+  // called API [took 1s]
+  // Result [took 2s]
 
 
 object Chapter08_Reliability_3 extends ZIOAppDefault:
@@ -178,21 +173,24 @@ object Chapter08_Reliability_3 extends ZIOAppDefault:
         .foreachPar(people):
           person =>
             rateLimiter:
-              makeCalls(person)
+              expensiveApiCall
+            .timedSecondsDebug:
+              s"$person called API"
+            .repeatN(2) // Repeats as fast as allowed
         .timedSecondsDebug:
           "Total time"
+        .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bill called API [took 0s]
-  // Bill called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // Bruce called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // James called API [took 0s]
-  // Total time [took 2s]
-  // Result: List((), (), ())
+  // Bruce called API [took 1s]
+  // James called API [took 2s]
+  // Bill called API [took 3s]
+  // Bruce called API [took 3s]
+  // James called API [took 3s]
+  // Bill called API [took 3s]
+  // Bruce called API [took 3s]
+  // James called API [took 3s]
+  // Total time [took 8s]
 
 
 trait DelicateResource:
@@ -216,7 +214,7 @@ case class Live(
       // Add request to current requests
       currentRequests
         .updateAndGet(res :: _)
-        .debug("Current requests: ")
+        .debug("Current requests")
         .run
 
       // Simulate a long-running request
@@ -264,10 +262,10 @@ object Chapter08_Reliability_4 extends ZIOAppDefault:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(924)
-  // Current requests: : List(543, 924)
-  // Current requests: : List(88, 543, 924)
-  // Current requests: : List(388, 88, 543, 924)
+  // Current requests: List(937)
+  // Current requests: List(789, 937)
+  // Current requests: List(970, 789, 937)
+  // Current requests: List(30, 970, 789, 937)
   // Result: Crashed the server!!
 
 
@@ -295,16 +293,16 @@ object Chapter08_Reliability_5 extends ZIOAppDefault:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: : List(982)
-  // Current requests: : List(167, 982)
-  // Current requests: : List(57, 167, 982)
-  // Current requests: : List(624, 679)
-  // Current requests: : List(679)
-  // Current requests: : List(876, 624, 679)
-  // Current requests: : List(293)
-  // Current requests: : List(273, 293)
-  // Current requests: : List(150, 273, 293)
-  // Current requests: : List(240)
+  // Current requests: List(18)
+  // Current requests: List(471, 18)
+  // Current requests: List(385, 471, 18)
+  // Current requests: List(143)
+  // Current requests: List(981, 143)
+  // Current requests: List(792, 981, 143)
+  // Current requests: List(415)
+  // Current requests: List(780, 415)
+  // Current requests: List(491, 780, 415)
+  // Current requests: List(333, 491)
   // Result: All Requests Succeeded
 
 
@@ -337,11 +335,10 @@ def externalSystem(numCalls: Ref[Int]) =
     val b =
       timeSensitiveValue.run
     if b then
-      ZIO.succeed(()).run
+      ZIO.unit.run
     else
       ZIO.fail(()).run
 
-// TODO Consider deleting
 object InstantOps:
   extension (i: Instant)
     def plusZ(duration: zio.Duration): Instant =
@@ -477,16 +474,17 @@ val makeCircuitBreaker =
 
 object Chapter08_Reliability_7 extends ZIOAppDefault:
   import CircuitBreaker.CircuitBreakerOpen
+  
   def run =
     defer:
       val cb =
         makeCircuitBreaker.run
-      // TODO Can we move these Refs into the
-      // external system?
+  
       val numCalls =
         Ref.make[Int](0).run
       val numPrevented =
         Ref.make[Int](0).run
+  
       val protectedCall =
         cb(externalSystem(numCalls)).catchSome:
           case CircuitBreakerOpen =>
@@ -529,26 +527,22 @@ object Chapter08_Reliability_8 extends ZIOAppDefault:
       val contractBreaches =
         Ref.make(0).run
   
+      val req =
+        defer:
+          val hedged =
+            logicThatSporadicallyLocksUp.race:
+              logicThatSporadicallyLocksUp
+                .delay:
+                  25.millis
+  
+          val duration =
+            hedged.run
+          if (duration > 1.second)
+            contractBreaches.update(_ + 1).run
+  
       ZIO
         .foreachPar(List.fill(50_000)(())):
-          _ => // james still hates this
-            defer:
-              val hedged =
-                logicThatSporadicallyLocksUp.race:
-                  logicThatSporadicallyLocksUp
-                    .delay:
-                      25.millis
-  
-              // TODO How do we make this demo more
-              // obvious?
-              // The request is returning the
-              // hypothetical runtime, but that's
-              // not clear from the code that will
-              // be visible to the reader.
-              val duration =
-                hedged.run
-              if (duration > 1.second)
-                contractBreaches.update(_ + 1).run
+          _ => req // TODO james still hates this and maybe a collectAllPar could do the trick but we've already wasted 321 hours on this
         .run
   
       contractBreaches

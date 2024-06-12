@@ -5,6 +5,8 @@ import zio.direct.*
 import zio.test.*
 
 object Chapter04_Configuration_0 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test("flips 10 times"):
       defer:
@@ -26,10 +28,12 @@ object Chapter04_Configuration_0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.032766S)
+  // Result: Summary(1,0,0,,PT0.056088S)
 
 
 object Chapter04_Configuration_1 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test(
       "rosencrantzAndGuildensternAreDead finishes"
@@ -55,10 +59,12 @@ object Chapter04_Configuration_1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.032664S)
+  // Result: Summary(1,0,0,,PT0.039334S)
 
 
 object Chapter04_Configuration_2 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test("flaky plan"):
       defer:
@@ -69,19 +75,21 @@ object Chapter04_Configuration_2 extends ZIOSpecDefault:
   // *Performance Begins*
   // Heads
   // R: Heads
-  // Heads
-  // R: Heads
-  // Heads
+  // Tails
+  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-2143861915":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:443)
   // ...
   // R: Heads
   // G: ...probability
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.037815S)
+  // Result: Summary(1,0,0,,PT0.041292S)
 
 
 object Chapter04_Configuration_3 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test("batch runs after 24 hours"):
       val timeTravel =
@@ -97,4 +105,4 @@ object Chapter04_Configuration_3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.040124S)
+  // Result: Summary(1,0,0,,PT0.020402S)

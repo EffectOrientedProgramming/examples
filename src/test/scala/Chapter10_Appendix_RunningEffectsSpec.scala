@@ -5,16 +5,20 @@ import zio.direct.*
 import zio.test.*
 
 object Chapter10_Appendix_RunningEffects_0 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test("random is random"):
       defer:
         assertTrue:
           Random.nextIntBounded(10).run < 10
   // + random is random
-  // Result: Summary(1,0,0,,PT0.380951S)
+  // Result: Summary(1,0,0,,PT0.433294S)
 
 
 object Chapter10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test("random is still random"):
       defer:
@@ -24,10 +28,12 @@ object Chapter10_Appendix_RunningEffects_1 extends ZIOSpecDefault:
             20 &&
             Random.nextIntBetween(20, 30).run <= 30
   // + random is still random
-  // Result: Summary(1,0,0,,PT0.102022S)
+  // Result: Summary(1,0,0,,PT0.122004S)
 
 
 object Chapter10_Appendix_RunningEffects_2 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     test("console works"):
       defer:
@@ -47,17 +53,17 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-212509731" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-1354729958" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
   //   	at zio.ZIO$.consoleWith$$anonfun$1(ZIO.scala:3068)
   //   	at zio.FiberRef$unsafe$$anon$2.getWith$$anonfun$1(FiberRef.scala:474)
-  //   	at repl.MdocSession.MdocApp.logic(<input>:83)
+  //   	at repl.MdocSession.MdocApp.logic(<input>:91)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.logic(<input>:93)
+  //   	at repl.MdocSession.MdocApp.logic(<input>:101)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.Chapter69Spec.spec(<input>:127)
+  //   	at repl.MdocSession.MdocApp.Chapter69Spec.spec(<input>:137)
   // Result: 
   // - console works
   //   Exception i
