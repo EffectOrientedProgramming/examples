@@ -348,18 +348,18 @@ val flipTen =
 object Chapter04_Configuration_12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Heads
-  // Tails
   // Heads
   // Heads
   // Tails
   // Heads
   // Tails
+  // Heads
+  // Heads
   // Tails
   // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Tails
+  // Num Heads = 5
+  // Result: 5
 
 
 val rosencrantzCoinToss =
