@@ -440,7 +440,6 @@ object Chapter06_Composability_15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
