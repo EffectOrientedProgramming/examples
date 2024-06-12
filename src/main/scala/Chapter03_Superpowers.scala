@@ -26,23 +26,20 @@ class StaticConfigProvider(scenario: Scenario)
     ZIO.succeed(Some(scenario).asInstanceOf[A])
 
 val happyPath =
-  Runtime.setConfigProvider(
+  Runtime.setConfigProvider:
     StaticConfigProvider(Scenario.HappyPath)
-  )
 
 val neverWorks =
-  Runtime.setConfigProvider(
+  Runtime.setConfigProvider:
     StaticConfigProvider(Scenario.NeverWorks)
-  )
 
 val slow =
-  Runtime.setConfigProvider(
+  Runtime.setConfigProvider:
     StaticConfigProvider(Scenario.Slow)
-  )
 
 val doesNotWorkInitially =
   val scenario =
-    Unsafe.unsafe {
+    Unsafe.unsafe:
       implicit unsafe =>
         Scenario.WorksOnTry(
           3,
@@ -52,15 +49,14 @@ val doesNotWorkInitially =
             .run(Ref.make(1))
             .getOrThrow()
         )
-    }
-  Runtime.setConfigProvider(
+  Runtime.setConfigProvider:
     StaticConfigProvider(scenario)
-  )
 
 def saveUser(username: String) =
   val succeed =
     ZIO.succeed:
       "User saved"
+
   val fail =
     ZIO
       .fail:
@@ -69,41 +65,44 @@ def saveUser(username: String) =
         error =>
           Console.printLine:
             "Log: " + error
+
+  def saveForScenario(maybeScenario: Option[Scenario]) =
+    defer:
+      maybeScenario match
+        case Some(Scenario.NeverWorks) =>
+          fail.run
+
+        case Some(Scenario.Slow) =>
+          ZIO
+            .sleep(1.minute)
+            .onInterrupt:
+              ZIO.debug:
+                "Log: Interrupting slow request"
+            .run
+          succeed.run
+
+        case Some(Scenario.WorksOnTry(attempts, ref)) =>
+          val numCalls =
+            ref.getAndUpdate(_ + 1).run
+          if numCalls == attempts then
+            succeed.run
+          else
+            fail.run
+
+        case _ =>
+          succeed.run
+
   defer:
     val maybeScenario =
       ZIO.config(scenarioConfig).run
-    maybeScenario
-      .getOrElse(Scenario.HappyPath) match
-      case Scenario.HappyPath =>
-        succeed.run
-
-      case Scenario.NeverWorks =>
-        fail.run
-
-      case Scenario.Slow =>
-        ZIO
-          .sleep(1.minute)
-          .onInterrupt:
-            ZIO.debug(
-              "Log: Interrupting slow request"
-            )
-          .run
-        succeed.run
-
-      case Scenario.WorksOnTry(attempts, ref) =>
-        val numCalls =
-          ref.getAndUpdate(_ + 1).run
-        if numCalls == attempts then
-          succeed.run
-        else
-          fail.run
-    end match
+    saveForScenario:
+      maybeScenario
+    .run
 end saveUser
 
 def sendToManualQueue(username: String) =
-  ZIO.attempt(
+  ZIO.attempt:
     s"Please manually provision $username"
-  )
 
 val logUserSignup =
   Console
@@ -122,13 +121,13 @@ object MyApp extends ZIOAppDefault:
   def run =
     effect0
 
-object Chapter03_Superpowers_0 extends helpers.ZIOAppDebug:
+object App0 extends helpers.ZIOAppDebug:
   def run =
     effect0
   // Result: User saved
 
 
-object Chapter03_Superpowers_1 extends helpers.ZIOAppDebug:
+object App1 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
@@ -137,7 +136,7 @@ object Chapter03_Superpowers_1 extends helpers.ZIOAppDebug:
   // Result: User saved
 
 
-object Chapter03_Superpowers_2 extends helpers.ZIOAppDebug:
+object App2 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
@@ -150,7 +149,7 @@ object Chapter03_Superpowers_2 extends helpers.ZIOAppDebug:
 val effect1 =
   effect0.retryN(2)
 
-object Chapter03_Superpowers_3 extends helpers.ZIOAppDebug:
+object App3 extends helpers.ZIOAppDebug:
   override val bootstrap =
     doesNotWorkInitially
   
@@ -161,7 +160,7 @@ object Chapter03_Superpowers_3 extends helpers.ZIOAppDebug:
   // Result: User saved
 
 
-object Chapter03_Superpowers_4 extends helpers.ZIOAppDebug:
+object App4 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
@@ -177,7 +176,7 @@ val effect2 =
   effect1.orElseFail:
     "ERROR: User could not be saved"
 
-object Chapter03_Superpowers_5 extends helpers.ZIOAppDebug:
+object App5 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
@@ -193,7 +192,7 @@ val effect3 =
   effect2.timeoutFail("*** Save timed out ***"):
     5.seconds
 
-object Chapter03_Superpowers_6 extends helpers.ZIOAppDebug:
+object App6 extends helpers.ZIOAppDebug:
   override val bootstrap =
     slow
   
@@ -208,12 +207,14 @@ val effect4 =
     sendToManualQueue:
       userName
 
-object Chapter03_Superpowers_7 extends helpers.ZIOAppDebug:
+object App7 extends helpers.ZIOAppDebug:
   override val bootstrap =
     neverWorks
   
   def run =
     effect4
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
@@ -222,7 +223,7 @@ val effect5 =
   effect4.withFinalizer:
     _ => logUserSignup
 
-object Chapter03_Superpowers_8 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
@@ -234,19 +235,19 @@ object Chapter03_Superpowers_8 extends helpers.ZIOAppDebug:
 val effect6 =
   effect5.timed
 
-object Chapter03_Superpowers_9 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
   def run =
     effect6
-  // Result: (PT0.001407621S,User saved)
+  // Result: (PT0.001232065S,User saved)
 
 
 val effect7 =
   effect6.when(userName != "Morty")
 
-object Chapter03_Superpowers_10 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   override val bootstrap =
     happyPath
   
@@ -272,7 +273,7 @@ val surroundedProgram =
     program.run
     Console.printLine("**After**").run
 
-object Chapter03_Superpowers_11 extends helpers.ZIOAppDebug:
+object App11 extends helpers.ZIOAppDebug:
   def run =
     surroundedProgram
   // **Before**

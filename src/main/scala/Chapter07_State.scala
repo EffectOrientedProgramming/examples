@@ -20,13 +20,13 @@ val unreliableCounting =
     // we need to wrap counter in .succeed
     "Final count: " + ZIO.succeed(counter).run
 
-object Chapter07_State_0 extends helpers.ZIOAppDebug:
+object App0 extends helpers.ZIOAppDebug:
   def run =
     unreliableCounting
-  // Result: Final count: 99980
+  // Result: Final count: 99966
 
 
-object Chapter07_State_1 extends helpers.ZIOAppDebug:
+object App1 extends helpers.ZIOAppDebug:
   lazy val reliableCounting =
     def incrementCounter(counter: Ref[Int]) =
       counter.update:
@@ -63,7 +63,7 @@ def update(counter: Ref[Int]) =
       sendNotification()
       previousValue + 1
 
-object Chapter07_State_2 extends helpers.ZIOAppDebug:
+object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val counter =
@@ -100,7 +100,7 @@ val sideEffectingUpdatesSync =
       counter.get.run
     s"Final count: $finalCount"
 
-object Chapter07_State_3 extends helpers.ZIOAppDebug:
+object App3 extends helpers.ZIOAppDebug:
   def run =
     sideEffectingUpdatesSync
   // Alert: updating count!

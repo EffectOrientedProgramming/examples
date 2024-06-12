@@ -79,7 +79,7 @@ val makePopularService =
       ZIO.service[CloudStorage].run
     PopularService(cloudStorage.retrieve)
 
-object Chapter08_Reliability_0 extends helpers.ZIOAppDebug:
+object App0 extends helpers.ZIOAppDebug:
   def run =
     thunderingHerdsScenario.provide(
       CloudStorage.live,
@@ -106,7 +106,7 @@ val makeCachedPopularService =
 
     PopularService(cache.get)
 
-object Chapter08_Reliability_1 extends helpers.ZIOAppDebug:
+object App1 extends helpers.ZIOAppDebug:
   def run =
     thunderingHerdsScenario.provide(
       CloudStorage.live,
@@ -143,7 +143,7 @@ val makeRateLimiter =
       1.second
   )
 
-object Chapter08_Reliability_2 extends helpers.ZIOAppDebug:
+object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val rateLimiter =
@@ -161,7 +161,7 @@ object Chapter08_Reliability_2 extends helpers.ZIOAppDebug:
   // Result [took 2s]
 
 
-object Chapter08_Reliability_3 extends helpers.ZIOAppDebug:
+object App3 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val rateLimiter =
@@ -181,15 +181,15 @@ object Chapter08_Reliability_3 extends helpers.ZIOAppDebug:
           "Total time"
         .unit // ignores the list of unit
         .run
-  // Bruce called API [took 0s]
-  // James called API [took 1s]
-  // Bruce called API [took 2s]
-  // Bill called API [took 3s]
+  // Bill called API [took 0s]
+  // Bruce called API [took 1s]
+  // Bill called API [took 2s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
   // Bill called API [took 3s]
   // James called API [took 3s]
-  // Bill called API [took 2s]
+  // Bruce called API [took 3s]
+  // James called API [took 2s]
   // Total time [took 8s]
 
 
@@ -249,7 +249,7 @@ object DelicateResource:
           Ref.make(true).run
         )
 
-object Chapter08_Reliability_4 extends helpers.ZIOAppDebug:
+object App4 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val delicateResource =
@@ -262,12 +262,10 @@ object Chapter08_Reliability_4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(30, 289)
-  // Current requests: List(708, 30, 289)
-  // Current requests: List(289)
-  // Current requests: List(483, 708, 30, 289)
-  // Current requests: List(161, 483, 708, 30, 289)
-  // Current requests: List(595, 161, 483, 708, 30, 289)
+  // Current requests: List(474, 434)
+  // Current requests: List(434)
+  // Current requests: List(526, 474, 434)
+  // Current requests: List(514, 526, 474, 434)
   // Result: Crashed the server!!
 
 
@@ -277,7 +275,7 @@ val makeOurBulkhead =
     3
   )
 
-object Chapter08_Reliability_5 extends helpers.ZIOAppDebug:
+object App5 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val bulkhead =
@@ -295,16 +293,16 @@ object Chapter08_Reliability_5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(859, 747)
-  // Current requests: List(747)
-  // Current requests: List(830, 859, 747)
-  // Current requests: List(804)
-  // Current requests: List(376, 804)
-  // Current requests: List(590, 376, 804)
-  // Current requests: List(253)
-  // Current requests: List(43, 253)
-  // Current requests: List(314, 43, 253)
-  // Current requests: List(449)
+  // Current requests: List(771, 592)
+  // Current requests: List(592)
+  // Current requests: List(801, 771, 592)
+  // Current requests: List(313)
+  // Current requests: List(845, 313)
+  // Current requests: List(692, 845, 313)
+  // Current requests: List(177)
+  // Current requests: List(425, 177)
+  // Current requests: List(276, 425, 177)
+  // Current requests: List(755)
   // Result: All Requests Succeeded
 
 
@@ -440,7 +438,7 @@ val repeatSchedule =
   Schedule.recurs(140) &&
     Schedule.spaced(50.millis)
 
-object Chapter08_Reliability_6 extends helpers.ZIOAppDebug:
+object App6 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val numCalls =
@@ -474,7 +472,7 @@ val makeCircuitBreaker =
       Retry.Schedules.common()
   )
 
-object Chapter08_Reliability_7 extends helpers.ZIOAppDebug:
+object App7 extends helpers.ZIOAppDebug:
   import CircuitBreaker.CircuitBreakerOpen
   
   def run =
@@ -523,7 +521,7 @@ val logicThatSporadicallyLocksUp =
       case _ =>
         10.millis
 
-object Chapter08_Reliability_8 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val contractBreaches =
