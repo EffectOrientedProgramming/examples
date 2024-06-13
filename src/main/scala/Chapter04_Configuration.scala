@@ -3,7 +3,6 @@ package Chapter04_Configuration
 import zio.*
 import zio.direct.*
 
-// Explain private constructor approach
 case class Dough():
   val letRise =
     Console.printLine:
@@ -127,8 +126,8 @@ object App4 extends helpers.ZIOAppDebug:
         oven,
       )
   // Toaster: Heating
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -288,8 +287,6 @@ object App10 extends helpers.ZIOAppDebug:
   // Bread: Eating
 
 
-// TODO Split this up? It's pretty busy.
-// TODO Can we introduce acquireRelease in isolation in superpowers?
 val ovenSafe =
   ZLayer.fromZIO:
     ZIO.succeed(Heat())
@@ -315,9 +312,6 @@ object App11 extends helpers.ZIOAppDebug:
 
 
 val coinToss =
-  // TODO: This is the first place we use defer.
-  // We need to deliberately, and explicitly,
-  // introduce it.
   defer:
     if Random.nextBoolean.run then
       ZIO.debug("Heads").run
@@ -347,18 +341,18 @@ val flipTen =
 object App12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
   // Tails
   // Heads
   // Tails
   // Tails
   // Tails
-  // Heads
+  // Tails
   // Tails
   // Heads
-  // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Tails
+  // Num Heads = 2
+  // Result: 2
 
 
 val rosencrantzCoinToss =

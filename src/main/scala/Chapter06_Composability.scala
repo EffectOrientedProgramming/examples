@@ -463,5 +463,9 @@ object App16 extends helpers.ZIOAppDebug:
   // Result: market is not rational
 
 
-def saveInformation(info: String): Unit =
-  ???
+def run =
+  researchHeadling.run
+  researchHeadling.run
+
+def run =
+  researchHeadling.repeatN(2).run
