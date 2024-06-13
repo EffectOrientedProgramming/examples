@@ -182,14 +182,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // Bill called API [took 2s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
+  // Bill called API [took 3s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
   // Bill called API [took 3s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
-  // James called API [took 2s]
   // Total time [took 8s]
 
 
@@ -262,10 +262,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(474, 434)
-  // Current requests: List(434)
-  // Current requests: List(526, 474, 434)
-  // Current requests: List(514, 526, 474, 434)
+  // Current requests: List(58)
+  // Current requests: List(653, 58)
+  // Current requests: List(64, 653, 58)
+  // Current requests: List(173, 64, 653, 58)
   // Result: Crashed the server!!
 
 
@@ -293,16 +293,16 @@ object App5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(771, 592)
-  // Current requests: List(592)
-  // Current requests: List(801, 771, 592)
-  // Current requests: List(313)
-  // Current requests: List(845, 313)
-  // Current requests: List(692, 845, 313)
-  // Current requests: List(177)
-  // Current requests: List(425, 177)
-  // Current requests: List(276, 425, 177)
-  // Current requests: List(755)
+  // Current requests: List(101)
+  // Current requests: List(208, 101)
+  // Current requests: List(787, 208, 101)
+  // Current requests: List(485)
+  // Current requests: List(462, 485)
+  // Current requests: List(543, 462, 485)
+  // Current requests: List(145)
+  // Current requests: List(881, 145)
+  // Current requests: List(292, 881, 145)
+  // Current requests: List(487)
   // Result: All Requests Succeeded
 
 
