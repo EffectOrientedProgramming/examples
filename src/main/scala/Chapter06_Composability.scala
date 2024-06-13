@@ -461,11 +461,3 @@ object App16 extends helpers.ZIOAppDebug:
   // File - write: market is not rational
   // File - CLOSE
   // Result: market is not rational
-
-
-def run =
-  researchHeadling.run
-  researchHeadling.run
-
-def run =
-  researchHeadling.repeatN(2).run
