@@ -262,10 +262,12 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(426)
-  // Current requests: List(151, 426)
-  // Current requests: List(855, 151, 426)
-  // Current requests: List(209, 855, 151, 426)
+  // Current requests: List(479)
+  // Current requests: List(562, 479)
+  // Current requests: List(977, 562, 479)
+  // Current requests: List(688, 977, 562, 479)
+  // Current requests: List(834, 688, 977, 562, 479)
+  // Current requests: List(93, 834, 688, 977, 562, 479)
   // Result: Crashed the server!!
 
 
@@ -293,16 +295,16 @@ object App5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(147)
-  // Current requests: List(515, 147)
-  // Current requests: List(566, 515, 147)
-  // Current requests: List(556)
-  // Current requests: List(66, 556)
-  // Current requests: List(353, 66, 556)
-  // Current requests: List(50)
-  // Current requests: List(534, 50)
-  // Current requests: List(623, 534, 50)
-  // Current requests: List(187)
+  // Current requests: List(589)
+  // Current requests: List(555, 589)
+  // Current requests: List(331, 555, 589)
+  // Current requests: List(719)
+  // Current requests: List(4, 719)
+  // Current requests: List(475, 4, 719)
+  // Current requests: List(805)
+  // Current requests: List(86, 805)
+  // Current requests: List(315, 86, 805)
+  // Current requests: List(797)
   // Result: All Requests Succeeded
 
 
@@ -501,7 +503,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -549,8 +551,8 @@ object App8 extends helpers.ZIOAppDebug:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 0
-  // Result: 0
+  // Contract Breaches: 1
+  // Result: 1
 
 
 var attempts = 0
@@ -560,7 +562,7 @@ def spottyLogic =
     ZIO.attempt{
       attempts = attempts + 1
     }.run
-    if (attempts > 1)
+    if (ZIO.attempt(attempts).run > 1)
       Random.nextIntBounded(3).run match
         case 0 => 
           Console.printLine("Success!").run
