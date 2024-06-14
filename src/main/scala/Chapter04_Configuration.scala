@@ -51,8 +51,8 @@ object App1 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -303,8 +303,8 @@ object App11 extends helpers.ZIOAppDebug:
         ovenSafe, 
         Scope.default
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -342,14 +342,14 @@ object App12 extends helpers.ZIOAppDebug:
     flipTen
   // Heads
   // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
-  // Heads
   // Num Heads = 7
   // Result: 7
 

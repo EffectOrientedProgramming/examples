@@ -16,12 +16,44 @@ enum Scenario: // TODO Could these instances _also_ be the error types??
   case SummaryReadThrows()
   case DiskFull()
 
+import Scenario.*
+
+// the scenario is used from non-ZIO code, so we don't use the config / bootstrap approach to passing it.
+// but we do still use bootstrap to set the scenario, just for consistency with how the scenario is set in other chapters
+var scenario: Scenario = StockMarketHeadline
+
+def stockMarketHeadline =
+  scenario = StockMarketHeadline
+  ZLayer.empty
+
+def headlineNotAvailable =
+  scenario = HeadlineNotAvailable
+  ZLayer.empty
+
+def noInterestingTopic =
+  scenario = NoInterestingTopic()
+  ZLayer.empty
+
+def summaryReadThrows =
+  scenario = SummaryReadThrows()
+  ZLayer.empty
+
+def noWikiArticleAvailable =
+  scenario = NoWikiArticleAvailable()
+  ZLayer.empty
+
+def aiTooSlow =
+  scenario = AITooSlow()
+  ZLayer.empty
+
+def diskFull =
+  scenario = DiskFull()
+  ZLayer.empty
+
 import scala.concurrent.Future
 // TODO If we make this function accept the "mock" result and return that, then
 //  we can leverage that to hit all of the possible paths in AllTheThings.
-def getHeadLine(
-    scenario: Scenario
-): Future[String] =
+def getHeadLine(): Future[String] =
   println("Network - Getting headline")
   scenario match
     case Scenario.HeadlineNotAvailable =>
@@ -75,24 +107,28 @@ def wikiArticle(topic: String): Either[
 
 import scala.concurrent.Future
 
-def getHeadlineZ(scenario: Scenario) =
+def getHeadlineZ() =
   ZIO
     .from:
-      getHeadLine(scenario)
+      getHeadLine()
     .mapError:
       case _: Throwable =>
-        Scenario.HeadlineNotAvailable
+        HeadlineNotAvailable
 
 object App0 extends helpers.ZIOAppDebug:
+  override val bootstrap = stockMarketHeadline
+  
   def run =
-    getHeadlineZ(Scenario.StockMarketHeadline)
+    getHeadlineZ()
   // Network - Getting headline
   // Result: stock market rising!
 
 
 object App1 extends helpers.ZIOAppDebug:
+  override val bootstrap = headlineNotAvailable
+  
   def run =
-    getHeadlineZ(Scenario.HeadlineNotAvailable)
+    getHeadlineZ()
   // Network - Getting headline
   // Result: HeadlineNotAvailable
 
@@ -107,7 +143,7 @@ def topicOfInterestZ(headline: String) =
       findTopicOfInterest:
         headline
     .orElseFail:
-      Scenario.NoInterestingTopic()
+      NoInterestingTopic()
 
 object App2 extends helpers.ZIOAppDebug:
   def run =
@@ -263,7 +299,7 @@ def writeToFileZ(file: File, content: String) =
       file.write:
         content
     .mapError:
-      _ => Scenario.DiskFull()
+      _ => DiskFull()
 
 object App8 extends helpers.ZIOAppDebug:
   def run =
@@ -278,6 +314,7 @@ object App8 extends helpers.ZIOAppDebug:
 
 
 case class NoSummaryAvailable(topic: String)
+
 def summaryForZ(
     file: File,
     // TODO Consider making a CloseableFileZ
@@ -323,7 +360,7 @@ def summarizeZ(article: String) =
     .onInterrupt:
       ZIO.debug("AI **INTERRUPTED**")
     .orDie // TODO Confirm we don't care about this case.
-    .timeoutFail(Scenario.AITooSlow())(50.millis)
+    .timeoutFail(AITooSlow())(50.millis)
 
 val findTopNewsStory =
   ZIO.succeed:
@@ -342,10 +379,10 @@ object App9 extends helpers.ZIOAppDebug:
   // Texting story: Battery Breakthrough
 
 
-def researchHeadline(scenario: Scenario) =
+def researchHeadline() =
   defer:
     val headline: String =
-      getHeadlineZ(scenario).run
+      getHeadlineZ().run
 
     val topic: String =
       topicOfInterestZ(headline).run
@@ -371,26 +408,29 @@ def researchHeadline(scenario: Scenario) =
       summary
 
 object App10 extends helpers.ZIOAppDebug:
+  override val bootstrap = headlineNotAvailable
+  
   def run =
-    researchHeadline:
-      Scenario.HeadlineNotAvailable
+    researchHeadline()
   // Network - Getting headline
   // Result: HeadlineNotAvailable
 
 
 object App11 extends helpers.ZIOAppDebug:
+  override val bootstrap = noInterestingTopic
+  
   def run =
-    researchHeadline:
-      Scenario.NoInterestingTopic()
+    researchHeadline()
   // Network - Getting headline
   // Analytics - Scanning
   // Result: NoInterestingTopic()
 
 
 object App12 extends helpers.ZIOAppDebug:
+  override val bootstrap = summaryReadThrows
+  
   def run =
-    researchHeadline:
-      Scenario.SummaryReadThrows()
+    researchHeadline()
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -401,9 +441,10 @@ object App12 extends helpers.ZIOAppDebug:
 
 
 object App13 extends helpers.ZIOAppDebug:
+  override val bootstrap = noWikiArticleAvailable
+  
   def run =
-    researchHeadline:
-      Scenario.NoWikiArticleAvailable()
+    researchHeadline()
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -414,27 +455,25 @@ object App13 extends helpers.ZIOAppDebug:
 
 
 object App14 extends helpers.ZIOAppDebug:
+  override val bootstrap = aiTooSlow
+  
   def run =
-    researchHeadline:
-      Scenario.AITooSlow()
+    researchHeadline()
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
   // File - contains(space)
   // Wiki - articleFor(space)
-  // AI - summarize - start
-  // printing because our test clock is insane
   // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
 
 object App15 extends helpers.ZIOAppDebug:
+  override val bootstrap = diskFull
+  
   def run =
-    researchHeadline:
-      // TODO Handle inconsistency in this example
-      // AI keeps timing out
-      Scenario.DiskFull()
+    researchHeadline()
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -442,15 +481,16 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
+  // AI **INTERRUPTED**
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App16 extends helpers.ZIOAppDebug:
+  override val bootstrap = stockMarketHeadline
+  
   def run =
-    researchHeadline:
-      Scenario.StockMarketHeadline
+    researchHeadline()
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN

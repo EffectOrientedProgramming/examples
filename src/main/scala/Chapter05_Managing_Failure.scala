@@ -3,7 +3,7 @@ package Chapter05_Managing_Failure
 import zio.*
 import zio.direct.*
 
-enum FailureScenario:
+enum Scenario:
   case HappyPath,
     NetworkError,
     GPSError
@@ -11,55 +11,57 @@ enum FailureScenario:
 class GpsFail          extends Exception
 class NetworkException extends Exception
 
-var scenario =
-  FailureScenario.HappyPath
-
-val failureScenarioConfig
-    : Config[Option[FailureScenario]] =
-  Config.Optional[FailureScenario](
+val scenarioConfig
+    : Config[Option[Scenario]] =
+  Config.Optional[Scenario](
     Config.fail("no default scenario")
   )
 
 class ErrorsStaticConfigProvider(
-    scenario: FailureScenario
+    scenario: Scenario
 ) extends ConfigProvider:
   override def load[A](config: Config[A])(
       implicit trace: Trace
   ): IO[Config.Error, A] =
     ZIO.succeed(Some(scenario).asInstanceOf[A])
 
-object Scenario:
+var scenarioForNonZio: Option[Scenario] = None
 
-  val happyPath =
-    Runtime.setConfigProvider(
-      ErrorsStaticConfigProvider(
-        FailureScenario.HappyPath
-      )
+def happyPath =
+  scenarioForNonZio = Some(Scenario.HappyPath)
+
+  Runtime.setConfigProvider(
+    ErrorsStaticConfigProvider(
+      Scenario.HappyPath
     )
+  )
 
-  val networkError =
-    Runtime.setConfigProvider(
-      ErrorsStaticConfigProvider(
-        FailureScenario.NetworkError
-      )
+def networkError =
+  scenarioForNonZio = Some(Scenario.NetworkError)
+
+  Runtime.setConfigProvider(
+    ErrorsStaticConfigProvider(
+      Scenario.NetworkError
     )
+  )
 
-  val gpsError =
-    Runtime.setConfigProvider(
-      ErrorsStaticConfigProvider(
-        FailureScenario.GPSError
-      )
+def gpsError =
+  scenarioForNonZio = Some(Scenario.GPSError)
+
+  Runtime.setConfigProvider(
+    ErrorsStaticConfigProvider(
+      Scenario.GPSError
     )
+  )
 
-// TODO Hide definition? Then we won't see the internals of the scenario stuff.
-// This would also makes the exceptions more surprising
+// since this function isn't a ZIO, it has to get the scenario from a var which is set when the bootstrap is set
 def getTemperatureOrThrow(): String =
-  scenario match
-    case FailureScenario.GPSError =>
+  scenarioForNonZio match
+    case Some(Scenario.GPSError) =>
       throw GpsFail()
-    case FailureScenario.NetworkError =>
+    case Some(Scenario.NetworkError) =>
       throw NetworkException()
-    case FailureScenario.HappyPath =>
+    case _ =>
       "35 degrees"
 
 def render(value: String) =
@@ -77,8 +79,7 @@ object App0 extends helpers.ZIOAppDebug:
 
 
 object App1 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.NetworkError
+  override val bootstrap = networkError
   
   def run =
     ZIO.succeed:
@@ -95,8 +96,7 @@ def temperatureCatchingApp(): String =
       "Failure"
 
 object App2 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.NetworkError
+  override val bootstrap = networkError
   
   def run =
     ZIO.succeed:
@@ -115,8 +115,7 @@ def temperatureCatchingMoreApp(): String =
       "GPS Hardware Failure"
 
 object App3 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.NetworkError
+  override val bootstrap = networkError
   
   def run =
     ZIO.succeed:
@@ -125,8 +124,7 @@ object App3 extends helpers.ZIOAppDebug:
 
 
 object App4 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.GPSError
+  override val bootstrap = gpsError
   
   def run =
     ZIO.succeed:
@@ -143,29 +141,27 @@ val getTemperature: ZIO[
 ] =
   defer:
     val maybeScenario =
-      ZIO.config(failureScenarioConfig).orDie.run
-    maybeScenario
-      .getOrElse(FailureScenario.HappyPath) match
-      case FailureScenario.GPSError =>
+      ZIO.config(scenarioConfig).orDie.run
+      
+    maybeScenario match
+      case Some(Scenario.GPSError) =>
         ZIO
           .fail:
             GpsFail()
           .run
-      case FailureScenario.NetworkError =>
-        // TODO Use a non-exceptional failure
+      case Some(Scenario.NetworkError) =>
         ZIO
           .fail:
             NetworkException()
           .run
-      case FailureScenario.HappyPath =>
-        ZIO
-          .succeed:
-            "Temperature: 35 degrees"
-          .run
+      case _ =>
+         ZIO
+           .succeed:
+             "Temperature: 35 degrees"
+           .run
 
 object App5 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    Scenario.happyPath
+  override val bootstrap = happyPath
   
   def run =
     getTemperature
@@ -173,8 +169,7 @@ object App5 extends helpers.ZIOAppDebug:
 
 
 object App6 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    Scenario.networkError
+  override val bootstrap = networkError
   
   def run =
     getTemperature
@@ -197,8 +192,7 @@ val temperatureAppComplete =
         "GPS Hardware Failure"
 
 object App7 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    Scenario.gpsError
+  override val bootstrap = gpsError
   
   def run =
     temperatureAppComplete
@@ -219,8 +213,7 @@ val displayTemperatureZWrapped =
         "GPS problem"
 
 object App8 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.HappyPath
+  override val bootstrap = happyPath
   
   def run =
     displayTemperatureZWrapped
@@ -228,8 +221,7 @@ object App8 extends helpers.ZIOAppDebug:
 
 
 object App9 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.NetworkError
+  override val bootstrap = networkError
   
   def run =
     displayTemperatureZWrapped
@@ -237,8 +229,7 @@ object App9 extends helpers.ZIOAppDebug:
 
 
 object App10 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.GPSError
+  override val bootstrap = gpsError
   
   def run =
     getTemperatureWrapped.catchAll:
@@ -249,8 +240,7 @@ object App10 extends helpers.ZIOAppDebug:
 
 
 object App11 extends helpers.ZIOAppDebug:
-  scenario =
-    FailureScenario.GPSError
+  override val bootstrap = gpsError
   
   def run =
     getTemperatureWrapped.catchAll:
