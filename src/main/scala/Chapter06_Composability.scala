@@ -464,6 +464,8 @@ object App14 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(space)
   // Wiki - articleFor(space)
+  // AI - summarize - start
+  // printing because our test clock is insane
   // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
@@ -481,9 +483,9 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App16 extends helpers.ZIOAppDebug:

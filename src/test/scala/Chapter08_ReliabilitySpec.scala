@@ -5,6 +5,8 @@ import zio.direct.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
+  // TODO Re-enable once our mdoc tooling 
+  //   supports deliberate test failures  
   import zio.test.*
   
   def spec =
@@ -36,6 +38,7 @@ object Test1 extends ZIOSpecDefault:
        TestAspect.flaky
   // Failed!
   // Failed!
+  // Failed!
   // Success!
   // + long test
-  // Result: Summary(1,0,0,,PT0.020836S)
+  // Result: Summary(1,0,0,,PT0.016238S)
