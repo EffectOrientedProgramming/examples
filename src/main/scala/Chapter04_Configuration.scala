@@ -26,7 +26,6 @@ object App0 extends helpers.ZIOAppDebug:
 
 case class Heat()
 
-// TODO Version of oven that turns off when finished?
 val oven =
   ZLayer.derive[Heat]
     .tap(_ => Console.printLine("Oven: Heated"))
@@ -341,18 +340,18 @@ val flipTen =
 object App12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Tails
-  // Tails
-  // Tails
+  // Heads
+  // Heads
   // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 7
+  // Result: 7
 
 
 val rosencrantzCoinToss =

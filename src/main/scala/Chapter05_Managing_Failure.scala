@@ -3,7 +3,7 @@ package Chapter05_Managing_Failure
 import zio.*
 import zio.direct.*
 
-enum ErrorsScenario:
+enum FailureScenario:
   case HappyPath,
     NetworkError,
     GPSError
@@ -12,16 +12,16 @@ class GpsFail          extends Exception
 class NetworkException extends Exception
 
 var scenario =
-  ErrorsScenario.HappyPath
+  FailureScenario.HappyPath
 
-val errorScenarioConfig
-    : Config[Option[ErrorsScenario]] =
-  Config.Optional[ErrorsScenario](
+val failureScenarioConfig
+    : Config[Option[FailureScenario]] =
+  Config.Optional[FailureScenario](
     Config.fail("no default scenario")
   )
 
 class ErrorsStaticConfigProvider(
-    scenario: ErrorsScenario
+    scenario: FailureScenario
 ) extends ConfigProvider:
   override def load[A](config: Config[A])(
       implicit trace: Trace
@@ -33,21 +33,21 @@ object Scenario:
   val happyPath =
     Runtime.setConfigProvider(
       ErrorsStaticConfigProvider(
-        ErrorsScenario.HappyPath
+        FailureScenario.HappyPath
       )
     )
 
   val networkError =
     Runtime.setConfigProvider(
       ErrorsStaticConfigProvider(
-        ErrorsScenario.NetworkError
+        FailureScenario.NetworkError
       )
     )
 
   val gpsError =
     Runtime.setConfigProvider(
       ErrorsStaticConfigProvider(
-        ErrorsScenario.GPSError
+        FailureScenario.GPSError
       )
     )
 
@@ -55,11 +55,11 @@ object Scenario:
 // This would also makes the exceptions more surprising
 def getTemperatureOrThrow(): String =
   scenario match
-    case ErrorsScenario.GPSError =>
+    case FailureScenario.GPSError =>
       throw GpsFail()
-    case ErrorsScenario.NetworkError =>
+    case FailureScenario.NetworkError =>
       throw NetworkException()
-    case ErrorsScenario.HappyPath =>
+    case FailureScenario.HappyPath =>
       "35 degrees"
 
 def render(value: String) =
@@ -78,7 +78,7 @@ object App0 extends helpers.ZIOAppDebug:
 
 object App1 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.NetworkError
+    FailureScenario.NetworkError
   
   def run =
     ZIO.succeed:
@@ -96,7 +96,7 @@ def temperatureCatchingApp(): String =
 
 object App2 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.NetworkError
+    FailureScenario.NetworkError
   
   def run =
     ZIO.succeed:
@@ -116,7 +116,7 @@ def temperatureCatchingMoreApp(): String =
 
 object App3 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.NetworkError
+    FailureScenario.NetworkError
   
   def run =
     ZIO.succeed:
@@ -126,7 +126,7 @@ object App3 extends helpers.ZIOAppDebug:
 
 object App4 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.GPSError
+    FailureScenario.GPSError
   
   def run =
     ZIO.succeed:
@@ -143,21 +143,21 @@ val getTemperature: ZIO[
 ] =
   defer:
     val maybeScenario =
-      ZIO.config(errorScenarioConfig).orDie.run
+      ZIO.config(failureScenarioConfig).orDie.run
     maybeScenario
-      .getOrElse(ErrorsScenario.HappyPath) match
-      case ErrorsScenario.GPSError =>
+      .getOrElse(FailureScenario.HappyPath) match
+      case FailureScenario.GPSError =>
         ZIO
           .fail:
             GpsFail()
           .run
-      case ErrorsScenario.NetworkError =>
-        // TODO Use a non-exceptional error
+      case FailureScenario.NetworkError =>
+        // TODO Use a non-exceptional failure
         ZIO
           .fail:
             NetworkException()
           .run
-      case ErrorsScenario.HappyPath =>
+      case FailureScenario.HappyPath =>
         ZIO
           .succeed:
             "Temperature: 35 degrees"
@@ -220,7 +220,7 @@ val displayTemperatureZWrapped =
 
 object App8 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.HappyPath
+    FailureScenario.HappyPath
   
   def run =
     displayTemperatureZWrapped
@@ -229,7 +229,7 @@ object App8 extends helpers.ZIOAppDebug:
 
 object App9 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.NetworkError
+    FailureScenario.NetworkError
   
   def run =
     displayTemperatureZWrapped
@@ -238,7 +238,7 @@ object App9 extends helpers.ZIOAppDebug:
 
 object App10 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.GPSError
+    FailureScenario.GPSError
   
   def run =
     getTemperatureWrapped.catchAll:
@@ -250,7 +250,7 @@ object App10 extends helpers.ZIOAppDebug:
 
 object App11 extends helpers.ZIOAppDebug:
   scenario =
-    ErrorsScenario.GPSError
+    FailureScenario.GPSError
   
   def run =
     getTemperatureWrapped.catchAll:

@@ -215,7 +215,6 @@ object App7 extends helpers.ZIOAppDebug:
     effect4
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -243,7 +242,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT5.031876746S,User saved)
+  // Result: (PT5.093405507S,User saved)
 
 
 val effect7 =
