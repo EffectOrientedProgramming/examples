@@ -5,25 +5,6 @@ import zio.direct.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
-  // TODO Re-enable once our mdoc tooling 
-  //   supports deliberate test failures  
-  import zio.test.*
-  
-  def spec =
-    test("long test"):
-      defer:
-        ZIO.sleep(1.hour).run
-        assertCompletes
-    @@ TestAspect.withLiveClock @@ 
-       TestAspect.timeout(1.second)
-  // - long test
-  // Timeout of 1 s exceeded.
-  // Result: 
-  // - long test
-  // Timeout of 1 s ex
-
-
-object Test1 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -39,6 +20,8 @@ object Test1 extends ZIOSpecDefault:
   // Failed!
   // Failed!
   // Failed!
+  // Failed!
+  // Failed!
   // Success!
   // + long test
-  // Result: Summary(1,0,0,,PT0.016238S)
+  // Result: Summary(1,0,0,,PT0.016462S)
