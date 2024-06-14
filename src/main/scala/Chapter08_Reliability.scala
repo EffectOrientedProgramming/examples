@@ -182,14 +182,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // James called API [took 1s]
-  // Bruce called API [took 2s]
+  // Bruce called API [took 1s]
+  // James called API [took 2s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Total time [took 8s]
 
 
@@ -262,11 +262,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(183)
-  // Current requests: List(20, 183)
-  // Current requests: List(336, 20, 183)
-  // Current requests: List(217, 336, 20, 183)
-  // Current requests: List(523, 217, 336, 20, 183)
+  // Current requests: List(947)
+  // Current requests: List(12, 947)
+  // Current requests: List(733, 12, 947)
+  // Current requests: List(980, 733, 12, 947)
   // Result: Crashed the server!!
 
 
@@ -294,16 +293,16 @@ object App5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(622, 599)
-  // Current requests: List(599)
-  // Current requests: List(829, 622, 599)
-  // Current requests: List(804)
-  // Current requests: List(530, 804)
-  // Current requests: List(948, 530, 804)
-  // Current requests: List(475)
-  // Current requests: List(303, 475)
-  // Current requests: List(794, 303, 475)
-  // Current requests: List(452)
+  // Current requests: List(999)
+  // Current requests: List(585, 999)
+  // Current requests: List(12, 585, 999)
+  // Current requests: List(766)
+  // Current requests: List(449, 766)
+  // Current requests: List(138, 449, 766)
+  // Current requests: List(920)
+  // Current requests: List(980, 920)
+  // Current requests: List(497, 980, 920)
+  // Current requests: List(227)
   // Result: All Requests Succeeded
 
 
@@ -502,7 +501,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -553,18 +552,6 @@ object App8 extends helpers.ZIOAppDebug:
   // Contract Breaches: 0
   // Result: 0
 
-
-// TODO Re-enable mdoc:testzio once our mdoc tooling 
-//   supports deliberate test failures  
-import zio.test.*
-
-def spec =
-  test("long test"):
-    defer:
-      ZIO.sleep(1.hour).run
-      assertCompletes
-  @@ TestAspect.withLiveClock @@ 
-     TestAspect.timeout(1.second)
 
 var attempts = 0
 
