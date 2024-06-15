@@ -69,7 +69,7 @@ def getHeadLine(): Future[String] =
       Future.successful("new unicode released!")
     case Scenario.NoInterestingTopic() =>
       Future.successful(
-        "TODO Use boring content here"
+        "boring content"
       )
     case Scenario.DiskFull() =>
       Future.successful("human genome sequenced")
@@ -79,7 +79,7 @@ def findTopicOfInterest(
     content: String
 ): Option[String] =
   // TODO Decide best output string here
-  println("Analytics - Scanning")
+  println("Analytics - Scanning for topic")
   val topics =
     List(
       "stock market",
@@ -88,7 +88,10 @@ def findTopicOfInterest(
       "unicode",
       "genome"
     )
-  topics.find(content.contains)
+  val res = 
+    topics.find(content.contains)
+  println(s"Analytics - topic: $res")
+  res
 
 import scala.util.Either
 def wikiArticle(topic: String): Either[
@@ -149,7 +152,8 @@ object App2 extends helpers.ZIOAppDebug:
   def run =
     topicOfInterestZ:
       "stock market rising!"
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
   // Result: stock market
 
 
@@ -157,7 +161,8 @@ object App3 extends helpers.ZIOAppDebug:
   def run =
     topicOfInterestZ:
       "boring and inane content"
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: None
   // Result: NoInterestingTopic()
 
 
@@ -278,6 +283,27 @@ object App6 extends helpers.ZIOAppDebug:
 
 
 object App7 extends helpers.ZIOAppDebug:
+  import scala.util.Using
+  import java.io.FileReader
+  
+  def run =
+    defer:
+      Using(openFile("file1.txt")) {
+        file1 =>
+          Using(openFile("file2.txt")) {
+            file2 =>
+              file1.sameContent(file2)
+          }
+      }
+  // File - OPEN
+  // File - OPEN
+  // side-effect print: comparing content
+  // File - CLOSE
+  // File - CLOSE
+  // Result: Success(Success(true))
+
+
+object App8 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val file1 =
@@ -301,7 +327,7 @@ def writeToFileZ(file: File, content: String) =
     .mapError:
       _ => DiskFull()
 
-object App8 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val file =
@@ -331,11 +357,6 @@ def summarize(article: String): String =
   // Represents the AI taking a long time to
   // summarize the content
   if (article.contains("space"))
-    // This should go away when our clock is less
-    // dumb
-    println(
-      "printing because our test clock is insane"
-    )
     Thread.sleep(1000)
 
   println(s"AI - summarize - end")
@@ -349,7 +370,6 @@ def summarize(article: String): String =
     ???
 end summarize
 
-// TODO Can we use silent instead of compile-only above?
 val summaryTmp: String =
   summarize("topic")
 
@@ -370,7 +390,7 @@ def textAlert(message: String) =
   Console.printLine:
     s"Texting story: $message"
 
-object App9 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   def run =
     defer:
       val topStory =
@@ -407,7 +427,7 @@ val researchHeadline =
       writeToFileZ(summaryFile, summary).run
       summary
 
-object App10 extends helpers.ZIOAppDebug:
+object App11 extends helpers.ZIOAppDebug:
   override val bootstrap = headlineNotAvailable
   
   def run =
@@ -416,23 +436,25 @@ object App10 extends helpers.ZIOAppDebug:
   // Result: HeadlineNotAvailable
 
 
-object App11 extends helpers.ZIOAppDebug:
+object App12 extends helpers.ZIOAppDebug:
   override val bootstrap = noInterestingTopic
   
   def run =
     researchHeadline
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: None
   // Result: NoInterestingTopic()
 
 
-object App12 extends helpers.ZIOAppDebug:
+object App13 extends helpers.ZIOAppDebug:
   override val bootstrap = summaryReadThrows
   
   def run =
     researchHeadline
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(unicode)
   // File - OPEN
   // File - contains(unicode)
   // File - summaryFor(unicode)
@@ -440,13 +462,14 @@ object App12 extends helpers.ZIOAppDebug:
   // Result: NoSummaryAvailable(unicode)
 
 
-object App13 extends helpers.ZIOAppDebug:
+object App14 extends helpers.ZIOAppDebug:
   override val bootstrap = noWikiArticleAvailable
   
   def run =
     researchHeadline
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(barn)
   // File - OPEN
   // File - contains(barn)
   // Wiki - articleFor(barn)
@@ -454,47 +477,50 @@ object App13 extends helpers.ZIOAppDebug:
   // Result: NoWikiArticleAvailable()
 
 
-object App14 extends helpers.ZIOAppDebug:
+object App15 extends helpers.ZIOAppDebug:
   override val bootstrap = aiTooSlow
   
   def run =
     researchHeadline
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(space)
   // File - OPEN
   // File - contains(space)
   // Wiki - articleFor(space)
   // AI - summarize - start
-  // printing because our test clock is insane
   // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
 
-object App15 extends helpers.ZIOAppDebug:
+object App16 extends helpers.ZIOAppDebug:
   // TODO This inconsistently works. It frequently reports the AI problem again.
   override val bootstrap = diskFull
   
   def run =
     researchHeadline
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(genome)
   // File - OPEN
   // File - contains(genome)
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
-object App16 extends helpers.ZIOAppDebug:
+object App17 extends helpers.ZIOAppDebug:
   override val bootstrap = stockMarketHeadline
   
   def run =
     researchHeadline
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
@@ -505,13 +531,14 @@ object App16 extends helpers.ZIOAppDebug:
   // Result: market is not rational
 
 
-object App17 extends helpers.ZIOAppDebug:
+object App18 extends helpers.ZIOAppDebug:
   def run =
     defer:
       researchHeadline.run
       researchHeadline.run
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
@@ -519,23 +546,24 @@ object App17 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
   // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()
 
 
-object App18 extends helpers.ZIOAppDebug:
+object App19 extends helpers.ZIOAppDebug:
   def run =
     researchHeadline.repeatN(2)
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
@@ -543,12 +571,24 @@ object App18 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // Network - Getting headline
-  // Analytics - Scanning
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
