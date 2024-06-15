@@ -189,10 +189,7 @@ object App5 extends helpers.ZIOAppDebug:
 
 import scala.util.Try
 
-// TODO Different name to make less confusable with AutoCloseable?
 trait File extends AutoCloseable:
-  // TODO Return existing entry, rather than a
-  // raw Boolean?
   def contains(searchTerm: String): Boolean
   def write(entry: String): Try[String]
   def summaryFor(searchTerm: String): String
@@ -552,10 +549,9 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()
 
 
 object App19 extends helpers.ZIOAppDebug:
@@ -578,6 +574,17 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
