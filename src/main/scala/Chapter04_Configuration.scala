@@ -342,16 +342,16 @@ object App12 extends helpers.ZIOAppDebug:
     flipTen
   // Heads
   // Tails
-  // Heads
   // Tails
   // Tails
   // Heads
+  // Tails
+  // Heads
   // Heads
   // Tails
   // Tails
-  // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 4
+  // Result: 4
 
 
 val rosencrantzCoinToss =
