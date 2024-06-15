@@ -198,7 +198,6 @@ object App6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
-  // Log: Interrupting slow request
   // Result: *** Save timed out ***
 
 
@@ -213,6 +212,7 @@ object App7 extends helpers.ZIOAppDebug:
   
   def run =
     effect4
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
@@ -242,7 +242,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.002229931S,User saved)
+  // Result: (PT0.009465675S,User saved)
 
 
 val effect7 =
@@ -260,28 +260,40 @@ object App10 extends helpers.ZIOAppDebug:
 val program =
   defer:
     Console.printLine("Hello").run
-    val subject =
-      "world"
-    Console.printLine(subject).run
+    Console.printLine("world").run
 
-val programManipulatingBeforeRun =
-  defer:
-    Console.printLine("Hello").repeatN(3).run
+object App11 extends helpers.ZIOAppDebug:
+  val run =
+    program
+  // Hello
+  // world
+
+
+// NOTE: If you alter the sample below, you need to explicitly change the brittle error msg manipulation in Main
+val x = 1 // This is just a dumb way to keep the code block from being empty, so it's properly hidden
+
+object App12 extends helpers.ZIOAppDebug:
+  def run =
+    defer:
+      program.repeatN(1).run
+  // Hello
+  // world
+  // Hello
+  // world
+
 
 val surroundedProgram =
   defer:
     Console.printLine("**Before**").run
-    program.run
+    program.repeatN(1).run
     Console.printLine("**After**").run
 
-object App11 extends helpers.ZIOAppDebug:
+object App13 extends helpers.ZIOAppDebug:
   def run =
     surroundedProgram
   // **Before**
   // Hello
   // world
+  // Hello
+  // world
   // **After**
-
-
-// NOTE: If you alter the sample below, you need to explicitly change the brittle error msg manipulation in Main
-val x = 1 // This is just a dumb way to keep the code block from being empty, so it's properly hidden

@@ -464,6 +464,8 @@ object App14 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(space)
   // Wiki - articleFor(space)
+  // AI - summarize - start
+  // printing because our test clock is insane
   // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
