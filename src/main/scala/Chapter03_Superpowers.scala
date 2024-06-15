@@ -198,6 +198,7 @@ object App6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
+  // Log: Interrupting slow request
   // Result: *** Save timed out ***
 
 
@@ -212,6 +213,7 @@ object App7 extends helpers.ZIOAppDebug:
   
   def run =
     effect4
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
@@ -240,7 +242,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.026277156S,User saved)
+  // Result: (PT0.002229931S,User saved)
 
 
 val effect7 =
@@ -279,3 +281,7 @@ object App11 extends helpers.ZIOAppDebug:
   // Hello
   // world
   // **After**
+
+
+// NOTE: If you alter the sample below, you need to explicitly change the brittle error msg manipulation in Main
+val x = 1 // This is just a dumb way to keep the code block from being empty, so it's properly hidden

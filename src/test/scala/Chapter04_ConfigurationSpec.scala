@@ -28,7 +28,7 @@ object Test0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.029211S)
+  // Result: Summary(1,0,0,,PT0.290456S)
 
 
 object Test1 extends ZIOSpecDefault:
@@ -59,7 +59,7 @@ object Test1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.021047S)
+  // Result: Summary(1,0,0,,PT0.072296S)
 
 
 object Test2 extends ZIOSpecDefault:
@@ -75,16 +75,16 @@ object Test2 extends ZIOSpecDefault:
   // *Performance Begins*
   // Heads
   // R: Heads
-  // Heads
-  // R: Heads
-  // Heads
+  // Tails
+  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1722730449":
+  // 	at repl.MdocSession.MdocApp.coinToss(<input>:440)
   // ...
   // R: Heads
   // G: ...probability
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.029998S)
+  // Result: Summary(1,0,0,,PT0.04665S)
 
 
 object Test3 extends ZIOSpecDefault:
@@ -105,4 +105,4 @@ object Test3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.016701S)
+  // Result: Summary(1,0,0,,PT0.021158S)
