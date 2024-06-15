@@ -28,7 +28,7 @@ object Test0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.251779S)
+  // Result: Summary(1,0,0,,PT0.034328S)
 
 
 object Test1 extends ZIOSpecDefault:
@@ -59,7 +59,7 @@ object Test1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.061688S)
+  // Result: Summary(1,0,0,,PT0.045881S)
 
 
 object Test2 extends ZIOSpecDefault:
@@ -74,7 +74,7 @@ object Test2 extends ZIOSpecDefault:
       TestAspect.flaky(Int.MaxValue)
   // *Performance Begins*
   // Tails
-  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1902393614":
+  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-936836427":
   // 	at repl.MdocSession.MdocApp.coinToss(<input>:440)
   // 	at repl.MdocSession.MdocApp.rosencrantzCoinToss(<input>:509)
   // 	at repl.MdocSession.MdocApp.rosencrantzAndGuildensternAreDead(<input>:514)
@@ -84,7 +84,7 @@ object Test2 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.0253S)
+  // Result: Summary(1,0,0,,PT0.025205S)
 
 
 object Test3 extends ZIOSpecDefault:
@@ -105,4 +105,4 @@ object Test3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.016814S)
+  // Result: Summary(1,0,0,,PT0.022703S)
