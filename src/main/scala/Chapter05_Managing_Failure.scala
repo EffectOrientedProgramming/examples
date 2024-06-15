@@ -5,7 +5,7 @@ import zio.direct.*
 
 enum Scenario:
   case HappyPath,
-    Weird,
+    TooCold,
     NetworkFailure,
     GPSFailure
 
@@ -56,19 +56,20 @@ def gpsFailure =
   )
 
 def weird =
-  scenarioForNonZio = Some(Scenario.Weird)
+  scenarioForNonZio = Some(Scenario.TooCold)
 
   Runtime.setConfigProvider(
     ErrorsStaticConfigProvider(
-      Scenario.Weird
+      Scenario.TooCold
     )
   )
 
+case class Temperature(degrees: Int)
 
 val getTemperature: ZIO[
   Any,
   GpsException | NetworkException,
-  String
+  Temperature
 ] =
   defer:
     val maybeScenario =
@@ -85,15 +86,15 @@ val getTemperature: ZIO[
           .fail:
             NetworkException()
           .run
-      case Some(Scenario.Weird) =>
+      case Some(Scenario.TooCold) =>
         ZIO
            .succeed:
-             "Temperature: 34 degrees"
+             Temperature(-20)
            .run
       case _ =>
          ZIO
            .succeed:
-             "Temperature: 35 degrees"
+             Temperature(35)
            .run
 
 object App0 extends helpers.ZIOAppDebug:
@@ -101,7 +102,7 @@ object App0 extends helpers.ZIOAppDebug:
   
   def run =
     getTemperature
-  // Result: Temperature: 35 degrees
+  // Result: Temperature(35)
 
 
 object App1 extends helpers.ZIOAppDebug:
@@ -118,7 +119,7 @@ object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
       getTemperature.run
-      Console.printLine("will not print if getTemperature fails").run
+      Console.printLine("only prints if getTemperature succeeds").run
   // Result: Defect: NetworkException: Network Failure
 
 
@@ -181,12 +182,12 @@ object App5 extends helpers.ZIOAppDebug:
 
 case class LocalizeFailure(s: String)
 
-def localize(temperature: String) =
-  if temperature.contains("35") then
-    ZIO.succeed("Brrrr")
+def localize(temperature: Temperature) =
+  if temperature.degrees > 0 then
+    ZIO.succeed("Not too cold.")
   else
     ZIO.fail:
-      LocalizeFailure("I dunno")
+      LocalizeFailure("**Machine froze**")
 
 // can fail with an Exception or a LocalizeFailure
 val getTemperatureLocal =
@@ -207,7 +208,7 @@ object App6 extends helpers.ZIOAppDebug:
         Console.printLine(e.getMessage)
       case LocalizeFailure(s: String) =>
         Console.printLine(s)
-  // I dunno
+  // **Machine froze**
 
 
 
