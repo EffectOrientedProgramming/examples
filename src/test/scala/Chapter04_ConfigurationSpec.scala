@@ -28,7 +28,7 @@ object Test0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.052797S)
+  // Result: Summary(1,0,0,,PT0.035286S)
 
 
 object Test1 extends ZIOSpecDefault:
@@ -59,7 +59,7 @@ object Test1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.047583S)
+  // Result: Summary(1,0,0,,PT0.032556S)
 
 
 object Test2 extends ZIOSpecDefault:
@@ -77,14 +77,14 @@ object Test2 extends ZIOSpecDefault:
   // R: Heads
   // Heads
   // R: Heads
-  // Heads
+  // Tails
   // ...
   // R: Heads
   // G: ...probability
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.018388S)
+  // Result: Summary(1,0,0,,PT0.017671S)
 
 
 object Test3 extends ZIOSpecDefault:
@@ -105,4 +105,4 @@ object Test3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.017783S)
+  // Result: Summary(1,0,0,,PT0.017801S)
