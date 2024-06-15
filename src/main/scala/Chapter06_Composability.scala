@@ -350,7 +350,7 @@ def summarize(article: String): String =
 end summarize
 
 // TODO Can we use silent instead of compile-only above?
-val summary: String =
+val summaryTmp: String =
   summarize("topic")
 
 def summarizeZ(article: String) =
@@ -379,7 +379,7 @@ object App9 extends helpers.ZIOAppDebug:
   // Texting story: Battery Breakthrough
 
 
-def researchHeadline() =
+val researchHeadline =
   defer:
     val headline: String =
       getHeadlineZ().run
@@ -411,7 +411,7 @@ object App10 extends helpers.ZIOAppDebug:
   override val bootstrap = headlineNotAvailable
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Result: HeadlineNotAvailable
 
@@ -420,7 +420,7 @@ object App11 extends helpers.ZIOAppDebug:
   override val bootstrap = noInterestingTopic
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Analytics - Scanning
   // Result: NoInterestingTopic()
@@ -430,7 +430,7 @@ object App12 extends helpers.ZIOAppDebug:
   override val bootstrap = summaryReadThrows
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -444,7 +444,7 @@ object App13 extends helpers.ZIOAppDebug:
   override val bootstrap = noWikiArticleAvailable
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -458,7 +458,7 @@ object App14 extends helpers.ZIOAppDebug:
   override val bootstrap = aiTooSlow
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -472,10 +472,11 @@ object App14 extends helpers.ZIOAppDebug:
 
 
 object App15 extends helpers.ZIOAppDebug:
+  // TODO This inconsistently works. It frequently reports the AI problem again.
   override val bootstrap = diskFull
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -483,16 +484,15 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App16 extends helpers.ZIOAppDebug:
   override val bootstrap = stockMarketHeadline
   
   def run =
-    researchHeadline()
+    researchHeadline
   // Network - Getting headline
   // Analytics - Scanning
   // File - OPEN
@@ -503,3 +503,52 @@ object App16 extends helpers.ZIOAppDebug:
   // File - write: market is not rational
   // File - CLOSE
   // Result: market is not rational
+
+
+object App17 extends helpers.ZIOAppDebug:
+  def run =
+    defer:
+      researchHeadline.run
+      researchHeadline.run
+  // Network - Getting headline
+  // Analytics - Scanning
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // AI **INTERRUPTED**
+  // File - CLOSE
+  // File - CLOSE
+  // Result: AITooSlow()
+
+
+object App18 extends helpers.ZIOAppDebug:
+  def run =
+    researchHeadline.repeatN(2)
+  // Network - Getting headline
+  // Analytics - Scanning
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - CLOSE
+  // File - CLOSE
+  // Result: AITooSlow()
