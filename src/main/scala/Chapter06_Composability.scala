@@ -3,7 +3,7 @@ package Chapter06_Composability
 import zio.*
 import zio.direct.*
 
-enum Scenario: // TODO Could these instances _also_ be the error types??
+enum Scenario:
   case StockMarketHeadline
   case HeadlineNotAvailable
   case NoInterestingTopic()
@@ -51,8 +51,6 @@ def diskFull =
   ZLayer.empty
 
 import scala.concurrent.Future
-// TODO If we make this function accept the "mock" result and return that, then
-//  we can leverage that to hit all of the possible paths in AllTheThings.
 def getHeadLine(): Future[String] =
   println("Network - Getting headline")
   scenario match
@@ -78,7 +76,6 @@ end getHeadLine
 def findTopicOfInterest(
     content: String
 ): Option[String] =
-  // TODO Decide best output string here
   println("Analytics - Scanning for topic")
   val topics =
     List(
@@ -114,9 +111,8 @@ def getHeadlineZ() =
   ZIO
     .from:
       getHeadLine()
-    .mapError:
-      case _: Throwable =>
-        HeadlineNotAvailable
+    .orElseFail:
+      HeadlineNotAvailable
 
 object App0 extends helpers.ZIOAppDebug:
   override val bootstrap = stockMarketHeadline
@@ -204,7 +200,7 @@ def openFile(path: String) =
 
     override def content() =
       path match
-        case "file1.txt" | "file2.txt" =>
+        case "file1.txt" | "file2.txt" | "summaries.txt" =>
           "hot dog"
         case _ =>
           "not hot dog"
@@ -226,7 +222,6 @@ def openFile(path: String) =
       println:
         s"File - contains($searchTerm)"
 
-      // todo use path to determine behavior?
       searchTerm match
         case "wheel" | "unicode" =>
           true
@@ -321,8 +316,8 @@ def writeToFileZ(file: File, content: String) =
     .from:
       file.write:
         content
-    .mapError:
-      _ => DiskFull()
+    .orElseFail: 
+      DiskFull()
 
 object App9 extends helpers.ZIOAppDebug:
   def run =
@@ -340,14 +335,13 @@ case class NoSummaryAvailable(topic: String)
 
 def summaryForZ(
     file: File,
-    // TODO Consider making a CloseableFileZ
     topic: String
 ) =
   ZIO
     .attempt:
       file.summaryFor(topic)
-    .mapError:
-      _ => NoSummaryAvailable(topic)
+    .orElseFail:
+      NoSummaryAvailable(topic)
 
 def summarize(article: String): String =
   println(s"AI - summarize - start")
@@ -361,22 +355,22 @@ def summarize(article: String): String =
     s"market is not rational"
   else if (article.contains("genome"))
     "The human genome is huge!"
-  else if (article.contains("topic"))
-    "topic summary"
+  else if (article.contains("long article"))
+    "content summary"
   else
     ???
 end summarize
 
 val summaryTmp: String =
-  summarize("topic")
+  summarize("long article")
 
 def summarizeZ(article: String) =
   ZIO
     .attemptBlockingInterrupt:
       summarize(article)
+    .orDie
     .onInterrupt:
       ZIO.debug("AI **INTERRUPTED**")
-    .orDie // TODO Confirm we don't care about this case.
     .timeoutFail(AITooSlow())(50.millis)
 
 val findTopNewsStory =
@@ -405,8 +399,7 @@ val researchHeadline =
       topicOfInterestZ(headline).run
 
     val summaryFile: File =
-      // TODO Use Scenario to determine file?
-      openFileZ("file1.txt").run
+      openFileZ("summaries.txt").run
 
     val knownTopic: Boolean =
       summaryFile.contains:
@@ -541,8 +534,19 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
 
 
 object App19 extends helpers.ZIOAppDebug:
@@ -565,17 +569,6 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market)
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()
