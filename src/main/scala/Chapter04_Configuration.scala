@@ -124,10 +124,10 @@ object App4 extends helpers.ZIOAppDebug:
         Dough.fresh, 
         oven,
       )
-  // Toaster: Heating
   // Oven: Heated
   // Dough: Mixed
   // BreadHomeMade: Baked
+  // Toaster: Heating
   // ToastZ: Made
   // Toast: Eating
 
@@ -303,8 +303,8 @@ object App11 extends helpers.ZIOAppDebug:
         ovenSafe, 
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -342,16 +342,16 @@ object App12 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Tails
-  // Heads
+  // Tails
   // Heads
   // Heads
   // Tails
   // Heads
-  // Heads
+  // Tails
   // Heads
   // Tails
-  // Num Heads = 6
-  // Result: 6
+  // Num Heads = 4
+  // Result: 4
 
 
 val rosencrantzCoinToss =

@@ -211,8 +211,6 @@ object App6 extends helpers.ZIOAppDebug:
   // **Machine froze**
 
 
-
-
 // since this function isn't a ZIO, it has to get the scenario from a var which is set when the bootstrap is set
 def getTemperatureOrThrow(): String =
   scenarioForNonZio match
@@ -223,123 +221,24 @@ def getTemperatureOrThrow(): String =
     case _ =>
       "35 degrees"
 
-def render(value: String) =
-  s"Temperature: $value"
-
-def temperatureApp(): String =
-  render:
-    getTemperatureOrThrow()
-
 object App7 extends helpers.ZIOAppDebug:
+  override val bootstrap = networkFailure
+  
   def run =
-    ZIO.attempt:
-      temperatureApp()
-  // Result: Temperature: 35 degrees
+    ZIO.succeed:
+      getTemperatureOrThrow()
+  // Result: Defect: NetworkException: Network Failure
 
+
+val safeTemperatureApp =
+  ZIO.attempt:
+    getTemperatureOrThrow()
 
 object App8 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
-    ZIO.succeed:
-      temperatureApp()
-  // Result: Defect: NetworkException: Network Failure
-
-
-def temperatureCatchingApp(): String =
-  try
-    render:
-      getTemperatureOrThrow()
-  catch
-    case ex: Exception =>
-      "Failure"
-
-object App9 extends helpers.ZIOAppDebug:
-  override val bootstrap = networkFailure
-  
-  def run =
-    ZIO.succeed:
-      temperatureCatchingApp()
-  // Result: Failure
-
-
-def temperatureCatchingMoreApp(): String =
-  try
-    render:
-      getTemperatureOrThrow()
-  catch
-    case ex: NetworkException =>
-      "Network Unavailable"
-    case ex: GpsException =>
-      "GPS Hardware Failure"
-
-object App10 extends helpers.ZIOAppDebug:
-  override val bootstrap = networkFailure
-  
-  def run =
-    ZIO.succeed:
-      temperatureCatchingMoreApp()
-  // Result: Network Unavailable
-
-
-object App11 extends helpers.ZIOAppDebug:
-  override val bootstrap = gpsFailure
-  
-  def run =
-    ZIO.succeed:
-      temperatureCatchingMoreApp()
-  // Result: GPS Hardware Failure
-
-
-val getTemperatureWrapped =
-  ZIO.attempt:
-    getTemperatureOrThrow()
-
-val displayTemperatureZWrapped =
-  getTemperatureWrapped.catchAll:
-    case ex: NetworkException =>
+    safeTemperatureApp.orElse:
       ZIO.succeed:
-        "Network Unavailable"
-    case ex: GpsException =>
-      ZIO.succeed:
-        "GPS problem"
-
-object App12 extends helpers.ZIOAppDebug:
-  override val bootstrap = happyPath
-  
-  def run =
-    displayTemperatureZWrapped
-  // Result: 35 degrees
-
-
-object App13 extends helpers.ZIOAppDebug:
-  override val bootstrap = networkFailure
-  
-  def run =
-    displayTemperatureZWrapped
-  // Result: Network Unavailable
-
-
-object App14 extends helpers.ZIOAppDebug:
-  override val bootstrap = gpsFailure
-  
-  def run =
-    getTemperatureWrapped.catchAll:
-      case ex: NetworkException =>
-        ZIO.succeed:
-          "Network Unavailable"
-  // Result: Defect: GpsException
-
-
-object App15 extends helpers.ZIOAppDebug:
-  override val bootstrap = gpsFailure
-  
-  def run =
-    getTemperatureWrapped.catchAll:
-      case ex: NetworkException =>
-        ZIO.succeed:
-          "Network Unavailable"
-      case other =>
-        ZIO.succeed:
-          "Unknown Error"
-  // Result: Unknown Error
+        "Could not get temperature"
+  // Result: Could not get temperature
