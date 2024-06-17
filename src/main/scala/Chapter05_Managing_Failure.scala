@@ -144,6 +144,13 @@ val bad =
       ZIO.succeed:
         "Network Unavailable"
 
+// [E029] Pattern Match Exhaustivity Warning:
+//     case ex: NetworkException =>
+//     ^
+// match may not be exhaustive.
+//
+// It would fail on pattern case: _: GpsException
+
 val temperatureAppComplete =
   getTemperature.catchAll:
     case ex: NetworkException =>
