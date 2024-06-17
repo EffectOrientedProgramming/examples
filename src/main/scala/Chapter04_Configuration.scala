@@ -341,14 +341,14 @@ object App12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Heads
-  // Heads
-  // Tails
-  // Tails
-  // Tails
   // Tails
   // Heads
+  // Tails
+  // Heads
+  // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
   // Num Heads = 6
   // Result: 6

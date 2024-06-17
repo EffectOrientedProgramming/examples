@@ -181,7 +181,7 @@ object App3 extends helpers.ZIOAppDebug:
           "Total time"
         .unit // ignores the list of unit
         .run
-  // James called API [took 0s]
+  // Bill called API [took 0s]
   // Bruce called API [took 1s]
   // James called API [took 2s]
   // Bill called API [took 3s]
@@ -189,7 +189,7 @@ object App3 extends helpers.ZIOAppDebug:
   // James called API [took 3s]
   // Bill called API [took 3s]
   // Bruce called API [took 3s]
-  // Bill called API [took 2s]
+  // James called API [took 3s]
   // Total time [took 8s]
 
 
@@ -262,10 +262,12 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(555)
-  // Current requests: List(942, 555)
-  // Current requests: List(687, 942, 555)
-  // Current requests: List(276, 687, 942, 555)
+  // Current requests: List(383, 569)
+  // Current requests: List(569)
+  // Current requests: List(640, 383, 569)
+  // Current requests: List(450, 640, 383, 569)
+  // Current requests: List(931, 450, 640, 383, 569)
+  // Current requests: List(933, 931, 450, 640, 383, 569)
   // Result: Crashed the server!!
 
 
@@ -293,16 +295,16 @@ object App5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(400)
-  // Current requests: List(880, 400)
-  // Current requests: List(225, 880, 400)
-  // Current requests: List(68)
-  // Current requests: List(578, 68)
-  // Current requests: List(689, 578, 68)
-  // Current requests: List(83)
-  // Current requests: List(725, 83)
-  // Current requests: List(953, 725, 83)
-  // Current requests: List(809)
+  // Current requests: List(418)
+  // Current requests: List(244, 418)
+  // Current requests: List(508, 244, 418)
+  // Current requests: List(718)
+  // Current requests: List(436, 718)
+  // Current requests: List(205, 436, 718)
+  // Current requests: List(480)
+  // Current requests: List(185, 480)
+  // Current requests: List(569, 185, 480)
+  // Current requests: List(803)
   // Result: All Requests Succeeded
 
 
@@ -352,7 +354,6 @@ import InstantOps._
  * seconds, I would get "Third Value" 14+
  * seconds, it would fail */
 
-// TODO Consider TimeSequence as a name
 def scheduledValues[A](
     value: (Duration, A),
     values: (Duration, A)*
@@ -377,7 +378,6 @@ def scheduledValues[A](
     accessX(timeTable)
   }
 
-// TODO Some comments, tests, examples, etc to
 // make this function more obvious
 private def createTimeTableX[A](
     startTime: Instant,
