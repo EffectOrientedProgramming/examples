@@ -18,4 +18,4 @@ object Test0 extends ZIOSpecDefault:
   // Failed!
   // Success!
   // + long test
-  // Result: Summary(1,0,0,,PT0.019475S)
+  // Result: Summary(1,0,0,,PT0.024718S)
