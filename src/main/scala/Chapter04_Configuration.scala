@@ -132,25 +132,28 @@ object App4 extends helpers.ZIOAppDebug:
   // Toast: Eating
 
 
-case class BreadStoreBought() extends Bread
-
-val buyBread =
-  ZIO.succeed:
-    BreadStoreBought()
-
-val storeBought =
+val ovenSafe =
   ZLayer.fromZIO:
-    buyBread
-  .tap(_ => Console.printLine("BreadStoreBought: Bought"))
+    ZIO.succeed(Heat())
+      .tap(_ => Console.printLine("Oven: Heated"))
+      .withFinalizer(_ => Console.printLine("Oven: Turning off!").orDie)
 
 object App5 extends helpers.ZIOAppDebug:
   def run =
     ZIO
-      .service[Bread]
-      .provide:
-        storeBought
-  // BreadStoreBought: Bought
-  // Result: BreadStoreBought()
+      .serviceWithZIO[Bread]:
+        bread => bread.eat
+      .provide(
+        Bread.homemade, 
+        Dough.fresh, 
+        ovenSafe, 
+        Scope.default
+      )
+  // Oven: Heated
+  // Dough: Mixed
+  // BreadHomeMade: Baked
+  // Bread: Eating
+  // Oven: Turning off!
 
 
 case class BreadFromFriend() extends Bread()
@@ -164,7 +167,7 @@ object Friend:
         .run
       ZIO
         .when(true)(
-          ZIO.fail("Error(Friend Unreachable)")
+          ZIO.fail("Error(Friend Unreachable)") // TODO Replace error with failure pervasively
         )
         .as(???)
         .run
@@ -201,6 +204,17 @@ object App6 extends helpers.ZIOAppDebug:
   // Result: Error(Friend Unreachable)
 
 
+case class BreadStoreBought() extends Bread
+
+val buyBread =
+  ZIO.succeed:
+    BreadStoreBought()
+
+val storeBought =
+  ZLayer.fromZIO:
+    buyBread
+  .tap(_ => Console.printLine("BreadStoreBought: Bought"))
+
 object App7 extends helpers.ZIOAppDebug:
   def run =
     ZIO
@@ -233,14 +247,6 @@ def logicWithRetries(retries: Int) =
 
 object App8 extends helpers.ZIOAppDebug:
   def run =
-    logicWithRetries(retries = 1)
-  // Attempt 1: Error(Friend Unreachable)
-  // Attempt 2: Error(Friend Unreachable)
-  // Result: Error(Friend Unreachable)
-
-
-object App9 extends helpers.ZIOAppDebug:
-  def run =
     logicWithRetries(retries = 2)
   // Attempt 1: Error(Friend Unreachable)
   // Attempt 2: Error(Friend Unreachable)
@@ -270,7 +276,7 @@ val config =
       configDescriptor.from:
         configProvider
 
-object App10 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[RetryConfig]:
@@ -284,30 +290,6 @@ object App10 extends helpers.ZIOAppDebug:
   // Attempt 2: Error(Friend Unreachable)
   // Attempt 3: Succeeded
   // Bread: Eating
-
-
-val ovenSafe =
-  ZLayer.fromZIO:
-    ZIO.succeed(Heat())
-      .tap(_ => Console.printLine("Oven: Heated"))
-      .withFinalizer(_ => Console.printLine("Oven: Turning off!").orDie)
-
-object App11 extends helpers.ZIOAppDebug:
-  def run =
-    ZIO
-      .serviceWithZIO[Bread]:
-        bread => bread.eat
-      .provide(
-        Bread.homemade, 
-        Dough.fresh, 
-        ovenSafe, 
-        Scope.default
-      )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Bread: Eating
-  // Oven: Turning off!
 
 
 val coinToss =
@@ -337,21 +319,21 @@ val flipTen =
     ZIO.debug(s"Num Heads = $numHeads").run
     numHeads
 
-object App12 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Tails
+  // Tails
   // Heads
+  // Tails
   // Tails
   // Heads
   // Tails
   // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
-  // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Num Heads = 3
+  // Result: 3
 
 
 val rosencrantzCoinToss =
