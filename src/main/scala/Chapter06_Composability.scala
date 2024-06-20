@@ -498,9 +498,9 @@ object App16 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App17 extends helpers.ZIOAppDebug:
@@ -534,7 +534,6 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -566,8 +565,10 @@ object App19 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market)
   // Wiki - articleFor(stock market)
-  // AI **INTERRUPTED**
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: market is not rational

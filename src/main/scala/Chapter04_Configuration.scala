@@ -324,16 +324,16 @@ object App10 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Tails
+  // Tails
+  // Heads
+  // Heads
+  // Tails
   // Heads
   // Tails
   // Tails
   // Heads
-  // Tails
-  // Heads
-  // Tails
-  // Tails
-  // Num Heads = 3
-  // Result: 3
+  // Num Heads = 4
+  // Result: 4
 
 
 val rosencrantzCoinToss =
