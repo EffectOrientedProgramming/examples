@@ -128,8 +128,8 @@ object App4 extends helpers.ZIOAppDebug:
         oven,
       )
   // Toaster: Heating
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -330,16 +330,16 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Tails
-  // Heads
   // Heads
   // Tails
+  // Heads
   // Tails
+  // Heads
   // Tails
   // Heads
+  // Tails
   // Heads
-  // Heads
+  // Tails
   // Num Heads = 5
   // Result: 5
 

@@ -533,6 +533,8 @@ object App17 extends helpers.ZIOAppDebug:
 
 
 object App18 extends helpers.ZIOAppDebug:
+  override val bootstrap = stockMarketHeadline
+  
   def run =
     defer:
       researchHeadline.run
@@ -560,6 +562,8 @@ object App18 extends helpers.ZIOAppDebug:
 
 
 object App19 extends helpers.ZIOAppDebug:
+  override val bootstrap = stockMarketHeadline
+  
   def run =
     researchHeadline.repeatN(2)
   // Network - Getting headline
@@ -579,6 +583,16 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - CLOSE
   // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()
