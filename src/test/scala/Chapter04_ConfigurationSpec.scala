@@ -8,6 +8,28 @@ object Test0 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
+    test("eat Bread"):
+      defer:
+        ZIO
+          .serviceWithZIO[Bread]:
+            bread => 
+              bread.eat
+        .run
+        val output = TestConsole.output.run
+        assertTrue(output.contains("Bread: Eating\n"))
+        
+    .provide:
+      IdealFriend
+        .bread
+  // Bread: Eating
+  // + eat Bread
+  // Result: Summary(1,0,0,,PT0.063907S)
+
+
+object Test1 extends ZIOSpecDefault:
+  import zio.test.*
+  
+  def spec =
     test("flips 10 times"):
       defer:
         TestRandom
@@ -28,10 +50,10 @@ object Test0 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.053269S)
+  // Result: Summary(1,0,0,,PT0.057273S)
 
 
-object Test1 extends ZIOSpecDefault:
+object Test2 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -59,10 +81,10 @@ object Test1 extends ZIOSpecDefault:
   // Heads
   // R: Heads
   // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.085645S)
+  // Result: Summary(1,0,0,,PT0.041565S)
 
 
-object Test2 extends ZIOSpecDefault:
+object Test3 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -73,21 +95,21 @@ object Test2 extends ZIOSpecDefault:
     @@ TestAspect.withLiveRandom @@
       TestAspect.flaky(Int.MaxValue)
   // *Performance Begins*
+  // Heads
+  // R: Heads
+  // Heads
+  // R: Heads
   // Tails
-  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-432632955":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:413)
-  // 	at repl.MdocSession.MdocApp.rosencrantzCoinToss(<input>:482)
-  // 	at repl.MdocSession.MdocApp.rosencrantzAndGuildensternAreDead(<input>:487)
   // ...
   // R: Heads
   // G: ...probability
   // Heads
   // R: Heads
   // + flaky plan
-  // Result: Summary(1,0,0,,PT0.043046S)
+  // Result: Summary(1,0,0,,PT0.038855S)
 
 
-object Test3 extends ZIOSpecDefault:
+object Test4 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -105,4 +127,4 @@ object Test3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.043241S)
+  // Result: Summary(1,0,0,,PT0.039479S)

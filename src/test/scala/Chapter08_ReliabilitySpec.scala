@@ -15,9 +15,6 @@ object Test0 extends ZIOSpecDefault:
     @@ TestAspect.withLiveRandom @@ 
        TestAspect.flaky
   // Failed!
-  // Failed!
-  // Failed!
-  // Failed!
   // Success!
   // + long test
-  // Result: Summary(1,0,0,,PT0.024327S)
+  // Result: Summary(1,0,0,,PT0.021152S)

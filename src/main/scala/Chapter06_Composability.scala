@@ -284,15 +284,19 @@ object App7 extends helpers.ZIOAppDebug:
         file1 =>
           Using(openFile("file2.txt")) {
             file2 =>
-              file1.sameContent(file2)
+              println:
+                file1.sameContent(file2)
           }
       }
+    // TODO Confirm .unit is better than showing 
+    //   the ugly return type that wraps unit
+    .unit 
   // File - OPEN
   // File - OPEN
   // side-effect print: comparing content
+  // true
   // File - CLOSE
   // File - CLOSE
-  // Result: Success(Success(true))
 
 
 object App8 extends helpers.ZIOAppDebug:
@@ -302,13 +306,15 @@ object App8 extends helpers.ZIOAppDebug:
         openFileZ("file1.txt").run
       val file2 =
         openFileZ("file2.txt").run
-      file1.sameContent(file2)
+      Console.printLine:
+        file1.sameContent(file2)
+      .run
   // File - OPEN
   // File - OPEN
   // side-effect print: comparing content
+  // true
   // File - CLOSE
   // File - CLOSE
-  // Result: true
 
 
 def writeToFileZ(file: File, content: String) =
@@ -330,6 +336,11 @@ object App9 extends helpers.ZIOAppDebug:
   // File - CLOSE
   // Result: New data on topic
 
+
+openFile("file1").summaryFor("space")
+
+// TODO Simplify mdoc output if possible
+openFile("file1").summaryFor("unicode")
 
 case class NoSummaryAvailable(topic: String)
 
@@ -479,6 +490,7 @@ object App15 extends helpers.ZIOAppDebug:
   // File - contains(space)
   // Wiki - articleFor(space)
   // AI - summarize - start
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -497,8 +509,9 @@ object App16 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App17 extends helpers.ZIOAppDebug:
@@ -532,6 +545,16 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -547,5 +570,15 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()

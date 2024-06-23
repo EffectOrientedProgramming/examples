@@ -63,8 +63,11 @@ case class Toast(heat: Heat, bread: Bread):
 
 object Toast:
   val make =
-    ZLayer.derive[Toast]
-      .tap(_ => Console.printLine("Toast: Made"))
+    ZLayer
+      .derive[Toast]
+      .tap(
+        _ => Console.printLine("Toast: Made")
+      )
 
 object App2 extends helpers.ZIOAppDebug:
   def run =
@@ -125,8 +128,8 @@ object App4 extends helpers.ZIOAppDebug:
         oven,
       )
   // Toaster: Heating
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -162,12 +165,12 @@ object Friend:
     defer:
       Console
         .printLine(
-          s"Attempt $invocations: Error(Friend Unreachable)"
+          s"Attempt $invocations: Failure(Friend Unreachable)"
         )
         .run
       ZIO
         .when(true)(
-          ZIO.fail("Error(Friend Unreachable)") // TODO Replace error with failure pervasively
+          ZIO.fail("Failure(Friend Unreachable)") // TODO Replace error with failure pervasively
         )
         .as(???)
         .run
@@ -200,8 +203,8 @@ object App6 extends helpers.ZIOAppDebug:
         Friend.bread(worksOnAttempt =
           3
         )
-  // Attempt 1: Error(Friend Unreachable)
-  // Result: Error(Friend Unreachable)
+  // Attempt 1: Failure(Friend Unreachable)
+  // Result: Failure(Friend Unreachable)
 
 
 case class BreadStoreBought() extends Bread
@@ -226,7 +229,7 @@ object App7 extends helpers.ZIOAppDebug:
           )
           .orElse:
             storeBought
-  // Attempt 1: Error(Friend Unreachable)
+  // Attempt 1: Failure(Friend Unreachable)
   // BreadStoreBought: Bought
   // Result: BreadStoreBought()
 
@@ -248,8 +251,8 @@ def logicWithRetries(retries: Int) =
 object App8 extends helpers.ZIOAppDebug:
   def run =
     logicWithRetries(retries = 2)
-  // Attempt 1: Error(Friend Unreachable)
-  // Attempt 2: Error(Friend Unreachable)
+  // Attempt 1: Failure(Friend Unreachable)
+  // Attempt 2: Failure(Friend Unreachable)
   // Attempt 3: Succeeded
   // Bread: Eating
 
@@ -286,11 +289,16 @@ object App9 extends helpers.ZIOAppDebug:
           )
       .provide:
         config
-  // Attempt 1: Error(Friend Unreachable)
-  // Attempt 2: Error(Friend Unreachable)
+  // Attempt 1: Failure(Friend Unreachable)
+  // Attempt 2: Failure(Friend Unreachable)
   // Attempt 3: Succeeded
   // Bread: Eating
 
+
+object IdealFriend:
+  val bread =
+    ZLayer.succeed:
+      BreadFromFriend()
 
 val coinToss =
   defer:
@@ -328,10 +336,10 @@ object App10 extends helpers.ZIOAppDebug:
   // Heads
   // Tails
   // Tails
-  // Heads
-  // Heads
-  // Heads
   // Tails
+  // Heads
+  // Heads
+  // Heads
   // Num Heads = 5
   // Result: 5
 
