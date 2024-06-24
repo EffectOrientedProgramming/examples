@@ -152,8 +152,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe, 
         Scope.default
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -300,6 +300,18 @@ object IdealFriend:
     ZLayer.succeed:
       BreadFromFriend()
 
+import zio.test.assertTrue
+
+val logic =
+  defer:
+    assertTrue(1==1)
+
+import zio.test.test
+
+val testCase =
+  test("eat Bread"):
+    logic
+
 val coinToss =
   defer:
     if Random.nextBoolean.run then
@@ -330,18 +342,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Tails
   // Heads
+  // Tails
   // Tails
   // Heads
   // Tails
   // Heads
-  // Tails
   // Heads
-  // Tails
   // Heads
-  // Tails
-  // Num Heads = 5
-  // Result: 5
+  // Heads
+  // Num Heads = 6
+  // Result: 6
 
 
 val rosencrantzCoinToss =
