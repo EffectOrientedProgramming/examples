@@ -339,12 +339,6 @@ object App9 extends helpers.ZIOAppDebug:
   // Result: New data on topic
 
 
-openFile("file1").summaryFor("space")
-
-// TODO Simplify mdoc output if possible
-openFile("file1")
-  .summaryFor("unicode")
-
 case class NoSummaryAvailable(topic: String)
 
 def summaryForZ(
@@ -481,7 +475,6 @@ object App14 extends helpers.ZIOAppDebug:
   // File - contains(space)
   // Wiki - articleFor(space)
   // AI - summarize - start
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -501,9 +494,8 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App16 extends helpers.ZIOAppDebug:
@@ -541,6 +533,16 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -559,5 +561,16 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // AI **INTERRUPTED**
+  // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()

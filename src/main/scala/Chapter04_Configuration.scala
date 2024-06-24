@@ -51,8 +51,8 @@ object App1 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -300,18 +300,6 @@ object IdealFriend:
     ZLayer.succeed:
       BreadFromFriend()
 
-import zio.test.assertTrue
-
-val logic =
-  defer:
-    assertTrue(1==1)
-
-import zio.test.test
-
-val testCase =
-  test("eat Bread"):
-    logic
-
 val coinToss =
   defer:
     if Random.nextBoolean.run then
@@ -343,17 +331,17 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Heads
+  // Heads
   // Tails
-  // Tails
-  // Tails
+  // Heads
+  // Heads
   // Heads
   // Tails
   // Tails
   // Tails
-  // Tails
   // Heads
-  // Num Heads = 3
-  // Result: 3
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =

@@ -4,15 +4,27 @@ import zio.*
 import zio.direct.*
 import zio.test.*
 
-object Test0 extends ZIOSpecDefault:
+import zio.test.assertTrue
+
+val logic =
+  defer:
+    assertTrue(1==1)
+
+import zio.test.test
+
+val testCase =
+  test("eat Bread"):
+    logic
+
+object Test2 extends ZIOSpecDefault:
   def spec =
     testCase
   // TODO TestSummary renderer?
   // + eat Bread
-  // Result: Summary(1,0,0,,PT0.040174S)
+  // Result: Summary(1,0,0,,PT0.066125S)
 
 
-object Test1 extends ZIOSpecDefault:
+object Test3 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -31,10 +43,10 @@ object Test1 extends ZIOSpecDefault:
         .bread
   // Bread: Eating
   // + eat Bread
-  // Result: Summary(1,0,0,,PT0.047205S)
+  // Result: Summary(1,0,0,,PT0.035092S)
 
 
-object Test2 extends ZIOSpecDefault:
+object Test4 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -58,10 +70,10 @@ object Test2 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.034302S)
+  // Result: Summary(1,0,0,,PT0.040639S)
 
 
-object Test3 extends ZIOSpecDefault:
+object Test5 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -79,4 +91,4 @@ object Test3 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.047431S)
+  // Result: Summary(1,0,0,,PT0.043283S)
