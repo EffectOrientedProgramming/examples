@@ -384,23 +384,6 @@ def summarizeZ(article: String) =
       ZIO.debug("AI **INTERRUPTED**")
     .timeoutFail(AITooSlow())(50.millis)
 
-val findTopNewsStory =
-  ZIO.succeed:
-    "Battery Breakthrough"
-
-def textAlert(message: String) =
-  Console.printLine:
-    s"Texting story: $message"
-
-object App10 extends helpers.ZIOAppDebug:
-  def run =
-    defer:
-      val topStory =
-        findTopNewsStory.run
-      textAlert(topStory).run
-  // Texting story: Battery Breakthrough
-
-
 val researchHeadline =
   defer:
     val headline: String =
@@ -428,7 +411,7 @@ val researchHeadline =
       writeToFileZ(summaryFile, summary).run
       summary
 
-object App11 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   override val bootstrap = headlineNotAvailable
   
   def run =
@@ -437,7 +420,7 @@ object App11 extends helpers.ZIOAppDebug:
   // Result: HeadlineNotAvailable
 
 
-object App12 extends helpers.ZIOAppDebug:
+object App11 extends helpers.ZIOAppDebug:
   override val bootstrap = noInterestingTopic
   
   def run =
@@ -448,7 +431,7 @@ object App12 extends helpers.ZIOAppDebug:
   // Result: NoInterestingTopic()
 
 
-object App13 extends helpers.ZIOAppDebug:
+object App12 extends helpers.ZIOAppDebug:
   override val bootstrap = summaryReadThrows
   
   def run =
@@ -463,7 +446,7 @@ object App13 extends helpers.ZIOAppDebug:
   // Result: NoSummaryAvailable(unicode)
 
 
-object App14 extends helpers.ZIOAppDebug:
+object App13 extends helpers.ZIOAppDebug:
   override val bootstrap = noWikiArticleAvailable
   
   def run =
@@ -478,7 +461,7 @@ object App14 extends helpers.ZIOAppDebug:
   // Result: NoWikiArticleAvailable()
 
 
-object App15 extends helpers.ZIOAppDebug:
+object App14 extends helpers.ZIOAppDebug:
   override val bootstrap = aiTooSlow
   
   def run =
@@ -495,7 +478,7 @@ object App15 extends helpers.ZIOAppDebug:
   // Result: AITooSlow()
 
 
-object App16 extends helpers.ZIOAppDebug:
+object App15 extends helpers.ZIOAppDebug:
   // TODO This inconsistently works. It frequently reports the AI problem again.
   override val bootstrap = diskFull
   
@@ -509,12 +492,11 @@ object App16 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
 
-object App17 extends helpers.ZIOAppDebug:
+object App16 extends helpers.ZIOAppDebug:
   override val bootstrap = stockMarketHeadline
   
   def run =
@@ -532,7 +514,7 @@ object App17 extends helpers.ZIOAppDebug:
   // Result: market is not rational
 
 
-object App18 extends helpers.ZIOAppDebug:
+object App17 extends helpers.ZIOAppDebug:
   override val bootstrap = stockMarketHeadline
   
   def run =
@@ -556,13 +538,13 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: market is not rational
 
 
-object App19 extends helpers.ZIOAppDebug:
+object App18 extends helpers.ZIOAppDebug:
   override val bootstrap = stockMarketHeadline
   
   def run =
