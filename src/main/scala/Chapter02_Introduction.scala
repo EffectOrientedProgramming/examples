@@ -1,4 +1,4 @@
-package Chapter02_Introduction_to_Effects
+package Chapter02_Introduction
 
 import zio.*
 import zio.direct.*
