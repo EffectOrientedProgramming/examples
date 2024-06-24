@@ -115,7 +115,8 @@ def getHeadlineZ() =
       HeadlineNotAvailable
 
 object App0 extends helpers.ZIOAppDebug:
-  override val bootstrap = stockMarketHeadline
+  override val bootstrap =
+    stockMarketHeadline
   
   def run =
     getHeadlineZ()
@@ -124,7 +125,8 @@ object App0 extends helpers.ZIOAppDebug:
 
 
 object App1 extends helpers.ZIOAppDebug:
-  override val bootstrap = headlineNotAvailable
+  override val bootstrap =
+    headlineNotAvailable
   
   def run =
     getHeadlineZ()
@@ -340,7 +342,8 @@ object App9 extends helpers.ZIOAppDebug:
 openFile("file1").summaryFor("space")
 
 // TODO Simplify mdoc output if possible
-openFile("file1").summaryFor("unicode")
+openFile("file1")
+  .summaryFor("unicode")
 
 case class NoSummaryAvailable(topic: String)
 
@@ -412,7 +415,8 @@ val researchHeadline =
       summary
 
 object App10 extends helpers.ZIOAppDebug:
-  override val bootstrap = headlineNotAvailable
+  override val bootstrap =
+    headlineNotAvailable
   
   def run =
     researchHeadline
@@ -421,7 +425,8 @@ object App10 extends helpers.ZIOAppDebug:
 
 
 object App11 extends helpers.ZIOAppDebug:
-  override val bootstrap = noInterestingTopic
+  override val bootstrap =
+    noInterestingTopic
   
   def run =
     researchHeadline
@@ -432,7 +437,8 @@ object App11 extends helpers.ZIOAppDebug:
 
 
 object App12 extends helpers.ZIOAppDebug:
-  override val bootstrap = summaryReadThrows
+  override val bootstrap = 
+    summaryReadThrows
   
   def run =
     researchHeadline
@@ -447,7 +453,8 @@ object App12 extends helpers.ZIOAppDebug:
 
 
 object App13 extends helpers.ZIOAppDebug:
-  override val bootstrap = noWikiArticleAvailable
+  override val bootstrap =
+    noWikiArticleAvailable
   
   def run =
     researchHeadline
@@ -462,7 +469,8 @@ object App13 extends helpers.ZIOAppDebug:
 
 
 object App14 extends helpers.ZIOAppDebug:
-  override val bootstrap = aiTooSlow
+  override val bootstrap =
+    aiTooSlow
   
   def run =
     researchHeadline
@@ -479,8 +487,9 @@ object App14 extends helpers.ZIOAppDebug:
 
 
 object App15 extends helpers.ZIOAppDebug:
-  // TODO This inconsistently works. It frequently reports the AI problem again.
-  override val bootstrap = diskFull
+  // TODO This inconsistently works. frequently reports AI problem.
+  override val bootstrap = 
+    diskFull
   
   def run =
     researchHeadline
@@ -492,12 +501,14 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App16 extends helpers.ZIOAppDebug:
-  override val bootstrap = stockMarketHeadline
+  override val bootstrap =
+    stockMarketHeadline
   
   def run =
     researchHeadline
@@ -515,7 +526,8 @@ object App16 extends helpers.ZIOAppDebug:
 
 
 object App17 extends helpers.ZIOAppDebug:
-  override val bootstrap = stockMarketHeadline
+  override val bootstrap =
+    stockMarketHeadline
   
   def run =
     defer:
@@ -529,23 +541,13 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market)
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()
 
 
 object App18 extends helpers.ZIOAppDebug:
-  override val bootstrap = stockMarketHeadline
+  override val bootstrap =
+    stockMarketHeadline
   
   def run =
     researchHeadline.repeatN(2)
@@ -557,6 +559,5 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
