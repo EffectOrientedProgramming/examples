@@ -490,6 +490,7 @@ object App15 extends helpers.ZIOAppDebug:
   // File - contains(space)
   // Wiki - articleFor(space)
   // AI - summarize - start
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -508,6 +509,7 @@ object App16 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -554,6 +556,7 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // AI **INTERRUPTED**
   // File - CLOSE
   // File - CLOSE
   // Result: AITooSlow()
@@ -572,5 +575,6 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()

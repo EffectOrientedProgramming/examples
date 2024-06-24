@@ -343,48 +343,18 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Tails
+  // Tails
   // Heads
+  // Tails
   // Tails
   // Tails
   // Heads
   // Tails
   // Heads
   // Heads
-  // Heads
-  // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Num Heads = 4
+  // Result: 4
 
-
-val rosencrantzCoinToss =
-  coinToss.debug:
-    "R"
-
-val rosencrantzAndGuildensternAreDead =
-  defer:
-    ZIO
-      .debug:
-        "*Performance Begins*"
-      .run
-    rosencrantzCoinToss.repeatN(4).run
-
-    ZIO
-      .debug:
-        "G: There is an art to building suspense."
-      .run
-    rosencrantzCoinToss.run
-
-    ZIO
-      .debug:
-        "G: Though it can be done by luck alone."
-      .run
-    rosencrantzCoinToss.run
-
-    ZIO
-      .debug:
-        "G: ...probability"
-      .run
-    rosencrantzCoinToss.run
 
 val nightlyBatch =
   ZIO

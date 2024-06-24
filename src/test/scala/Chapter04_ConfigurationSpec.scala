@@ -9,7 +9,7 @@ object Test0 extends ZIOSpecDefault:
     testCase
   // TODO TestSummary renderer?
   // + eat Bread
-  // Result: Summary(1,0,0,,PT0.055188S)
+  // Result: Summary(1,0,0,,PT0.051375S)
 
 
 object Test1 extends ZIOSpecDefault:
@@ -31,7 +31,7 @@ object Test1 extends ZIOSpecDefault:
         .bread
   // Bread: Eating
   // + eat Bread
-  // Result: Summary(1,0,0,,PT0.034393S)
+  // Result: Summary(1,0,0,,PT0.066635S)
 
 
 object Test2 extends ZIOSpecDefault:
@@ -58,66 +58,10 @@ object Test2 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.036908S)
+  // Result: Summary(1,0,0,,PT0.053406S)
 
 
 object Test3 extends ZIOSpecDefault:
-  import zio.test.*
-  
-  def spec =
-    test(
-      "rosencrantzAndGuildensternAreDead finishes"
-    ):
-      defer:
-        TestRandom
-          .feedBooleans:
-            true
-          .repeatN:
-            7
-          .run
-        rosencrantzAndGuildensternAreDead.run
-        assertCompletes
-  // *Performance Begins*
-  // Heads
-  // R: Heads
-  // Heads
-  // R: Heads
-  // Heads
-  // ...
-  // R: Heads
-  // G: ...probability
-  // Heads
-  // R: Heads
-  // + rosencrantzAndGuildensternAreDead finishes
-  // Result: Summary(1,0,0,,PT0.033159S)
-
-
-object Test4 extends ZIOSpecDefault:
-  import zio.test.*
-  
-  def spec =
-    test("flaky plan"):
-      defer:
-        rosencrantzAndGuildensternAreDead.run
-        assertCompletes
-    @@ TestAspect.withLiveRandom @@
-      TestAspect.flaky(Int.MaxValue)
-  // *Performance Begins*
-  // Heads
-  // R: Heads
-  // Tails
-  // <FAIL> R: Fail(Tails,Stack trace for thread "zio-fiber-1255303000":
-  // 	at repl.MdocSession.MdocApp.coinToss(<input>:485)
-  // ...
-  // R: Heads
-  // G: ...probability
-  // Heads
-  // R: Heads
-  // + flaky plan
-  // Result: Summary(1,0,0,,PT0.021687S)
-
-
-object Test5 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -135,4 +79,4 @@ object Test5 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.024271S)
+  // Result: Summary(1,0,0,,PT0.043912S)

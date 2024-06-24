@@ -262,10 +262,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(626)
-  // Current requests: List(141, 626)
-  // Current requests: List(139, 141, 626)
-  // Current requests: List(616, 139, 141, 626)
+  // Current requests: List(165)
+  // Current requests: List(706, 165)
+  // Current requests: List(308, 706, 165)
+  // Current requests: List(167, 308, 706, 165)
   // Result: Crashed the server!!
 
 
@@ -293,16 +293,16 @@ object App5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(713)
-  // Current requests: List(588, 713)
-  // Current requests: List(280, 588, 713)
-  // Current requests: List(746)
-  // Current requests: List(534, 746)
-  // Current requests: List(503, 534, 746)
-  // Current requests: List(807)
-  // Current requests: List(334, 807)
-  // Current requests: List(178, 334, 807)
-  // Current requests: List(49)
+  // Current requests: List(674)
+  // Current requests: List(295, 674)
+  // Current requests: List(17, 295, 674)
+  // Current requests: List(991)
+  // Current requests: List(158, 991)
+  // Current requests: List(324, 158, 991)
+  // Current requests: List(120)
+  // Current requests: List(276, 120)
+  // Current requests: List(538, 276, 120)
+  // Current requests: List(322)
   // Result: All Requests Succeeded
 
 
@@ -547,8 +547,8 @@ object App8 extends helpers.ZIOAppDebug:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 0
-  // Result: 0
+  // Contract Breaches: 1
+  // Result: 1
 
 
 var attempts = 0
