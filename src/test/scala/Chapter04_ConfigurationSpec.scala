@@ -21,7 +21,7 @@ object Test2 extends ZIOSpecDefault:
     testCase
   // TODO TestSummary renderer?
   // + eat Bread
-  // Result: Summary(1,0,0,,PT0.066125S)
+  // Result: Summary(1,0,0,,PT0.127014S)
 
 
 object Test3 extends ZIOSpecDefault:
@@ -43,7 +43,7 @@ object Test3 extends ZIOSpecDefault:
         .bread
   // Bread: Eating
   // + eat Bread
-  // Result: Summary(1,0,0,,PT0.035092S)
+  // Result: Summary(1,0,0,,PT0.072071S)
 
 
 object Test4 extends ZIOSpecDefault:
@@ -70,7 +70,7 @@ object Test4 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-  // Result: Summary(1,0,0,,PT0.040639S)
+  // Result: Summary(1,0,0,,PT0.034335S)
 
 
 object Test5 extends ZIOSpecDefault:
@@ -91,4 +91,4 @@ object Test5 extends ZIOSpecDefault:
         assertCompletes
   // Parsing CSV: ()
   // + batch runs after 24 hours
-  // Result: Summary(1,0,0,,PT0.043283S)
+  // Result: Summary(1,0,0,,PT0.063368S)

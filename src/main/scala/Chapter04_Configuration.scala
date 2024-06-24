@@ -51,8 +51,8 @@ object App1 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(Bread.homemade, Dough.fresh, oven)
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -331,17 +331,17 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Heads
-  // Heads
   // Tails
-  // Heads
-  // Heads
-  // Heads
+  // Tails
   // Tails
   // Tails
   // Tails
   // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Heads
+  // Heads
+  // Tails
+  // Num Heads = 4
+  // Result: 4
 
 
 val nightlyBatch =
