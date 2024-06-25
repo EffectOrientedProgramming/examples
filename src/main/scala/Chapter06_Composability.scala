@@ -480,7 +480,6 @@ object App14 extends helpers.ZIOAppDebug:
 
 
 object App15 extends helpers.ZIOAppDebug:
-  // TODO This inconsistently works. frequently reports AI problem.
   override val bootstrap =
     diskFull
   
