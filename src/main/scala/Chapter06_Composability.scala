@@ -356,7 +356,7 @@ def summarize(article: String): String =
   // Represents the AI taking a long time to
   // summarize the content
   if (article.contains("space"))
-    Thread.sleep(1000)
+    Thread.sleep(5000)
 
   println(s"AI - summarize - end")
   if (article.contains("stock market"))
@@ -379,7 +379,7 @@ def summarizeZ(article: String) =
     .orDie
     .onInterrupt:
       ZIO.debug("AI **INTERRUPTED**")
-    .timeoutFail(AITooSlow())(50.millis)
+    .timeoutFail(AITooSlow())(4000.millis)
 
 val researchHeadline =
   defer:
@@ -495,8 +495,9 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App16 extends helpers.ZIOAppDebug:
@@ -534,13 +535,23 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
 
 
 object App18 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    stockMarketHeadline
+  override val bootstrap = stockMarketHeadline
   
   def run =
     researchHeadline.repeatN(2)
@@ -570,7 +581,8 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: market is not rational

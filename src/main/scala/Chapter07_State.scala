@@ -23,7 +23,7 @@ val unreliableCounting =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     unreliableCounting
-  // Result: Final count: 99936
+  // Result: Final count: 99891
 
 
 object App1 extends helpers.ZIOAppDebug:
