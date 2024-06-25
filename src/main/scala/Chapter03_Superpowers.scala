@@ -211,7 +211,8 @@ object App6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
-  // Result: User saved
+  // Log: Interrupting slow request
+  // Result: *** Save timed out ***
 
 
 val effect4 =
@@ -241,7 +242,6 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     effect5
-  // Log: Signup initiated for Morty
   // Result: User saved
 
 
@@ -254,8 +254,7 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Log: Signup initiated for Morty
-  // Result: (PT0.00215646S,User saved)
+  // Result: (PT0.075821079S,User saved)
 
 
 val effect7 =
