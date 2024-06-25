@@ -12,8 +12,8 @@ object Test0 extends ZIOSpecDefault:
       defer:
         ZIO.sleep(1.hour).run
         assertCompletes
-    @@ TestAspect.withLiveClock @@ 
-       TestAspect.timeout(1.second)
+    @@ TestAspect.withLiveClock @@
+      TestAspect.timeout(1.second)
   // - long testZ
   // Timeout of 1 s exceeded.
 
@@ -26,8 +26,10 @@ object Test1 extends ZIOSpecDefault:
       defer:
         spottyLogic.run
         assertCompletes
-    @@ TestAspect.withLiveRandom @@ 
-       TestAspect.flaky
+    @@ TestAspect.withLiveRandom @@
+      TestAspect.flaky
+  // Failed!
+  // Failed!
   // Failed!
   // Failed!
   // Failed!

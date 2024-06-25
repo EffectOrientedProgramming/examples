@@ -66,7 +66,9 @@ def saveUser(username: String) =
           Console.printLine:
             "Log: " + error
 
-  def saveForScenario(maybeScenario: Option[Scenario]) =
+  def saveForScenario(
+      maybeScenario: Option[Scenario]
+  ) =
     defer:
       maybeScenario match
         case Some(Scenario.NeverWorks) =>
@@ -81,7 +83,9 @@ def saveUser(username: String) =
             .run
           succeed.run
 
-        case Some(Scenario.WorksOnTry(attempts, ref)) =>
+        case Some(
+              Scenario.WorksOnTry(attempts, ref)
+            ) =>
           val numCalls =
             ref.getAndUpdate(_ + 1).run
           if numCalls == attempts then
@@ -241,7 +245,7 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT5.025178125S,User saved)
+  // Result: (PT0.005465432S,User saved)
 
 
 val effect7 =
@@ -269,7 +273,8 @@ object App11 extends helpers.ZIOAppDebug:
 
 
 // NOTE: If you alter the sample below, you need to explicitly change the brittle error msg manipulation in Main
-val x = 1 // This is just a dumb way to keep the code block from being empty, so it's properly hidden
+val x =
+  1 // This is just a dumb way to keep the code block from being empty, so it's properly hidden
 
 object App12 extends helpers.ZIOAppDebug:
   def run =

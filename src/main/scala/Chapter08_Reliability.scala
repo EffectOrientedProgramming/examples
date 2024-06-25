@@ -151,10 +151,9 @@ object App2 extends helpers.ZIOAppDebug:
       rateLimiter:
         expensiveApiCall
       .timedSecondsDebug:
-         s"called API"
+        s"called API"
       .repeatN(2) // Repeats as fast as allowed
-      .timedSecondsDebug("Result")
-      .run
+        .timedSecondsDebug("Result").run
   // called API [took 0s]
   // called API [took 1s]
   // called API [took 1s]
@@ -176,20 +175,22 @@ object App3 extends helpers.ZIOAppDebug:
               expensiveApiCall
             .timedSecondsDebug:
               s"$person called API"
-            .repeatN(2) // Repeats as fast as allowed
+            .repeatN(
+              2
+            ) // Repeats as fast as allowed
         .timedSecondsDebug:
           "Total time"
         .unit // ignores the list of unit
         .run
-  // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // James called API [took 2s]
+  // Bruce called API [took 0s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
   // Bill called API [took 3s]
-  // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bruce called API [took 3s]
   // Bill called API [took 3s]
-  // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bill called API [took 2s]
   // Total time [took 8s]
 
 
@@ -262,10 +263,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(766)
-  // Current requests: List(390, 836, 766)
-  // Current requests: List(836, 766)
-  // Current requests: List(48, 390, 836, 766)
+  // Current requests: List(70, 341)
+  // Current requests: List(341)
+  // Current requests: List(384, 70, 341)
+  // Current requests: List(909, 384, 70, 341)
   // Result: Crashed the server!!
 
 
@@ -293,16 +294,16 @@ object App5 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live, Scope.default)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(495)
-  // Current requests: List(519, 495)
-  // Current requests: List(568, 519, 495)
-  // Current requests: List(392)
-  // Current requests: List(234, 392)
-  // Current requests: List(103, 234, 392)
-  // Current requests: List(827, 103)
-  // Current requests: List(578, 827, 103)
-  // Current requests: List(513, 578, 827)
-  // Current requests: List(936)
+  // Current requests: List(698)
+  // Current requests: List(483, 698)
+  // Current requests: List(147, 483, 698)
+  // Current requests: List(771, 730)
+  // Current requests: List(730)
+  // Current requests: List(574, 771, 730)
+  // Current requests: List(627, 574)
+  // Current requests: List(325, 627, 574)
+  // Current requests: List(661, 325, 627)
+  // Current requests: List(238, 661)
   // Result: All Requests Succeeded
 
 
@@ -499,7 +500,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -529,9 +530,8 @@ object App8 extends helpers.ZIOAppDebug:
         defer:
           val hedged =
             logicThatSporadicallyLocksUp.race:
-              logicThatSporadicallyLocksUp
-                .delay:
-                  25.millis
+              logicThatSporadicallyLocksUp.delay:
+                25.millis
   
           val duration =
             hedged.run
@@ -540,32 +540,37 @@ object App8 extends helpers.ZIOAppDebug:
   
       ZIO
         .foreachPar(List.fill(50_000)(())):
-          _ => req // TODO james still hates this and maybe a collectAllPar could do the trick but we've already wasted 321 hours on this
+          _ =>
+            req // TODO james still hates this and maybe a collectAllPar could do the trick but we've already wasted 321 hours on this
         .run
   
       contractBreaches
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 1
-  // Result: 1
+  // Contract Breaches: 0
+  // Result: 0
 
 
-var attempts = 0
+var attempts =
+  0
 
-def spottyLogic = 
+def spottyLogic =
   defer:
-    ZIO.attempt{
-      attempts = attempts + 1
-    }.run
+    ZIO
+      .attempt {
+        attempts =
+          attempts + 1
+      }
+      .run
     if (ZIO.attempt(attempts).run > 1)
       Random.nextIntBounded(3).run match
-        case 0 => 
+        case 0 =>
           Console.printLine("Success!").run
           ZIO.succeed(1).run
-        case _ => 
+        case _ =>
           Console.printLine("Failed!").run
           ZIO.fail("Failed").run
-    else 
+    else
       Console.printLine("Failed!").run
       ZIO.fail("Failed").run

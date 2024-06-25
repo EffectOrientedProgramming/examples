@@ -20,34 +20,42 @@ import Scenario.*
 
 // the scenario is used from non-ZIO code, so we don't use the config / bootstrap approach to passing it.
 // but we do still use bootstrap to set the scenario, just for consistency with how the scenario is set in other chapters
-var scenario: Scenario = StockMarketHeadline
+var scenario: Scenario =
+  StockMarketHeadline
 
 def stockMarketHeadline =
-  scenario = StockMarketHeadline
+  scenario =
+    StockMarketHeadline
   ZLayer.empty
 
 def headlineNotAvailable =
-  scenario = HeadlineNotAvailable
+  scenario =
+    HeadlineNotAvailable
   ZLayer.empty
 
 def noInterestingTopic =
-  scenario = NoInterestingTopic()
+  scenario =
+    NoInterestingTopic()
   ZLayer.empty
 
 def summaryReadThrows =
-  scenario = SummaryReadThrows()
+  scenario =
+    SummaryReadThrows()
   ZLayer.empty
 
 def noWikiArticleAvailable =
-  scenario = NoWikiArticleAvailable()
+  scenario =
+    NoWikiArticleAvailable()
   ZLayer.empty
 
 def aiTooSlow =
-  scenario = AITooSlow()
+  scenario =
+    AITooSlow()
   ZLayer.empty
 
 def diskFull =
-  scenario = DiskFull()
+  scenario =
+    DiskFull()
   ZLayer.empty
 
 import scala.concurrent.Future
@@ -66,12 +74,9 @@ def getHeadLine(): Future[String] =
     case Scenario.SummaryReadThrows() =>
       Future.successful("new unicode released!")
     case Scenario.NoInterestingTopic() =>
-      Future.successful(
-        "boring content"
-      )
+      Future.successful("boring content")
     case Scenario.DiskFull() =>
       Future.successful("human genome sequenced")
-end getHeadLine
 
 def findTopicOfInterest(
     content: String
@@ -85,7 +90,7 @@ def findTopicOfInterest(
       "unicode",
       "genome"
     )
-  val res = 
+  val res =
     topics.find(content.contains)
   println(s"Analytics - topic: $res")
   res
@@ -202,7 +207,8 @@ def openFile(path: String) =
 
     override def content() =
       path match
-        case "file1.txt" | "file2.txt" | "summaries.txt" =>
+        case "file1.txt" | "file2.txt" |
+            "summaries.txt" =>
           "hot dog"
         case _ =>
           "not hot dog"
@@ -304,9 +310,10 @@ object App8 extends helpers.ZIOAppDebug:
         openFileZ("file1.txt").run
       val file2 =
         openFileZ("file2.txt").run
-      Console.printLine:
-        file1.sameContent(file2)
-      .run
+      Console
+        .printLine:
+          file1.sameContent(file2)
+        .run
   // File - OPEN
   // File - OPEN
   // side-effect print: comparing content
@@ -320,7 +327,7 @@ def writeToFileZ(file: File, content: String) =
     .from:
       file.write:
         content
-    .orElseFail: 
+    .orElseFail:
       DiskFull()
 
 object App9 extends helpers.ZIOAppDebug:
@@ -337,10 +344,7 @@ object App9 extends helpers.ZIOAppDebug:
 
 case class NoSummaryAvailable(topic: String)
 
-def summaryForZ(
-    file: File,
-    topic: String
-) =
+def summaryForZ(file: File, topic: String) =
   ZIO
     .attempt:
       file.summaryFor(topic)
@@ -363,7 +367,6 @@ def summarize(article: String): String =
     "content summary"
   else
     ???
-end summarize
 
 val summaryTmp: String =
   summarize("long article")
@@ -427,7 +430,7 @@ object App11 extends helpers.ZIOAppDebug:
 
 
 object App12 extends helpers.ZIOAppDebug:
-  override val bootstrap = 
+  override val bootstrap =
     summaryReadThrows
   
   def run =
@@ -478,7 +481,7 @@ object App14 extends helpers.ZIOAppDebug:
 
 object App15 extends helpers.ZIOAppDebug:
   // TODO This inconsistently works. frequently reports AI problem.
-  override val bootstrap = 
+  override val bootstrap =
     diskFull
   
   def run =
@@ -547,7 +550,8 @@ object App17 extends helpers.ZIOAppDebug:
 
 
 object App18 extends helpers.ZIOAppDebug:
-  override val bootstrap = stockMarketHeadline
+  override val bootstrap =
+    stockMarketHeadline
   
   def run =
     researchHeadline.repeatN(2)

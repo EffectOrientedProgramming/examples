@@ -8,7 +8,7 @@ import zio.test.assertTrue
 
 val logic =
   defer:
-    assertTrue(1==1)
+    assertTrue(1 == 1)
 
 import zio.test.test
 
@@ -31,15 +31,15 @@ object Test3 extends ZIOSpecDefault:
       defer:
         ZIO
           .serviceWithZIO[Bread]:
-            bread => 
-              bread.eat
-        .run
-        val output = TestConsole.output.run
-        assertTrue(output.contains("Bread: Eating\n"))
-        
+            bread => bread.eat
+          .run
+        val output =
+          TestConsole.output.run
+        assertTrue(
+          output.contains("Bread: Eating\n")
+        )
     .provide:
-      IdealFriend
-        .bread
+      IdealFriend.bread
   // Bread: Eating
   // + eat Bread
 
