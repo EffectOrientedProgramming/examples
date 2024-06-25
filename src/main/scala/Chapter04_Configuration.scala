@@ -180,8 +180,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -367,14 +367,14 @@ object App10 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Heads
+  // Heads
+  // Heads
+  // Tails
   // Tails
   // Heads
   // Heads
   // Heads
   // Heads
-  // Heads
-  // Heads
-  // Tails
   // Num Heads = 7
   // Result: 7
 
