@@ -84,7 +84,8 @@ def saveUser(username: String) =
           succeed.run
 
         case Some(
-              Scenario.WorksOnTry(attempts, ref)
+              Scenario
+                .WorksOnTry(attempts, ref)
             ) =>
           val numCalls =
             ref.getAndUpdate(_ + 1).run
@@ -193,8 +194,9 @@ object App5 extends helpers.ZIOAppDebug:
 
 
 val effect3 =
-  effect2.timeoutFail("*** Save timed out ***"):
-    5.seconds
+  effect2
+    .timeoutFail("*** Save timed out ***"):
+      5.seconds
 
 object App6 extends helpers.ZIOAppDebug:
   override val bootstrap =
@@ -217,6 +219,7 @@ object App7 extends helpers.ZIOAppDebug:
   
   def run =
     effect4
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
@@ -245,7 +248,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.003607632S,User saved)
+  // Result: (PT5.024478138S,User saved)
 
 
 val effect7 =

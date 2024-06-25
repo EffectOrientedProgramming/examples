@@ -180,8 +180,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -249,8 +249,9 @@ val storeBought =
       buyBread
     .tap(
       _ =>
-        Console
-          .printLine("BreadStoreBought: Bought")
+        Console.printLine(
+          "BreadStoreBought: Bought"
+        )
     )
 
 object App7 extends helpers.ZIOAppDebug:
@@ -366,17 +367,17 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Tails
-  // Heads
-  // Heads
-  // Tails
-  // Tails
   // Tails
   // Heads
   // Tails
   // Tails
   // Heads
-  // Num Heads = 4
-  // Result: 4
+  // Heads
+  // Heads
+  // Heads
+  // Tails
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =

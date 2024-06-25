@@ -226,7 +226,9 @@ case class Live(
         res
       else
         ZIO
-          .fail("Server crashed from requests!!")
+          .fail(
+            "Server crashed from requests!!"
+          )
           .run
 
   private def removeRequest(i: Int) =
@@ -263,10 +265,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(822)
-  // Current requests: List(873, 822)
-  // Current requests: List(703, 873, 822)
-  // Current requests: List(340, 703, 873, 822)
+  // Current requests: List(440, 456)
+  // Current requests: List(456)
+  // Current requests: List(552, 440, 456)
+  // Current requests: List(521, 552, 440, 456)
+  // Current requests: List(858, 521, 552, 440, 456)
   // Result: Crashed the server!!
 
 
@@ -291,19 +294,22 @@ object App5 extends helpers.ZIOAppDebug:
               delicateResource.request
         .as("All Requests Succeeded")
         .run
-    .provide(DelicateResource.live, Scope.default)
+    .provide(
+      DelicateResource.live,
+      Scope.default
+    )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(831)
-  // Current requests: List(341, 831)
-  // Current requests: List(82, 341, 831)
-  // Current requests: List(505, 919)
-  // Current requests: List(919)
-  // Current requests: List(439, 505, 919)
-  // Current requests: List(83, 895, 439)
-  // Current requests: List(895, 439)
-  // Current requests: List(405, 83, 895)
-  // Current requests: List(206)
+  // Current requests: List(518)
+  // Current requests: List(739, 518)
+  // Current requests: List(10, 739, 518)
+  // Current requests: List(784)
+  // Current requests: List(573, 784)
+  // Current requests: List(722, 573, 784)
+  // Current requests: List(661, 12, 722)
+  // Current requests: List(12, 722)
+  // Current requests: List(527, 661, 12)
+  // Current requests: List(36)
   // Result: All Requests Succeeded
 
 
@@ -342,7 +348,9 @@ def externalSystem(numCalls: Ref[Int]) =
 
 object InstantOps:
   extension (i: Instant)
-    def plusZ(duration: zio.Duration): Instant =
+    def plusZ(
+        duration: zio.Duration
+    ): Instant =
       i.plus(duration.asJava)
 
 import InstantOps._
@@ -464,9 +472,10 @@ import nl.vroste.rezilience.{
 val makeCircuitBreaker =
   CircuitBreaker.make(
     trippingStrategy =
-      TrippingStrategy.failureCount(maxFailures =
-        2
-      ),
+      TrippingStrategy
+        .failureCount(maxFailures =
+          2
+        ),
     resetPolicy =
       Retry.Schedules.common()
   )
@@ -500,7 +509,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =

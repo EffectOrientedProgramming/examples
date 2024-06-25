@@ -65,7 +65,9 @@ def weird =
     Some(Scenario.TooCold)
 
   Runtime.setConfigProvider(
-    ErrorsStaticConfigProvider(Scenario.TooCold)
+    ErrorsStaticConfigProvider(
+      Scenario.TooCold
+    )
   )
 
 case class Temperature(degrees: Int)
@@ -143,7 +145,8 @@ object App3 extends helpers.ZIOAppDebug:
     val safeGetTemperature =
       getTemperature.catchAll:
         case e: Exception =>
-          ZIO.succeed("Could not get temperature")
+          ZIO
+            .succeed("Could not get temperature")
   
     defer:
       safeGetTemperature.run
