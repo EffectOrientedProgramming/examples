@@ -562,10 +562,9 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()
 
 
 object App18 extends helpers.ZIOAppDebug:
