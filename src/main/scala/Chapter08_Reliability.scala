@@ -31,7 +31,9 @@ object FSLive:
       List("viralImage1", "viralImage2")
     )
 
-case class FileContents(contents: List[String])
+case class FileContents(
+    contents: List[String]
+)
 
 trait CloudStorage:
   def retrieve(
@@ -248,7 +250,9 @@ object DelicateResource:
             "Do not make more than 3 concurrent requests!"
           .run
         Live(
-          Ref.make[List[Int]](List.empty).run,
+          Ref
+            .make[List[Int]](List.empty)
+            .run,
           Ref.make(true).run
         )
 
@@ -265,10 +269,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(252, 63)
-  // Current requests: List(65, 252, 63)
-  // Current requests: List(37, 65, 252, 63)
-  // Current requests: List(63)
+  // Current requests: List(789)
+  // Current requests: List(233, 789)
+  // Current requests: List(873, 233, 789)
+  // Current requests: List(54, 287, 873, 233, 789)
+  // Current requests: List(287, 873, 233, 789)
   // Result: Crashed the server!!
 
 
@@ -299,16 +304,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(260)
-  // Current requests: List(504, 260)
-  // Current requests: List(690, 504, 260)
-  // Current requests: List(788)
-  // Current requests: List(898, 788)
-  // Current requests: List(599, 898, 788)
-  // Current requests: List(323)
-  // Current requests: List(970, 323)
-  // Current requests: List(962, 970, 323)
-  // Current requests: List(44)
+  // Current requests: List(155)
+  // Current requests: List(836, 155)
+  // Current requests: List(604, 836, 155)
+  // Current requests: List(450)
+  // Current requests: List(939, 450)
+  // Current requests: List(951, 939, 450)
+  // Current requests: List(499, 686, 951)
+  // Current requests: List(686, 951)
+  // Current requests: List(63, 499, 686)
+  // Current requests: List(178)
   // Result: All Requests Succeeded
 
 
@@ -412,8 +417,8 @@ private def createTimeTableX[A](
   * Runtime: Zero value: (8:00 + 1 minute,
   * "value1")
   *
-  * case ((8:01, _) , (2.minutes, "value2")) =>
-  * (8:01 + 2.minutes, "value2")
+  * case ((8:01, _) , (2.minutes, "value2"))
+  * \=> (8:01 + 2.minutes, "value2")
   *
   * Output: ( ("8:01", "value1"), ("8:03",
   * "value2") )
@@ -429,7 +434,9 @@ private def accessX[A](
         new TimeoutException("TOO LATE")
       ) {
         timeTable
-          .find(_.expirationTime.isAfter(now))
+          .find(
+            _.expirationTime.isAfter(now)
+          )
           .map(_.value)
       }
       .run
@@ -538,8 +545,9 @@ object App8 extends helpers.ZIOAppDebug:
         defer:
           val hedged =
             logicThatSporadicallyLocksUp.race:
-              logicThatSporadicallyLocksUp.delay:
-                25.millis
+              logicThatSporadicallyLocksUp
+                .delay:
+                  25.millis
   
           val duration =
             hedged.run

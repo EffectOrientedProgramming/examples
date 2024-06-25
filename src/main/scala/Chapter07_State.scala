@@ -18,12 +18,13 @@ val unreliableCounting =
       .run
     // It's not obvious to the reader why
     // we need to wrap counter in .succeed
-    "Final count: " + ZIO.succeed(counter).run
+    "Final count: " +
+      ZIO.succeed(counter).run
 
 object App0 extends helpers.ZIOAppDebug:
   def run =
     unreliableCounting
-  // Result: Final count: 99980
+  // Result: Final count: 99963
 
 
 object App1 extends helpers.ZIOAppDebug:

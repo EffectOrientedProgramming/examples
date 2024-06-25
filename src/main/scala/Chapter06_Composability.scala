@@ -66,9 +66,12 @@ def getHeadLine(): Future[String] =
   scenario match
     case Scenario.HeadlineNotAvailable =>
       Future.failed:
-        new Exception("Headline not available")
+        new Exception(
+          "Headline not available"
+        )
     case Scenario.StockMarketHeadline =>
-      Future.successful("stock market rising!")
+      Future
+        .successful("stock market rising!")
     case Scenario.NoWikiArticleAvailable() =>
       Future.successful("Fred built a barn.")
     case Scenario.AITooSlow() =>
@@ -81,6 +84,7 @@ def getHeadLine(): Future[String] =
     case Scenario.DiskFull() =>
       Future
         .successful("human genome sequenced")
+  end match
 end getHeadLine
 
 def findTopicOfInterest(
@@ -107,7 +111,8 @@ def wikiArticle(topic: String): Either[
 ] =
   println(s"Wiki - articleFor($topic)")
   topic match
-    case "stock market" | "space" | "genome" =>
+    case "stock market" | "space" |
+        "genome" =>
       Right:
         s"detailed history of $topic"
 
@@ -264,7 +269,9 @@ def openFile(path: String) =
       if (entry.contains("genome")) {
         println("File - disk full!")
         Try(
-          throw new Exception("Disk is full!")
+          throw new Exception(
+            "Disk is full!"
+          )
         )
       } else {
         println("File - write: " + entry)
@@ -331,7 +338,10 @@ object App8 extends helpers.ZIOAppDebug:
   // File - CLOSE
 
 
-def writeToFileZ(file: File, content: String) =
+def writeToFileZ(
+    file: File,
+    content: String
+) =
   ZIO
     .from:
       file.write:
@@ -344,7 +354,8 @@ object App9 extends helpers.ZIOAppDebug:
     defer:
       val file =
         openFileZ("file1").run
-      writeToFileZ(file, "New data on topic").run
+      writeToFileZ(file, "New data on topic")
+        .run
   // File - OPEN
   // File - write: New data on topic
   // File - CLOSE

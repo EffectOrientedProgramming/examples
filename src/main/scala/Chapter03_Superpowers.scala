@@ -7,23 +7,30 @@ enum Scenario:
   case HappyPath
   case NeverWorks
   case Slow
-  case WorksOnTry(attempts: Int, ref: Ref[Int])
+  case WorksOnTry(
+      attempts: Int,
+      ref: Ref[Int]
+  )
 
 // This configuration is used by effects to get the scenario that
 // may have been passed in via `bootstrap`
 // The configuration is optional and the default of `Config.fail`
 // sets the Option to None.
-val scenarioConfig: Config[Option[Scenario]] =
+val scenarioConfig
+    : Config[Option[Scenario]] =
   Config.Optional[Scenario](
     Config.fail("no default scenario")
   )
 
-class StaticConfigProvider(scenario: Scenario)
-    extends ConfigProvider:
+class StaticConfigProvider(
+    scenario: Scenario
+) extends ConfigProvider:
   override def load[A](config: Config[A])(
       implicit trace: Trace
   ): IO[Config.Error, A] =
-    ZIO.succeed(Some(scenario).asInstanceOf[A])
+    ZIO.succeed(
+      Some(scenario).asInstanceOf[A]
+    )
 
 val happyPath =
   Runtime.setConfigProvider:
@@ -235,6 +242,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     effect5
+  // Log: Signup initiated for Morty
   // Result: User saved
 
 
@@ -247,7 +255,8 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT5.014555509S,User saved)
+  // Log: Signup initiated for Morty
+  // Result: (PT5.025312125S,User saved)
 
 
 val effect7 =

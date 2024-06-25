@@ -13,7 +13,8 @@ object Dough:
     ZLayer
       .derive[Dough]
       .tap(
-        _ => Console.printLine("Dough: Mixed")
+        _ =>
+          Console.printLine("Dough: Mixed")
       )
 
 object App0 extends helpers.ZIOAppDebug:
@@ -51,8 +52,9 @@ object Bread:
       .derive[BreadHomeMade]
       .tap(
         _ =>
-          Console
-            .printLine("BreadHomeMade: Baked")
+          Console.printLine(
+            "BreadHomeMade: Baked"
+          )
       )
 
 object App1 extends helpers.ZIOAppDebug:
@@ -60,7 +62,11 @@ object App1 extends helpers.ZIOAppDebug:
     ZIO
       .serviceWithZIO[Bread]:
         bread => bread.eat
-      .provide(Bread.homemade, Dough.fresh, oven)
+      .provide(
+        Bread.homemade,
+        Dough.fresh,
+        oven
+      )
   // Oven: Heated
   // Dough: Mixed
   // BreadHomeMade: Baked
@@ -100,7 +106,8 @@ val toaster =
   ZLayer
     .derive[Heat]
     .tap(
-      _ => Console.printLine("Toaster: Heated")
+      _ =>
+        Console.printLine("Toaster: Heated")
     )
 
 object App3 extends helpers.ZIOAppDebug:
@@ -120,10 +127,14 @@ object Toaster:
       .derive[Toaster]
       .tap(
         _ =>
-          Console.printLine("Toaster: Heating")
+          Console
+            .printLine("Toaster: Heating")
       )
 
-case class ToastZ(heat: Toaster, bread: Bread):
+case class ToastZ(
+    heat: Toaster,
+    bread: Bread
+):
   val eat =
     Console.printLine("Toast: Eating")
 
@@ -132,7 +143,8 @@ object ToastZ:
     ZLayer
       .derive[ToastZ]
       .tap(
-        _ => Console.printLine("ToastZ: Made")
+        _ =>
+          Console.printLine("ToastZ: Made")
       )
 
 object App4 extends helpers.ZIOAppDebug:
@@ -160,7 +172,8 @@ val ovenSafe =
     ZIO
       .succeed(Heat())
       .tap(
-        _ => Console.printLine("Oven: Heated")
+        _ =>
+          Console.printLine("Oven: Heated")
       )
       .withFinalizer(
         _ =>
@@ -366,18 +379,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Tails
-  // Tails
-  // Tails
+  // Heads
   // Heads
   // Tails
   // Tails
   // Tails
   // Tails
+  // Heads
+  // Heads
+  // Heads
   // Tails
-  // Num Heads = 1
-  // Result: 1
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
