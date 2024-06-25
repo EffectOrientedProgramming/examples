@@ -13,7 +13,6 @@ object Test0 extends ZIOSpecDefault:
         assertTrue:
           Random.nextIntBounded(10).run < 10
   // + random is random
-  // Result: Summary(1,0,0,,PT0.51019S)
 
 
 object Test1 extends ZIOSpecDefault:
@@ -28,7 +27,6 @@ object Test1 extends ZIOSpecDefault:
             20 &&
             Random.nextIntBetween(20, 30).run <= 30
   // + random is still random
-  // Result: Summary(1,0,0,,PT0.091486S)
 
 
 object Test2 extends ZIOSpecDefault:
@@ -53,7 +51,7 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-926100344" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-11241128" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
@@ -64,6 +62,3 @@ Hello Zeb
   //   	at repl.MdocSession.MdocApp.logic(<input>:101)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
   //   	at repl.MdocSession.MdocApp.Chapter63Spec.spec(<input>:137)
-  // Result: 
-  // - console works
-  //   Exception i

@@ -8,13 +8,27 @@ object Test0 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
-    test("long test"):
+    test("long testZ"):
+      defer:
+        ZIO.sleep(1.hour).run
+        assertCompletes
+    @@ TestAspect.withLiveClock @@ 
+       TestAspect.timeout(1.second)
+  // - long testZ
+  // Timeout of 1 s exceeded.
+
+
+object Test1 extends ZIOSpecDefault:
+  import zio.test.*
+  
+  def spec =
+    test("long test!"):
       defer:
         spottyLogic.run
         assertCompletes
     @@ TestAspect.withLiveRandom @@ 
        TestAspect.flaky
   // Failed!
+  // Failed!
   // Success!
-  // + long test
-  // Result: Summary(1,0,0,,PT0.023487S)
+  // + long test!
