@@ -34,5 +34,7 @@ object Test1 extends ZIOSpecDefault:
   // Failed!
   // Failed!
   // Failed!
+  // Failed!
+  // Failed!
   // Success!
   // + long test!
