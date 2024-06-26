@@ -12,10 +12,10 @@ object Dough:
   val fresh =
     ZLayer
       .derive[Dough]
-      .tap(
+      .tap:
         _ =>
-          Console.printLine("Dough: Mixed")
-      )
+          Console.printLine:
+            "Dough: Mixed"
 
 object App0 extends helpers.ZIOAppDebug:
   def run =
@@ -33,13 +33,15 @@ case class Heat()
 val oven =
   ZLayer
     .derive[Heat]
-    .tap(
-      _ => Console.printLine("Oven: Heated")
-    )
+    .tap:
+      _ =>
+        Console.printLine:
+          "Oven: Heated"
 
 trait Bread:
   def eat =
-    Console.printLine("Bread: Eating")
+    Console.printLine:
+      "Bread: Eating"
 
 case class BreadHomeMade(
     heat: Heat,
@@ -50,12 +52,10 @@ object Bread:
   val homemade =
     ZLayer
       .derive[BreadHomeMade]
-      .tap(
+      .tap:
         _ =>
-          Console.printLine(
+          Console.printLine:
             "BreadHomeMade: Baked"
-          )
-      )
 
 object App1 extends helpers.ZIOAppDebug:
   def run =
@@ -75,15 +75,17 @@ object App1 extends helpers.ZIOAppDebug:
 
 case class Toast(heat: Heat, bread: Bread):
   val eat =
-    Console.printLine("Toast: Eating")
+    Console.printLine:
+      "Toast: Eating"
 
 object Toast:
   val make =
     ZLayer
       .derive[Toast]
-      .tap(
-        _ => Console.printLine("Toast: Made")
-      )
+      .tap:
+        _ =>
+          Console.printLine:
+            "Toast: Made"
 
 object App2 extends helpers.ZIOAppDebug:
   def run =
@@ -105,10 +107,10 @@ object App2 extends helpers.ZIOAppDebug:
 val toaster =
   ZLayer
     .derive[Heat]
-    .tap(
+    .tap:
       _ =>
-        Console.printLine("Toaster: Heated")
-    )
+        Console.printLine:
+          "Toaster: Heated"
 
 object App3 extends helpers.ZIOAppDebug:
   def run =
@@ -125,27 +127,27 @@ object Toaster:
   val layer =
     ZLayer
       .derive[Toaster]
-      .tap(
+      .tap:
         _ =>
-          Console
-            .printLine("Toaster: Heating")
-      )
+          Console.printLine:
+            "Toaster: Heating"
 
 case class ToastZ(
     heat: Toaster,
     bread: Bread
 ):
   val eat =
-    Console.printLine("Toast: Eating")
+    Console.printLine:
+      "Toast: Eating"
 
 object ToastZ:
   val make =
     ZLayer
       .derive[ToastZ]
-      .tap(
+      .tap:
         _ =>
-          Console.printLine("ToastZ: Made")
-      )
+          Console.printLine:
+            "ToastZ: Made"
 
 object App4 extends helpers.ZIOAppDebug:
   def run =
@@ -171,16 +173,16 @@ val ovenSafe =
   ZLayer.fromZIO:
     ZIO
       .succeed(Heat())
-      .tap(
+      .tap:
         _ =>
-          Console.printLine("Oven: Heated")
-      )
-      .withFinalizer(
+          Console.printLine:
+            "Oven: Heated"
+      .withFinalizer:
         _ =>
           Console
-            .printLine("Oven: Turning off!")
+            .printLine:
+              "Oven: Turning off!"
             .orDie
-      )
 
 object App5 extends helpers.ZIOAppDebug:
   def run =
@@ -260,12 +262,10 @@ val storeBought =
   ZLayer
     .fromZIO:
       buyBread
-    .tap(
+    .tap:
       _ =>
-        Console.printLine(
+        Console.printLine:
           "BreadStoreBought: Bought"
-        )
-    )
 
 object App7 extends helpers.ZIOAppDebug:
   def run =
@@ -379,7 +379,6 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
   // Tails
   // Tails
   // Tails
@@ -388,9 +387,10 @@ object App10 extends helpers.ZIOAppDebug:
   // Heads
   // Tails
   // Heads
-  // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Tails
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =

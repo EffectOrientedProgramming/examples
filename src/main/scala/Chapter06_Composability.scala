@@ -398,7 +398,8 @@ def summarizeZ(article: String) =
     .orDie
     .onInterrupt:
       ZIO.debug("AI **INTERRUPTED**")
-    .timeoutFail(AITooSlow())(4000.millis)
+    .timeoutFail(AITooSlow()):
+      4000.millis
 
 val researchHeadline =
   defer:
@@ -487,6 +488,7 @@ object App14 extends helpers.ZIOAppDebug:
   
   def run =
     researchHeadline
+  // todo: make sure onInterrupt debug shows up
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(space)
@@ -553,8 +555,19 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
 
 
 object App18 extends helpers.ZIOAppDebug:
@@ -580,6 +593,17 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market)
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational

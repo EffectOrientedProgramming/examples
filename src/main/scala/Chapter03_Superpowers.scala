@@ -82,12 +82,7 @@ def saveUser(username: String) =
           fail.run
 
         case Some(Scenario.Slow) =>
-          ZIO
-            .sleep(1.minute)
-            .onInterrupt:
-              ZIO.debug:
-                "Log: Interrupting slow request"
-            .run
+          ZIO.sleep(1.minute).run
           succeed.run
 
         case Some(
@@ -202,7 +197,7 @@ object App5 extends helpers.ZIOAppDebug:
 
 val effect3 =
   effect2
-    .timeoutFail("*** Save timed out ***"):
+    .timeoutFail("** Save timed out **"):
       5.seconds
 
 object App6 extends helpers.ZIOAppDebug:
@@ -211,7 +206,7 @@ object App6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
-  // Result: *** Save timed out ***
+  // Result: ** Save timed out **
 
 
 val effect4 =
@@ -226,6 +221,8 @@ object App7 extends helpers.ZIOAppDebug:
   def run =
     effect4
   // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -239,6 +236,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     effect5
+  // Log: Signup initiated for Morty
   // Result: User saved
 
 
@@ -251,7 +249,7 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT0.025635748S,User saved)
+  // Result: (PT0.029621871S,User saved)
 
 
 val effect7 =
@@ -266,44 +264,66 @@ object App10 extends helpers.ZIOAppDebug:
   // Result: None
 
 
-val program =
-  defer:
-    Console.printLine("Hello").run
-    Console.printLine("world").run
-
 object App11 extends helpers.ZIOAppDebug:
-  val run =
-    program
-  // Hello
-  // world
+  def run =
+    Console.printLine("Before save")
+    effect1
+  // Result: User saved
 
-
-// NOTE: If you alter the sample below, you need to explicitly change the brittle error msg manipulation in Main
-val x =
-  1 // This is just a dumb way to keep the code block from being empty, so it's properly hidden
 
 object App12 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      program.repeatN(1).run
-  // Hello
-  // world
-  // Hello
-  // world
+      Console.printLine("Before save").run
+      effect1.run // prints each save
+  // Before save
+  // Result: User saved
+
+
+val effect8 =
+  defer:
+    Console.printLine("Before save").run
+    effect1.run
+
+object App13 extends helpers.ZIOAppDebug:
+  val run =
+    effect8
+  // Before save
+  // Result: User saved
+
+
+// NOTE: If you alter the sample below, you need to explicitly change the brittle error msg manipulation in Main
+val x =
+  2 // This is just a dumb way to keep the code block from being empty, so it's properly hidden
+
+object App14 extends helpers.ZIOAppDebug:
+  // todo: explain this in prose
+  def run =
+    defer:
+      effect8
+        .debug // display each save
+        .repeatN(1).run
+  // Before save
+  // User saved
+  // Before save
+  // User saved
+  // Result: User saved
 
 
 val surroundedProgram =
   defer:
     Console.printLine("**Before**").run
-    program.repeatN(1).run
+    effect8
+      .debug // display each save
+      .repeatN(1).run
     Console.printLine("**After**").run
 
-object App13 extends helpers.ZIOAppDebug:
+object App15 extends helpers.ZIOAppDebug:
   def run =
     surroundedProgram
   // **Before**
-  // Hello
-  // world
-  // Hello
-  // world
+  // Before save
+  // User saved
+  // Before save
+  // User saved
   // **After**
