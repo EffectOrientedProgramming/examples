@@ -12,7 +12,9 @@ object Test0 extends ZIOSpecDefault:
       defer:
         assertTrue:
           Random.nextIntBounded(10).run < 10
-  // Log: Signup initiated for Morty
+  
+  // TODO: Justify defer syntax over for-comp for multi-statement assertions
+  //      Change this to a Console app, where the logic & testing is more visceral
   // + random is random
 
 
@@ -56,14 +58,14 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-2004309208" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-1776617767" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
   //   	at zio.ZIO$.consoleWith$$anonfun$1(ZIO.scala:3121)
   //   	at zio.FiberRef$unsafe$$anon$2.getWith$$anonfun$1(FiberRef.scala:474)
-  //   	at repl.MdocSession.MdocApp.logic(<input>:95)
+  //   	at repl.MdocSession.MdocApp.logic(<input>:100)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.logic(<input>:105)
+  //   	at repl.MdocSession.MdocApp.logic(<input>:110)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.Chapter63Spec.spec(<input>:141)
+  //   	at repl.MdocSession.MdocApp.Chapter57Spec.spec(<input>:146)

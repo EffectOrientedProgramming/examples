@@ -401,6 +401,8 @@ def summarizeZ(article: String) =
     .timeoutFail(AITooSlow()):
       4000.millis
 
+// TODO: better subhead name - Composed Pain? Compound Fracture?
+
 val researchHeadline =
   defer:
     val headline: String =
@@ -427,6 +429,8 @@ val researchHeadline =
 
       writeToFileZ(summaryFile, summary).run
       summary
+
+// TODO: Emphasize just how important this example is.
 
 object App10 extends helpers.ZIOAppDebug:
   override val bootstrap =
@@ -488,7 +492,7 @@ object App14 extends helpers.ZIOAppDebug:
   
   def run =
     researchHeadline
-  // todo: make sure onInterrupt debug shows up
+  // TODO: make sure onInterrupt debug shows up
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(space)
@@ -515,9 +519,8 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App16 extends helpers.ZIOAppDebug:
@@ -540,6 +543,7 @@ object App16 extends helpers.ZIOAppDebug:
 
 
 object App17 extends helpers.ZIOAppDebug:
+  // TODO: enables, reuse, repeats, delays, etc
   override val bootstrap =
     stockMarketHeadline
   
@@ -584,26 +588,6 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market)
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market)
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
+  // AI **INTERRUPTED**
   // File - CLOSE
-  // File - CLOSE
-  // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()

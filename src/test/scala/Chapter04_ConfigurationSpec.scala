@@ -19,7 +19,7 @@ val testCase =
 object Test2 extends ZIOSpecDefault:
   def spec =
     testCase
-  // TODO TestSummary renderer?
+  // TODO: TestSummary renderer?
   // + eat Bread
 
 
@@ -86,5 +86,7 @@ object Test5 extends ZIOSpecDefault:
         fork.join.run
   
         assertCompletes
+  
+  // TODO: update prose on not race
   // Parsing CSV: ()
   // + batch runs after 24 hours

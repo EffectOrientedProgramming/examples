@@ -3,6 +3,8 @@ package Chapter08_Reliability
 import zio.*
 import zio.direct.*
 
+// TODO: really "advanced recover techniques" as basic ones should have already been covered
+
 import zio.{ZIO, ZLayer}
 import zio.cache.{Cache, Lookup}
 
@@ -184,15 +186,15 @@ object App3 extends helpers.ZIOAppDebug:
           "Total time"
         .unit // ignores the list of unit
         .run
-  // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // James called API [took 2s]
+  // Bruce called API [took 0s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
   // Bill called API [took 3s]
-  // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bruce called API [took 3s]
   // Bill called API [took 3s]
-  // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bill called API [took 2s]
   // Total time [took 8s]
 
 
@@ -269,12 +271,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(171)
-  // Current requests: List(828, 171)
-  // Current requests: List(385, 828, 171)
-  // Current requests: List(872, 385, 828, 171)
-  // Current requests: List(124, 872, 385, 828, 171)
-  // Current requests: List(719, 124, 872, 385, 828, 171)
+  // Current requests: List(853)
+  // Current requests: List(797, 853)
+  // Current requests: List(41, 797, 853)
+  // Current requests: List(545, 41, 797, 853)
+  // Current requests: List(440, 545, 41, 797, 853)
   // Result: Crashed the server!!
 
 
@@ -305,16 +306,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(547, 773)
-  // Current requests: List(773)
-  // Current requests: List(890, 547, 773)
-  // Current requests: List(719)
-  // Current requests: List(859, 719)
-  // Current requests: List(927, 859, 719)
-  // Current requests: List(477, 927)
-  // Current requests: List(442, 477, 927)
-  // Current requests: List(624, 442, 477)
-  // Current requests: List(371, 624)
+  // Current requests: List(162)
+  // Current requests: List(389, 162)
+  // Current requests: List(420, 389, 162)
+  // Current requests: List(470)
+  // Current requests: List(776, 470)
+  // Current requests: List(754, 776, 470)
+  // Current requests: List(183, 624, 754)
+  // Current requests: List(624, 754)
+  // Current requests: List(180, 183, 624)
+  // Current requests: List(948)
   // Result: All Requests Succeeded
 
 
@@ -516,7 +517,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -558,15 +559,15 @@ object App8 extends helpers.ZIOAppDebug:
       ZIO
         .foreachPar(List.fill(50_000)(())):
           _ =>
-            req // TODO james still hates this and maybe a collectAllPar could do the trick but we've already wasted 321 hours on this
+            req // TODO: james still hates this and maybe a collectAllPar could do the trick but we've already wasted 321 hours on this
         .run
   
       contractBreaches
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 0
-  // Result: 0
+  // Contract Breaches: 1
+  // Result: 1
 
 
 var attempts =

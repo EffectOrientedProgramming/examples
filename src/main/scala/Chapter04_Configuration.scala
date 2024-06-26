@@ -215,7 +215,7 @@ object Friend:
         .when(true)(
           ZIO.fail(
             "Failure(Friend Unreachable)"
-          ) // TODO Replace error with failure pervasively
+          ) // TODO: Replace error with failure pervasively
         )
         .as(???)
         .run
@@ -379,18 +379,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Heads
-  // Heads
-  // Tails
   // Heads
   // Heads
   // Heads
   // Tails
   // Tails
+  // Heads
   // Tails
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Heads
+  // Heads
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =
