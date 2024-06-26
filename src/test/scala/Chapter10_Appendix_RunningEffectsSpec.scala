@@ -13,7 +13,6 @@ object Test0 extends ZIOSpecDefault:
         assertTrue:
           Random.nextIntBounded(10).run < 10
   // Log: Signup initiated for Morty
-  // Log: Signup initiated for Morty
   // + random is random
 
 
@@ -57,7 +56,7 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-1652700084" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-2004309208" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
