@@ -15,6 +15,8 @@ object Test0 extends ZIOSpecDefault:
   
   // TODO: Justify defer syntax over for-comp for multi-statement assertions
   //      Change this to a Console app, where the logic & testing is more visceral
+  // Log: Signup initiated for Morty
+  // Log: Signup initiated for Morty
   // + random is random
 
 
@@ -58,7 +60,7 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-247728746" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-1444907758" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
