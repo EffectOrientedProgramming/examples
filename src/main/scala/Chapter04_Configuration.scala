@@ -381,16 +381,16 @@ object App10 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Tails
-  // Tails
+  // Heads
   // Tails
   // Heads
   // Heads
   // Heads
-  // Tails
-  // Tails
   // Heads
-  // Num Heads = 4
-  // Result: 4
+  // Heads
+  // Heads
+  // Num Heads = 7
+  // Result: 7
 
 
 val nightlyBatch =
