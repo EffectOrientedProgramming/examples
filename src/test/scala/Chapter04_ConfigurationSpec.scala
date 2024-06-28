@@ -19,7 +19,6 @@ val testCase =
 object Test2 extends ZIOSpecDefault:
   def spec =
     testCase
-  // TODO: TestSummary renderer?
   // + eat Bread
 
 

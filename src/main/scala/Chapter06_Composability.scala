@@ -362,6 +362,8 @@ object App9 extends helpers.ZIOAppDebug:
   // Result: New data on topic
 
 
+openFile("file1").summaryFor("space")
+
 case class NoSummaryAvailable(topic: String)
 
 def summaryForZ(file: File, topic: String) =
@@ -588,26 +590,5 @@ object App18 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market)
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market)
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // File - CLOSE
-  // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()
