@@ -236,6 +236,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     effect5
+  // Log: Signup initiated for Morty
   // Result: User saved
 
 
@@ -248,7 +249,7 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT0.024490783S,User saved)
+  // Result: (PT0.020533095S,User saved)
 
 
 val effect7 =
@@ -274,7 +275,7 @@ object App12 extends helpers.ZIOAppDebug:
   def run =
     defer:
       Console.printLine("Before save").run
-      effect1.run // prints each save
+      effect1.run // Display each save
   // Before save
   // Result: User saved
 
@@ -300,7 +301,7 @@ object App14 extends helpers.ZIOAppDebug:
   def run =
     defer:
       effect8
-        .debug // display each save
+        .debug // Display each save
         .repeatN(1).run
   // Before save
   // User saved
@@ -313,7 +314,7 @@ val surroundedProgram =
   defer:
     Console.printLine("**Before**").run
     effect8
-      .debug // display each save
+      .debug // Display each save
       .repeatN(1).run
     Console.printLine("**After**").run
 
