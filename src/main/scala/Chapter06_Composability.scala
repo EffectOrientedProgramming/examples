@@ -519,9 +519,9 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App16 extends helpers.ZIOAppDebug:
