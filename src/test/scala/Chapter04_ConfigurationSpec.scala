@@ -4,14 +4,26 @@ import zio.*
 import zio.direct.*
 import zio.test.*
 
-object Test0 extends ZIOSpecDefault:
+import zio.test.assertTrue
+
+val logic =
+  defer:
+    assertTrue(1 == 1)
+
+import zio.test.test
+
+val testCase =
+  test("eat Bread"):
+    logic
+
+object Test2 extends ZIOSpecDefault:
   def spec =
     testCase
   // TODO: TestSummary renderer?
   // + eat Bread
 
 
-object Test1 extends ZIOSpecDefault:
+object Test3 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -32,7 +44,7 @@ object Test1 extends ZIOSpecDefault:
   // + eat Bread
 
 
-object Test2 extends ZIOSpecDefault:
+object Test4 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -58,7 +70,7 @@ object Test2 extends ZIOSpecDefault:
   // + flips 10 times
 
 
-object Test3 extends ZIOSpecDefault:
+object Test5 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
