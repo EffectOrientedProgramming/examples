@@ -362,8 +362,6 @@ object App9 extends helpers.ZIOAppDebug:
   // Result: New data on topic
 
 
-openFile("file1").summaryFor("space")
-
 case class NoSummaryAvailable(topic: String)
 
 def summaryForZ(file: File, topic: String) =
@@ -521,9 +519,8 @@ object App15 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App16 extends helpers.ZIOAppDebug:
