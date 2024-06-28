@@ -1,6 +1,6 @@
 ThisBuild / scalaVersion := "3.4.2"
 
-val zioVersion = "2.1.4"
+val zioVersion = "2.1.5"
 
 libraryDependencies ++= Seq(
   "dev.zio" %% "zio" % zioVersion,
