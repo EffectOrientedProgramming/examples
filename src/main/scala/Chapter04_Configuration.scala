@@ -195,8 +195,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -379,14 +379,14 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
+  // Tails
+  // Tails
   // Tails
   // Heads
   // Heads
-  // Tails
-  // Tails
   // Heads
   // Tails
+  // Heads
   // Tails
   // Heads
   // Num Heads = 5
