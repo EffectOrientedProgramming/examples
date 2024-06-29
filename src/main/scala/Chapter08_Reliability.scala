@@ -187,14 +187,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // James called API [took 2s]
-  // Bill called API [took 3s]
+  // James called API [took 1s]
+  // Bill called API [took 2s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
   // Bill called API [took 3s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bruce called API [took 2s]
   // Total time [took 8s]
 
 
@@ -271,10 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(231)
-  // Current requests: List(862, 231)
-  // Current requests: List(894, 684, 862, 231)
-  // Current requests: List(684, 862, 231)
+  // Current requests: List(176)
+  // Current requests: List(132, 176)
+  // Current requests: List(224, 132, 176)
+  // Current requests: List(539, 224, 132, 176)
   // Result: Crashed the server!!
 
 
@@ -305,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(17)
-  // Current requests: List(915, 17)
-  // Current requests: List(626, 915, 17)
-  // Current requests: List(85)
-  // Current requests: List(155, 85)
-  // Current requests: List(704, 155, 85)
-  // Current requests: List(52, 100, 704)
-  // Current requests: List(100, 704)
-  // Current requests: List(3, 52, 100)
-  // Current requests: List(705)
+  // Current requests: List(776)
+  // Current requests: List(627, 438, 776)
+  // Current requests: List(438, 776)
+  // Current requests: List(245, 773)
+  // Current requests: List(773)
+  // Current requests: List(51, 245, 773)
+  // Current requests: List(624, 708, 51)
+  // Current requests: List(708, 51)
+  // Current requests: List(274, 624, 708)
+  // Current requests: List(569)
   // Result: All Requests Succeeded
 
 

@@ -15,12 +15,14 @@ object App0 extends helpers.ZIOAppDebug:
   // hello, world
 
 
-// NOTE We cannot execute invoke main on this
+// NOTE We cannot invoke main on this
 // because it crashes mdoc in the CI process
 object RunningZIOs extends ZIOAppDefault:
   def run =
     Console.printLine:
       "Hello World!"
+
+// TODO Either find a better home for this, or delete.
 
 val logic =
   defer:

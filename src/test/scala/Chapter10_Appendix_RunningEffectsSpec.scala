@@ -10,34 +10,14 @@ object Test0 extends ZIOSpecDefault:
   def spec =
     test("random is random"):
       defer:
+        ZIO.debug("** logic **").run
         assertTrue:
-          Random.nextIntBounded(10).run < 10
-  
-  // TODO: Justify defer syntax over for-comp for multi-statement assertions
-  //      Change this to a Console app, where the logic & testing is more visceral
-  // Log: Signup initiated for Morty
+          10 > 2
+  // ** logic **
   // + random is random
 
 
 object Test1 extends ZIOSpecDefault:
-  import zio.test.*
-  
-  def spec =
-    test("random is still random"):
-      defer:
-        assertTrue:
-          Random.nextIntBetween(0, 10).run <=
-            10 &&
-            Random
-              .nextIntBetween(10, 20)
-              .run <= 20 &&
-            Random
-              .nextIntBetween(20, 30)
-              .run <= 30
-  // + random is still random
-
-
-object Test2 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -59,14 +39,14 @@ Hello Zeb
         assertTrue:
           capturedOutput == expectedOutput
   // - console works
-  //   Exception in thread "zio-fiber-1007485988" scala.NotImplementedError: an implementation is missing
+  //   Exception in thread "zio-fiber-1911826038" scala.NotImplementedError: an implementation is missing
   //   	at scala.Predef$.$qmark$qmark$qmark(Predef.scala:344)
   //   	at mdoctools.OurConsole.print(OurConsole.scala:14)
   //   	at zio.Console$.print$$anonfun$6(Console.scala:122)
   //   	at zio.ZIO$.consoleWith$$anonfun$1(ZIO.scala:3121)
   //   	at zio.FiberRef$unsafe$$anon$2.getWith$$anonfun$1(FiberRef.scala:474)
-  //   	at repl.MdocSession.MdocApp.logic(<input>:100)
+  //   	at repl.MdocSession.MdocApp.logic(<input>:72)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.logic(<input>:110)
+  //   	at repl.MdocSession.MdocApp.logic(<input>:82)
   //   	at zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19)
-  //   	at repl.MdocSession.MdocApp.Chapter57Spec.spec(<input>:146)
+  //   	at repl.MdocSession.MdocApp.Chapter59Spec.spec(<input>:118)
