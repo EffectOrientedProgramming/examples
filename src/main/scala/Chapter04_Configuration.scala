@@ -162,8 +162,8 @@ object App4 extends helpers.ZIOAppDebug:
         oven
       )
   // Toaster: Heating
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -379,18 +379,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Tails
-  // Tails
-  // Heads
-  // Tails
-  // Tails
-  // Tails
   // Tails
   // Heads
   // Heads
-  // Num Heads = 4
-  // Result: 4
+  // Tails
+  // Heads
+  // Tails
+  // Heads
+  // Tails
+  // Heads
+  // Tails
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
