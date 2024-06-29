@@ -221,8 +221,6 @@ object App7 extends helpers.ZIOAppDebug:
   def run =
     effect4
   // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
-  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -249,7 +247,8 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT0.020533095S,User saved)
+  // Log: Signup initiated for Morty
+  // Result: (PT0.002056588S,User saved)
 
 
 val effect7 =
@@ -297,7 +296,6 @@ val x =
   2 // This is just a dumb way to keep the code block from being empty, so it's properly hidden
 
 object App14 extends helpers.ZIOAppDebug:
-  // TODO: explain this in prose
   def run =
     defer:
       effect8
