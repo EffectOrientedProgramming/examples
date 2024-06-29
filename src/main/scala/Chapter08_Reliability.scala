@@ -271,11 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(183)
-  // Current requests: List(216, 142, 183)
-  // Current requests: List(497, 216, 142, 183)
-  // Current requests: List(142, 183)
-  // Current requests: List(281, 497, 216, 142, 183)
+  // Current requests: List(231)
+  // Current requests: List(862, 231)
+  // Current requests: List(894, 684, 862, 231)
+  // Current requests: List(684, 862, 231)
   // Result: Crashed the server!!
 
 
@@ -306,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(803)
-  // Current requests: List(786, 803)
-  // Current requests: List(90, 786, 803)
-  // Current requests: List(310)
-  // Current requests: List(179, 310)
-  // Current requests: List(146, 179, 310)
-  // Current requests: List(47, 959, 146)
-  // Current requests: List(959, 146)
-  // Current requests: List(166, 47, 959)
-  // Current requests: List(351, 166)
+  // Current requests: List(17)
+  // Current requests: List(915, 17)
+  // Current requests: List(626, 915, 17)
+  // Current requests: List(85)
+  // Current requests: List(155, 85)
+  // Current requests: List(704, 155, 85)
+  // Current requests: List(52, 100, 704)
+  // Current requests: List(100, 704)
+  // Current requests: List(3, 52, 100)
+  // Current requests: List(705)
   // Result: All Requests Succeeded
 
 
@@ -517,7 +516,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 74 Calls made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -556,10 +555,10 @@ object App8 extends helpers.ZIOAppDebug:
           if (duration > 1.second)
             contractBreaches.update(_ + 1).run
   
-      // TODO: explain the reason for the silly
+      // TODO: explain the reason for silly
       // List of ()
-      // talk about how it'd be nice to have a
-      // ZIO operator for repeatNPar
+      //       talk about how it'd be nice to have a
+      //       ZIO operator for repeatNPar
       //       happy birthday bill
       ZIO
         .foreachPar(List.fill(50_000)(())):

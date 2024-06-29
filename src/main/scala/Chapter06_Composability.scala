@@ -237,14 +237,16 @@ def openFile(path: String) =
     override def contains(
         searchTerm: String
     ): Boolean =
-      println:
-        s"File - contains($searchTerm)"
 
-      searchTerm match
-        case "wheel" | "unicode" =>
-          true
-        case _ =>
-          false
+      val result =
+        searchTerm match
+          case "wheel" | "unicode" =>
+            true
+          case _ =>
+            false
+      println:
+        s"File - contains($searchTerm) => $result"
+      result
 
     override def summaryFor(
         searchTerm: String
@@ -253,6 +255,7 @@ def openFile(path: String) =
         s"File - summaryFor($searchTerm)"
       )
       if (searchTerm == "unicode")
+        println("File - * Threw Exception *")
         throw Exception(
           s"No summary available for $searchTerm"
         )
@@ -293,7 +296,7 @@ object App6 extends helpers.ZIOAppDebug:
       file.contains:
         "topicOfInterest"
   // File - OPEN
-  // File - contains(topicOfInterest)
+  // File - contains(topicOfInterest) => false
   // File - CLOSE
   // Result: false
 
@@ -384,7 +387,7 @@ def summarize(article: String): String =
   else if (article.contains("genome"))
     "The human genome is huge!"
   else if (article.contains("long article"))
-    "content summary"
+    "short summary"
   else
     ???
 
@@ -401,10 +404,25 @@ def summarizeZ(article: String) =
     .timeoutFail(AITooSlow()):
       4000.millis
 
-def run =
-  summarizeZ("space")
+object App10 extends helpers.ZIOAppDebug:
+  def run =
+    summarizeZ("long article")
+  // AI - summarize - start
+  // AI - summarize - end
+  // Result: AITooSlow()
 
-// TODO: better subhead name - Composed Pain? Compound Fracture?
+
+object App11 extends helpers.ZIOAppDebug:
+  def run =
+    summarizeZ("space")
+  // AI - summarize - start
+  // AI **INTERRUPTED**
+  // Result: AITooSlow()
+
+
+// TODO: James/Bruce, like the new name? Another option - Compound Fracture
+
+// TODO Where does this short-circuiting section fit?
 
 val researchHeadline =
   defer:
@@ -435,7 +453,7 @@ val researchHeadline =
 
 // TODO: Emphasize just how important this example is.
 
-object App10 extends helpers.ZIOAppDebug:
+object App12 extends helpers.ZIOAppDebug:
   override val bootstrap =
     headlineNotAvailable
   
@@ -445,7 +463,7 @@ object App10 extends helpers.ZIOAppDebug:
   // Result: HeadlineNotAvailable
 
 
-object App11 extends helpers.ZIOAppDebug:
+object App13 extends helpers.ZIOAppDebug:
   override val bootstrap =
     noInterestingTopic
   
@@ -457,7 +475,7 @@ object App11 extends helpers.ZIOAppDebug:
   // Result: NoInterestingTopic()
 
 
-object App12 extends helpers.ZIOAppDebug:
+object App14 extends helpers.ZIOAppDebug:
   override val bootstrap =
     summaryReadThrows
   
@@ -467,13 +485,14 @@ object App12 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(unicode)
   // File - OPEN
-  // File - contains(unicode)
+  // File - contains(unicode) => true
   // File - summaryFor(unicode)
+  // File - * Threw Exception *
   // File - CLOSE
   // Result: NoSummaryAvailable(unicode)
 
 
-object App13 extends helpers.ZIOAppDebug:
+object App15 extends helpers.ZIOAppDebug:
   override val bootstrap =
     noWikiArticleAvailable
   
@@ -483,13 +502,13 @@ object App13 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(barn)
   // File - OPEN
-  // File - contains(barn)
+  // File - contains(barn) => false
   // Wiki - articleFor(barn)
   // File - CLOSE
   // Result: NoWikiArticleAvailable()
 
 
-object App14 extends helpers.ZIOAppDebug:
+object App16 extends helpers.ZIOAppDebug:
   override val bootstrap =
     aiTooSlow
   
@@ -500,7 +519,7 @@ object App14 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(space)
   // File - OPEN
-  // File - contains(space)
+  // File - contains(space) => false
   // Wiki - articleFor(space)
   // AI - summarize - start
   // AI **INTERRUPTED**
@@ -508,7 +527,7 @@ object App14 extends helpers.ZIOAppDebug:
   // Result: AITooSlow()
 
 
-object App15 extends helpers.ZIOAppDebug:
+object App17 extends helpers.ZIOAppDebug:
   override val bootstrap =
     diskFull
   
@@ -518,7 +537,7 @@ object App15 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(genome)
   // File - OPEN
-  // File - contains(genome)
+  // File - contains(genome) => false
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
@@ -527,7 +546,7 @@ object App15 extends helpers.ZIOAppDebug:
   // Result: DiskFull()
 
 
-object App16 extends helpers.ZIOAppDebug:
+object App18 extends helpers.ZIOAppDebug:
   override val bootstrap =
     stockMarketHeadline
   
@@ -537,7 +556,7 @@ object App16 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
   // File - OPEN
-  // File - contains(stock market)
+  // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
@@ -546,7 +565,7 @@ object App16 extends helpers.ZIOAppDebug:
   // Result: market is not rational
 
 
-object App17 extends helpers.ZIOAppDebug:
+object App19 extends helpers.ZIOAppDebug:
   // TODO: enables, reuse, repeats, delays, etc
   override val bootstrap =
     stockMarketHeadline
@@ -559,15 +578,26 @@ object App17 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
   // File - OPEN
-  // File - contains(stock market)
+  // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market) => false
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
 
 
-object App18 extends helpers.ZIOAppDebug:
+object App20 extends helpers.ZIOAppDebug:
   override val bootstrap =
     stockMarketHeadline
   
@@ -577,7 +607,7 @@ object App18 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
   // File - OPEN
-  // File - contains(stock market)
+  // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
@@ -586,7 +616,7 @@ object App18 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
   // File - OPEN
-  // File - contains(stock market)
+  // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
@@ -595,7 +625,7 @@ object App18 extends helpers.ZIOAppDebug:
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
   // File - OPEN
-  // File - contains(stock market)
+  // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
@@ -604,3 +634,23 @@ object App18 extends helpers.ZIOAppDebug:
   // File - CLOSE
   // File - CLOSE
   // Result: market is not rational
+
+
+object App21 extends helpers.ZIOAppDebug:
+  override val bootstrap =
+    stockMarketHeadline
+  
+  def run =
+    researchHeadline.timeoutFail(
+      "Super strict timeout"
+    )(1.millis)
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market) => false
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - CLOSE
+  // Result: Super strict timeout
