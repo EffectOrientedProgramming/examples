@@ -416,7 +416,6 @@ object App11 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("space")
   // AI - summarize - start
-  // AI **INTERRUPTED**
   // Result: AITooSlow()
 
 
@@ -522,6 +521,7 @@ object App16 extends helpers.ZIOAppDebug:
   // File - contains(space) => false
   // Wiki - articleFor(space)
   // AI - summarize - start
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -540,9 +540,8 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App18 extends helpers.ZIOAppDebug:

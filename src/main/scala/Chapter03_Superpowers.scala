@@ -12,7 +12,7 @@ enum Scenario:
       ref: Ref[Int]
   )
 
-// This configuration is used by effects to get the scenario that
+// This configuration is used by Effects to get the scenario that
 // may have been passed in via `bootstrap`
 // The configuration is optional and the default of `Config.fail`
 // sets the Option to None.
@@ -206,7 +206,7 @@ object App6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
-  // Result: User saved
+  // Result: ** Save timed out **
 
 
 val effect4 =
@@ -236,7 +236,6 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     effect5
-  // Log: Signup initiated for Morty
   // Result: User saved
 
 
@@ -249,8 +248,7 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Log: Signup initiated for Morty
-  // Result: (PT5.030713S,User saved)
+  // Result: (PT0.016316058S,User saved)
 
 
 val effect7 =
