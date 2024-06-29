@@ -379,16 +379,16 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
   // Heads
-  // Tails
   // Heads
   // Tails
   // Heads
   // Heads
-  // Tails
-  // Tails
   // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Tails
   // Num Heads = 5
   // Result: 5
 
