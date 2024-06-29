@@ -22,21 +22,6 @@ object RunningZIOs extends ZIOAppDefault:
     Console.printLine:
       "Hello World!"
 
-// TODO Either find a better home for this, or delete.
-
-val logic =
-  defer:
-    val username =
-      Console
-        .readLine:
-          "Enter your name\n"
-        .run
-    Console
-      .printLine:
-        s"Hello $username"
-      .run
-  .orDie
-
 val out =
   Unsafe.unsafe:
     implicit u: Unsafe =>

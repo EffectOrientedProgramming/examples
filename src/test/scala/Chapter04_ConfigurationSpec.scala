@@ -79,13 +79,14 @@ object Test5 extends ZIOSpecDefault:
           24.hours
   
       defer:
-        val fork =
-          nightlyBatch.fork.run
-        timeTravel.run
-        fork.join.run
+        nightlyBatch.zipPar(timeTravel).run
+  //      val fork =
+  //        nightlyBatch.fork.run
+  //      timeTravel.run
+  //      fork.join.run
   
         assertCompletes
   
-  // TODO: update prose on not race
+  // TODO: update prose on zip
   // Parsing CSV: ()
   // + batch runs after 24 hours

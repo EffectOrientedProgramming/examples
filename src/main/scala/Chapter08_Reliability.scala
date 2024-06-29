@@ -271,11 +271,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(53)
-  // Current requests: List(217, 277, 53)
-  // Current requests: List(277, 53)
-  // Current requests: List(551, 217, 277, 53)
-  // Current requests: List(487, 551, 217, 277, 53)
+  // Current requests: List(974)
+  // Current requests: List(576, 974)
+  // Current requests: List(404, 576, 974)
+  // Current requests: List(314, 404, 576, 974)
+  // Current requests: List(110, 314, 404, 576, 974)
   // Result: Crashed the server!!
 
 
@@ -306,16 +306,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(468)
-  // Current requests: List(962, 468)
-  // Current requests: List(752, 962, 468)
-  // Current requests: List(86, 132)
-  // Current requests: List(132)
-  // Current requests: List(114, 86, 132)
-  // Current requests: List(723, 114)
-  // Current requests: List(909, 723, 114)
-  // Current requests: List(501, 909, 723)
-  // Current requests: List(112)
+  // Current requests: List(65)
+  // Current requests: List(569, 65)
+  // Current requests: List(252, 569, 65)
+  // Current requests: List(824)
+  // Current requests: List(630, 824)
+  // Current requests: List(379, 630, 824)
+  // Current requests: List(430, 379)
+  // Current requests: List(969, 430, 379)
+  // Current requests: List(903, 969, 430)
+  // Current requests: List(696)
   // Result: All Requests Succeeded
 
 
@@ -543,7 +543,7 @@ object App8 extends helpers.ZIOAppDebug:
       val contractBreaches =
         Ref.make(0).run
   
-      val request =
+      val makeRequest =
         defer:
           val hedged =
             logicThatSporadicallyLocksUp.race:
@@ -563,7 +563,7 @@ object App8 extends helpers.ZIOAppDebug:
       //       happy birthday bill
       ZIO
         .foreachPar(List.fill(50_000)(())):
-          _ => request
+          _ => makeRequest
         .run
   
       contractBreaches

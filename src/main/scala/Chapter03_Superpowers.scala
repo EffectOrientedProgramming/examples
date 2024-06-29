@@ -248,7 +248,7 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT5.03069875S,User saved)
+  // Result: (PT0.019071941S,User saved)
 
 
 val effect7 =

@@ -409,13 +409,14 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: short summary
+  // Result: AITooSlow()
 
 
 object App11 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("space")
   // AI - summarize - start
+  // AI **INTERRUPTED**
   // Result: AITooSlow()
 
 
@@ -590,10 +591,10 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
+  // File - write: market is not rational
   // File - CLOSE
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: market is not rational
 
 
 object App20 extends helpers.ZIOAppDebug:
@@ -628,11 +629,11 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
+  // AI **INTERRUPTED**
   // File - CLOSE
   // File - CLOSE
   // File - CLOSE
-  // Result: market is not rational
+  // Result: AITooSlow()
 
 
 object App21 extends helpers.ZIOAppDebug:
@@ -653,4 +654,4 @@ object App21 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // File - CLOSE
-  // Result: Super strict timeout
+  // Result: market is not rational
