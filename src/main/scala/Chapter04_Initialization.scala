@@ -10,12 +10,10 @@ case class Dough():
 
 object Dough:
   val fresh =
-    ZLayer
-      .derive[Dough]
-      .tap:
-        _ =>
-          Console.printLine:
-            "Dough: Mixed"
+    ZLayer.fromZIO:
+      defer:
+        Console.printLine("Dough: Mixed").run
+        Dough()
 
 object App0 extends helpers.ZIOAppDebug:
   def run =
@@ -31,12 +29,10 @@ object App0 extends helpers.ZIOAppDebug:
 case class Heat()
 
 val oven =
-  ZLayer
-    .derive[Heat]
-    .tap:
-      _ =>
-        Console.printLine:
-          "Oven: Heated"
+  ZLayer.fromZIO:
+    defer:
+      Console.printLine("Oven: Heated").run
+      Heat()
 
 trait Bread:
   def eat =
@@ -50,12 +46,15 @@ case class BreadHomeMade(
 
 object Bread:
   val homemade =
-    ZLayer
-      .derive[BreadHomeMade]
-      .tap:
-        _ =>
-          Console.printLine:
-            "BreadHomeMade: Baked"
+    ZLayer.fromZIO:
+      defer:
+        Console
+          .printLine("BreadHomeMade: Baked")
+          .run
+        BreadHomeMade(
+          ZIO.service[Heat].run,
+          ZIO.service[Dough].run
+        )
 
 object App1 extends helpers.ZIOAppDebug:
   def run =
@@ -67,8 +66,8 @@ object App1 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -105,12 +104,12 @@ object App2 extends helpers.ZIOAppDebug:
 
 
 val toaster =
-  ZLayer
-    .derive[Heat]
-    .tap:
-      _ =>
-        Console.printLine:
-          "Toaster: Heated"
+  ZLayer.fromZIO:
+    defer:
+      Console
+        .printLine("Toaster: Heated")
+        .run
+      Heat()
 
 object App3 extends helpers.ZIOAppDebug:
   def run =
@@ -125,12 +124,12 @@ object App3 extends helpers.ZIOAppDebug:
 case class Toaster()
 object Toaster:
   val layer =
-    ZLayer
-      .derive[Toaster]
-      .tap:
-        _ =>
-          Console.printLine:
-            "Toaster: Heating"
+    ZLayer.fromZIO:
+      defer:
+        Console
+          .printLine("Toaster: Heating")
+          .run
+        Toaster()
 
 case class ToastZ(
     heat: Toaster,
@@ -195,8 +194,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -379,18 +378,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Tails
   // Tails
   // Heads
   // Heads
   // Tails
-  // Heads
   // Tails
   // Tails
-  // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 2
+  // Result: 2
 
 
 val nightlyBatch =

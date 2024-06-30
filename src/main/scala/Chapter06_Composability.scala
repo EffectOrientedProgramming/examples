@@ -409,8 +409,7 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
-  // Result: AITooSlow()
+  // Result: short summary
 
 
 object App11 extends helpers.ZIOAppDebug:
@@ -598,12 +597,16 @@ object App19 extends helpers.ZIOAppDebug:
   // Result: market is not rational
 
 
+val strictResearch =
+  researchHeadline
+    .timeoutFail("strict timeout")(1.second)
+
 object App20 extends helpers.ZIOAppDebug:
   override val bootstrap =
     stockMarketHeadline
   
   def run =
-    researchHeadline.repeatN(2)
+    strictResearch
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
@@ -612,29 +615,8 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market) => false
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market) => false
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // File - CLOSE
-  // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 object App21 extends helpers.ZIOAppDebug:
@@ -642,9 +624,8 @@ object App21 extends helpers.ZIOAppDebug:
     stockMarketHeadline
   
   def run =
-    researchHeadline.timeoutFail(
-      "Super strict timeout"
-    )(1.millis)
+    strictResearch
+      .repeat(Schedule.spaced(24.hours))
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
@@ -654,4 +635,4 @@ object App21 extends helpers.ZIOAppDebug:
   // AI - summarize - start
   // AI - summarize - end
   // File - CLOSE
-  // Result: Super strict timeout
+  // Result: strict timeout
