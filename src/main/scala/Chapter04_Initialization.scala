@@ -1,4 +1,4 @@
-package Chapter04_Configuration
+package Chapter04_Initialization
 
 import zio.*
 import zio.direct.*
@@ -67,8 +67,8 @@ object App1 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -379,18 +379,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Heads
   // Tails
   // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
+  // Heads
   // Heads
   // Tails
   // Heads
   // Tails
-  // Num Heads = 2
-  // Result: 2
+  // Tails
+  // Heads
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =

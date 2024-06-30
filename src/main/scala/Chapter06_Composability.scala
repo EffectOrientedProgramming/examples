@@ -409,6 +409,7 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
+  // AI **INTERRUPTED**
   // Result: AITooSlow()
 
 

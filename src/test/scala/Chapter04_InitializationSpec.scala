@@ -1,4 +1,4 @@
-package Chapter04_Configuration
+package Chapter04_Initialization
 
 import zio.*
 import zio.direct.*

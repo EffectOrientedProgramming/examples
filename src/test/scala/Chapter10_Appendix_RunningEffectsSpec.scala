@@ -14,6 +14,4 @@ object Test0 extends ZIOSpecDefault:
         assertTrue:
           10 > 2
   // ** logic **
-  // Log: Signup initiated for Morty
-  // Log: Signup initiated for Morty
   // + random is random
