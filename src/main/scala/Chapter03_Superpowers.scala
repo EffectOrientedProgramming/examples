@@ -221,12 +221,15 @@ object App7 extends helpers.ZIOAppDebug:
   def run =
     effect4
   // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
 val effect5 =
-  effect4.withFinalizer:
-    _ => logUserSignup
+  ZIO.scoped:
+    effect4.withFinalizer:
+      _ => logUserSignup
 
 object App8 extends helpers.ZIOAppDebug:
   override val bootstrap =
@@ -234,6 +237,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     effect5
+  // Log: Signup initiated for Morty
   // Result: User saved
 
 
@@ -246,7 +250,8 @@ object App9 extends helpers.ZIOAppDebug:
   
   def run =
     effect6
-  // Result: (PT5.03593368S,User saved)
+  // Log: Signup initiated for Morty
+  // Result: (PT0.002370118S,User saved)
 
 
 val effect7 =

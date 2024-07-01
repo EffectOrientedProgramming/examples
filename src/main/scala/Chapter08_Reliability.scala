@@ -187,14 +187,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // James called API [took 2s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
   // Bill called API [took 3s]
-  // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bruce called API [took 3s]
   // Bill called API [took 3s]
-  // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bruce called API [took 3s]
   // Total time [took 8s]
 
 
@@ -271,11 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(746)
-  // Current requests: List(117, 746)
-  // Current requests: List(549, 117, 746)
-  // Current requests: List(490, 549, 117, 746)
-  // Current requests: List(160, 490, 549, 117, 746)
+  // Current requests: List(141)
+  // Current requests: List(318, 141)
+  // Current requests: List(359, 318, 141)
+  // Current requests: List(359, 359, 318, 141)
   // Result: Crashed the server!!
 
 
@@ -306,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(955)
-  // Current requests: List(420, 955)
-  // Current requests: List(823, 420, 955)
-  // Current requests: List(148, 324)
-  // Current requests: List(324)
-  // Current requests: List(793, 148, 324)
-  // Current requests: List(474, 793)
-  // Current requests: List(557, 474, 793)
-  // Current requests: List(508, 557, 474)
-  // Current requests: List(534)
+  // Current requests: List(957)
+  // Current requests: List(604, 957)
+  // Current requests: List(471, 604, 957)
+  // Current requests: List(297)
+  // Current requests: List(62, 297)
+  // Current requests: List(923, 62, 297)
+  // Current requests: List(71, 923)
+  // Current requests: List(63, 71, 923)
+  // Current requests: List(164, 63, 71)
+  // Current requests: List(672, 164)
   // Result: All Requests Succeeded
 
 
