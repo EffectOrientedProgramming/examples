@@ -79,12 +79,13 @@ case class Toast(heat: Heat, bread: Bread):
 
 object Toast:
   val make =
-    ZLayer
-      .derive[Toast]
-      .tap:
-        _ =>
-          Console.printLine:
-            "Toast: Made"
+    ZLayer.fromZIO:
+      defer:
+        Console.printLine("Toast: Made").run
+        Toast(
+          ZIO.service[Heat].run,
+          ZIO.service[Bread].run
+        )
 
 object App2 extends helpers.ZIOAppDebug:
   def run =
@@ -141,12 +142,13 @@ case class ToastZ(
 
 object ToastZ:
   val make =
-    ZLayer
-      .derive[ToastZ]
-      .tap:
-        _ =>
-          Console.printLine:
-            "ToastZ: Made"
+    ZLayer.fromZIO:
+      defer:
+        Console.printLine("ToastZ: Made").run
+        ToastZ(
+          ZIO.service[Toaster].run,
+          ZIO.service[Bread].run
+        )
 
 object App4 extends helpers.ZIOAppDebug:
   def run =
@@ -378,15 +380,15 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Heads
   // Tails
-  // Tails
-  // Heads
-  // Heads
-  // Heads
   // Heads
   // Heads
   // Tails
   // Tails
+  // Tails
+  // Heads
+  // Heads
   // Heads
   // Num Heads = 6
   // Result: 6
