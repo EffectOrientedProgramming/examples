@@ -1,4 +1,4 @@
-package Chapter05_Managing_Failure
+package Chapter05_Failure
 
 import zio.*
 import zio.direct.*
