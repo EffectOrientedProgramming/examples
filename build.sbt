@@ -23,3 +23,41 @@ initialize := {
   val current = VersionNumber(sys.props("java.specification.version"))
   assert(current.get(0).get >= required.get(0).get, s"Java $required or above required")
 }
+
+lazy val runMainClassesDoesNotTolerateFailures = taskKey[Unit]("Print main classes")
+runMainClassesDoesNotTolerateFailures := Def.taskDyn {
+  val s: TaskStreams = streams.value
+  val classes = (discoveredMainClasses in Compile).value
+  val tasks = classes.map{className =>
+    Def.task {
+      try {
+        s.log.info(s"Running $className")
+        (runMain in Compile).toTask(" " + className).value
+      } catch {
+        case e: Exception =>
+          s.log.error(s"Failure when running $className: ${e.getMessage}")
+      }
+    }
+  }
+  Def.sequential(tasks)
+}.value
+
+// We need this version because many of the examples are expected to fail
+lazy val runMainClassesToleratesFailures = taskKey[Unit]("Run all main classes")
+
+runMainClassesToleratesFailures := {
+  val log = streams.value.log
+  val discovered: Seq[String] = (discoveredMainClasses in Compile).value
+  // Get the classpath
+  val classpath = Attributed.data((fullClasspath in Compile).value).mkString(":")
+
+  discovered.foreach { className =>
+    log.info(s"Running $className")
+    val result = Fork.java.fork(ForkOptions(), Seq("-cp", classpath, className)).exitValue()
+    if (result != 0) {
+      log.error(s"Class $className failed with exit code $result")
+    } else {
+      log.info(s"Class $className completed successfully")
+    }
+  }
+}
