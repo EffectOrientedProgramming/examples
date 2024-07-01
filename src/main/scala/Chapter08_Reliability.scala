@@ -271,10 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(141)
-  // Current requests: List(318, 141)
-  // Current requests: List(359, 318, 141)
-  // Current requests: List(359, 359, 318, 141)
+  // Current requests: List(475)
+  // Current requests: List(702, 475)
+  // Current requests: List(145, 702, 475)
+  // Current requests: List(658, 145, 702, 475)
   // Result: Crashed the server!!
 
 
@@ -305,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(957)
-  // Current requests: List(604, 957)
-  // Current requests: List(471, 604, 957)
-  // Current requests: List(297)
-  // Current requests: List(62, 297)
-  // Current requests: List(923, 62, 297)
-  // Current requests: List(71, 923)
-  // Current requests: List(63, 71, 923)
-  // Current requests: List(164, 63, 71)
-  // Current requests: List(672, 164)
+  // Current requests: List(417)
+  // Current requests: List(995, 417)
+  // Current requests: List(707, 995, 417)
+  // Current requests: List(925, 260)
+  // Current requests: List(260)
+  // Current requests: List(457, 925, 260)
+  // Current requests: List(776, 168, 457)
+  // Current requests: List(168, 457)
+  // Current requests: List(786, 776, 168)
+  // Current requests: List(99)
   // Result: All Requests Succeeded
 
 

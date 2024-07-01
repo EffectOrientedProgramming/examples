@@ -227,9 +227,8 @@ object App7 extends helpers.ZIOAppDebug:
 
 
 val effect5 =
-  ZIO.scoped:
-    effect4.withFinalizer:
-      _ => logUserSignup
+  effect4.withFinalizer:
+    _ => logUserSignup
 
 object App8 extends helpers.ZIOAppDebug:
   override val bootstrap =
@@ -251,7 +250,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.002370118S,User saved)
+  // Result: (PT0.002091732S,User saved)
 
 
 val effect7 =
