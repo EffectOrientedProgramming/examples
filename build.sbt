@@ -27,12 +27,12 @@ initialize := {
 lazy val runMainClassesDoesNotTolerateFailures = taskKey[Unit]("Print main classes")
 runMainClassesDoesNotTolerateFailures := Def.taskDyn {
   val s: TaskStreams = streams.value
-  val classes = (discoveredMainClasses in Compile).value
+  val classes = (Compile/discoveredMainClasses).value
   val tasks = classes.map{className =>
     Def.task {
       try {
         s.log.info(s"Running $className")
-        (runMain in Compile).toTask(" " + className).value
+        (Compile/runMain).toTask(" " + className).value
       } catch {
         case e: Exception =>
           s.log.error(s"Failure when running $className: ${e.getMessage}")
@@ -47,9 +47,9 @@ lazy val runMainClassesToleratesFailures = taskKey[Unit]("Run all main classes")
 
 runMainClassesToleratesFailures := {
   val log = streams.value.log
-  val discovered: Seq[String] = (discoveredMainClasses in Compile).value
+  val discovered: Seq[String] = (Compile/discoveredMainClasses).value
   // Get the classpath
-  val classpath = Attributed.data((fullClasspath in Compile).value).mkString(":")
+  val classpath = Attributed.data((Compile/fullClasspath).value).mkString(":")
 
   discovered.foreach { className =>
     log.info(s"Running $className")
