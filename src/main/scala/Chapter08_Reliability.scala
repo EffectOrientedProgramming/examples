@@ -271,10 +271,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(416)
-  // Current requests: List(375, 416)
-  // Current requests: List(586, 375, 416)
-  // Current requests: List(18, 586, 375, 416)
+  // Current requests: List(211)
+  // Current requests: List(409, 211)
+  // Current requests: List(632, 409, 211)
+  // Current requests: List(246, 632, 409, 211)
+  // Current requests: List(884, 246, 632, 409, 211)
   // Result: Crashed the server!!
 
 
@@ -305,16 +306,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(824)
-  // Current requests: List(695, 824)
-  // Current requests: List(177, 695, 824)
-  // Current requests: List(219, 719)
-  // Current requests: List(719)
-  // Current requests: List(25, 219, 719)
-  // Current requests: List(263, 25)
-  // Current requests: List(873, 263, 25)
-  // Current requests: List(191, 873, 263)
-  // Current requests: List(262, 191)
+  // Current requests: List(968)
+  // Current requests: List(422, 968)
+  // Current requests: List(11, 422, 968)
+  // Current requests: List(502, 202)
+  // Current requests: List(202)
+  // Current requests: List(195, 502, 202)
+  // Current requests: List(238, 941, 195)
+  // Current requests: List(941, 195)
+  // Current requests: List(192, 238, 941)
+  // Current requests: List(162)
   // Result: All Requests Succeeded
 
 
@@ -516,7 +517,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 74 Calls made: 67
+  // Result: Calls prevented: 75 Calls made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -569,8 +570,8 @@ object App8 extends helpers.ZIOAppDebug:
         .get
         .debug("Contract Breaches")
         .run
-  // Contract Breaches: 1
-  // Result: 1
+  // Contract Breaches: 0
+  // Result: 0
 
 
 var attempts =
