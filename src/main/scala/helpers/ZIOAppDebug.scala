@@ -21,6 +21,6 @@ trait ZIOAppDebug:
         self.bootstrap
 
       override def run: ZIO[ZIOAppArgs & Scope, Any, Any] =
-        self.run.debug("Result")
+        ZIO.scoped(self.run).debug("Result")
 
     app.main(args)
