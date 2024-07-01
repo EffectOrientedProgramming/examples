@@ -638,6 +638,6 @@ object App21 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: None
