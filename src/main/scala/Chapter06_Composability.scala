@@ -617,7 +617,7 @@ object App20 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 object App21 extends helpers.ZIOAppDebug:
