@@ -615,8 +615,9 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 object App21 extends helpers.ZIOAppDebug:
@@ -626,6 +627,9 @@ object App21 extends helpers.ZIOAppDebug:
   def run =
     strictResearch
       .repeat(Schedule.spaced(24.hours))
+      .timeout(
+        2.seconds
+      ) // So our demo does not hang forevery
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)
@@ -634,5 +638,6 @@ object App21 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: None
