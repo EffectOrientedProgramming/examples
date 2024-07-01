@@ -21,6 +21,12 @@ trait ZIOAppDebug:
         self.bootstrap
 
       override def run: ZIO[ZIOAppArgs & Scope, Any, Any] =
-        ZIO.scoped(self.run).debug("Result")
+        // this tries to create consistency for how we run and print output between the book and the examples
+        ZIO.scoped:
+          self.run
+        .tapSome:
+          case result if !result.isInstanceOf[Unit] =>
+            Console.printLine:
+              s"Result: $result"
 
     app.main(args)
