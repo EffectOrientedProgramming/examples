@@ -14,7 +14,8 @@ object Test0 extends ZIOSpecDefault:
         assertCompletes
     @@ TestAspect.withLiveClock @@
       TestAspect.timeout(1.second)
-  // + long testZ
+  // - long testZ
+  // Timeout of 1 s exceeded.
 
 
 object Test1 extends ZIOSpecDefault:

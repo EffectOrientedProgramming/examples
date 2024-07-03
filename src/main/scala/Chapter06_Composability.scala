@@ -409,7 +409,7 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: AITooSlow()
+  // Result: short summary
 
 
 object App11 extends helpers.ZIOAppDebug:
@@ -610,31 +610,11 @@ object App20 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: strict timeout
 
 
-object App21 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    stockMarketHeadline
-  
-  def run =
-  strictResearch
-    .repeat:
-      Schedule.spaced(24.hours)
-    .timeout:
-      2.seconds
-  // So our demo does not hang forever
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market) => false
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
-  // File - CLOSE
-  // Result: None
+val daily =
+  strictResearch.repeat:
+    Schedule.spaced(24.hours)
