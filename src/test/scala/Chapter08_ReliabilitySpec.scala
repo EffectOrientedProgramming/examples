@@ -7,6 +7,7 @@ import zio.test.*
 object Test0 extends ZIOSpecDefault:
   import zio.test.*
   
+  // TODO: Watch for indeterminate output - test should fail
   def spec =
     test("long testZ"):
       defer:
@@ -26,8 +27,8 @@ object Test1 extends ZIOSpecDefault:
       defer:
         spottyLogic.run
         assertCompletes
-    @@ TestAspect.withLiveRandom @@
-      TestAspect.flaky
+    @@ TestAspect.flaky
+  // Failed!
   // Failed!
   // Success!
   // + long test!
