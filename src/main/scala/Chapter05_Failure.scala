@@ -133,9 +133,8 @@ object App2 extends helpers.ZIOAppDebug:
     defer:
       getTemperature.run
       Console
-        .printLine(
+        .printLine:
           "only prints if getTemperature succeeds"
-        )
         .run
   // Result: Defect: NetworkException: Network Failure
 
@@ -148,16 +147,14 @@ object App3 extends helpers.ZIOAppDebug:
     val safeGetTemperature =
       getTemperature.catchAll:
         case e: Exception =>
-          ZIO.succeed(
+          ZIO.succeed:
             "Could not get temperature"
-          )
   
     defer:
       safeGetTemperature.run
       Console
-        .printLine(
+        .printLine:
           "will not print if getTemperature fails"
-        )
         .run
   // will not print if getTemperature fails
 
@@ -167,7 +164,6 @@ val bad =
     case ex: NetworkException =>
       ZIO.succeed:
         "Network Unavailable"
-
 // [E029] Pattern Match Exhaustivity Warning:
 //     case ex: NetworkException =>
 //     ^
@@ -193,9 +189,8 @@ object App4 extends helpers.ZIOAppDebug:
       val result =
         temperatureAppComplete.run
       Console
-        .printLine(
+        .printLine:
           s"Didn't fail, despite: $result"
-        )
         .run
   // Didn't fail, despite: GPS Hardware Failure
 
@@ -217,35 +212,48 @@ object App5 extends helpers.ZIOAppDebug:
   // GPS Failure
 
 
-case class LocalizeFailure(s: String)
+case class ClimateFailure(message: String)
 
-def localize(temperature: Temperature) =
+def check(temperature: Temperature) =
   if temperature.degrees > 0 then
-    ZIO.succeed("Not too cold.")
+    ZIO.succeed:
+      "Not too cold."
   else
     ZIO.fail:
-      LocalizeFailure("**Machine froze**")
+      ClimateFailure("**Machine froze**")
 
-// can fail with an Exception or a LocalizeFailure
-val getTemperatureLocal =
+// can fail with an Exception or a ClimateFailure
+val getTemperatureWithCheck =
   defer:
     // can fail with an Exception
     val temperature =
       getTemperature.run
 
-    // can fail with a LocalizeFailure
-    localize(temperature).run
+    // can fail with a ClimateFailure
+    check(temperature).run
 
 object App6 extends helpers.ZIOAppDebug:
+  // TODO: some prose needed to explain short-circuiting run example
+  override val bootstrap =
+    gpsFailure
+  
+  def run =
+    getTemperatureWithCheck
+  // Result: Defect: GpsException: GPS Failure
+
+
+object App7 extends helpers.ZIOAppDebug:
   override val bootstrap =
     weird
   
   def run =
-    getTemperatureLocal.catchAll:
-      case e: Exception =>
-        Console.printLine(e.getMessage)
-      case LocalizeFailure(s: String) =>
-        Console.printLine(s)
+    getTemperatureWithCheck.catchAll:
+      case exception: Exception =>
+        Console.printLine:
+          exception.getMessage
+      case failure: ClimateFailure =>
+        Console.printLine:
+          failure.message
   // **Machine froze**
 
 
@@ -259,7 +267,7 @@ def getTemperatureOrThrow(): String =
     case _ =>
       "35 degrees"
 
-object App7 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   override val bootstrap =
     networkFailure
   
@@ -273,7 +281,7 @@ val safeTemperatureApp =
   ZIO.attempt:
     getTemperatureOrThrow()
 
-object App8 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   override val bootstrap =
     networkFailure
   

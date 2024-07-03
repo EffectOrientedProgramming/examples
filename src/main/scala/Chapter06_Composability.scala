@@ -409,7 +409,7 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: short summary
+  // Result: AITooSlow()
 
 
 object App11 extends helpers.ZIOAppDebug:
@@ -419,10 +419,6 @@ object App11 extends helpers.ZIOAppDebug:
   // AI **INTERRUPTED**
   // Result: AITooSlow()
 
-
-// TODO: James/Bruce, like the new name? Another option - Compound Fracture
-
-// TODO Where does this short-circuiting section fit?
 
 val researchHeadline =
   defer:
@@ -599,7 +595,8 @@ object App19 extends helpers.ZIOAppDebug:
 
 val strictResearch =
   researchHeadline
-    .timeoutFail("strict timeout")(1.second)
+    .timeoutFail("strict timeout"):
+      1.second
 
 object App20 extends helpers.ZIOAppDebug:
   override val bootstrap =
@@ -615,9 +612,8 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 object App21 extends helpers.ZIOAppDebug:
@@ -625,11 +621,12 @@ object App21 extends helpers.ZIOAppDebug:
     stockMarketHeadline
   
   def run =
-    strictResearch
-      .repeat(Schedule.spaced(24.hours))
-      .timeout(
-        2.seconds
-      ) // So our demo does not hang forevery
+  strictResearch
+    .repeat:
+      Schedule.spaced(24.hours)
+    .timeout:
+      2.seconds
+  // So our demo does not hang forever
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(stock market)

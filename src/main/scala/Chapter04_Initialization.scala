@@ -3,7 +3,30 @@ package Chapter04_Initialization
 import zio.*
 import zio.direct.*
 
-case class Dough():
+trait Bread:
+  def eat =
+    Console.printLine:
+      "Bread: Eating"
+
+case class BreadStoreBought() extends Bread
+
+object BreadStoreBought:
+  val layer =
+    ZLayer.succeed:
+      BreadStoreBought()
+
+object App0 extends helpers.ZIOAppDebug:
+  def run =
+    ZIO
+      .serviceWithZIO[Bread]:
+        bread => bread.eat
+      .provide:
+        BreadStoreBought.layer
+  // Bread: Eating
+
+
+// todo: explain the letRise being an Effect, i.e. dependencies can themselves be Effects
+class Dough():
   val letRise =
     Console.printLine:
       "Dough is rising"
@@ -15,17 +38,6 @@ object Dough:
         Console.printLine("Dough: Mixed").run
         Dough()
 
-object App0 extends helpers.ZIOAppDebug:
-  def run =
-    ZIO
-      .serviceWithZIO[Dough]:
-        dough => dough.letRise
-      .provide:
-        Dough.fresh
-  // Dough: Mixed
-  // Dough is rising
-
-
 case class Heat()
 
 val oven =
@@ -33,11 +45,6 @@ val oven =
     defer:
       Console.printLine("Oven: Heated").run
       Heat()
-
-trait Bread:
-  def eat =
-    Console.printLine:
-      "Bread: Eating"
 
 case class BreadHomeMade(
     heat: Heat,
@@ -66,8 +73,8 @@ object App1 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -101,7 +108,10 @@ object App2 extends helpers.ZIOAppDebug:
   // Dough: Mixed
   // BreadHomeMade: Baked
   // Toast: Made
-  // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
+  // TODO Handle long line. 
+  // Truncating for now: 
+  // Toast(Heat(),BreadHomeMade(Heat(),repl.MdocSession$MdocApp$Dough@5464b2ba))
+  // Result: Toast(Heat(),BreadHomeMade(Heat(),repl.MdocSes
 
 
 val toaster =
@@ -253,21 +263,6 @@ object App6 extends helpers.ZIOAppDebug:
   // Result: Failure(Friend Unreachable)
 
 
-case class BreadStoreBought() extends Bread
-
-val buyBread =
-  ZIO.succeed:
-    BreadStoreBought()
-
-val storeBought =
-  ZLayer
-    .fromZIO:
-      buyBread
-    .tap:
-      _ =>
-        Console.printLine:
-          "BreadStoreBought: Bought"
-
 object App7 extends helpers.ZIOAppDebug:
   def run =
     ZIO
@@ -278,9 +273,8 @@ object App7 extends helpers.ZIOAppDebug:
             3
           )
           .orElse:
-            storeBought
+            BreadStoreBought.layer
   // Attempt 1: Failure(Friend Unreachable)
-  // BreadStoreBought: Bought
   // Result: BreadStoreBought()
 
 
@@ -380,18 +374,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
   // Heads
   // Tails
-  // Heads
-  // Tails
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Tails
-  // Num Heads = 6
-  // Result: 6
+  // Num Heads = 9
+  // Result: 9
 
 
 val nightlyBatch =

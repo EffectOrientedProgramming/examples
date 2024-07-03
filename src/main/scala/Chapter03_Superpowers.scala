@@ -206,7 +206,7 @@ object App6 extends helpers.ZIOAppDebug:
   
   def run =
     effect3
-  // Result: ** Save timed out **
+  // Result: User saved
 
 
 val effect4 =
@@ -222,10 +222,9 @@ object App7 extends helpers.ZIOAppDebug:
     effect4
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
-
-// TODO withFinalizer is not restricted to logging. this is a misleading section header
 
 val effect5 =
   effect4.withFinalizer:
@@ -251,7 +250,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.008969276S,User saved)
+  // Result: (PT0.028152111S,User saved)
 
 
 val effect7 =
