@@ -110,7 +110,7 @@ object App2 extends helpers.ZIOAppDebug:
   // Toast: Made
   // TODO Handle long line. 
   // Truncating for now: 
-  // Toast(Heat(),BreadHomeMade(Heat(),repl.MdocSession$MdocApp$Dough@529df36d))
+  // Toast(Heat(),BreadHomeMade(Heat(),repl.MdocSession$MdocApp$Dough@2e344043))
   // Result: Toast(Heat(),BreadHomeMade(Heat(),repl.MdocSes
 
 
@@ -374,18 +374,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
   // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
   // Tails
   // Heads
   // Heads
+  // Tails
+  // Tails
+  // Tails
   // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Num Heads = 4
+  // Result: 4
 
 
 val nightlyBatch =
