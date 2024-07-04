@@ -187,14 +187,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // James called API [took 1s]
-  // Bruce called API [took 2s]
+  // Bruce called API [took 1s]
+  // James called API [took 2s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Total time [took 8s]
 
 
@@ -271,10 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(695)
-  // Current requests: List(469, 695)
-  // Current requests: List(164, 469, 695)
-  // Current requests: List(757, 164, 469, 695)
+  // Current requests: List(198)
+  // Current requests: List(813, 198)
+  // Current requests: List(963, 813, 198)
+  // Current requests: List(383, 963, 813, 198)
   // Result: Crashed the server!!
 
 
@@ -305,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(146)
-  // Current requests: List(946, 146)
-  // Current requests: List(295, 946, 146)
-  // Current requests: List(999)
-  // Current requests: List(753, 999)
-  // Current requests: List(589, 753, 999)
-  // Current requests: List(768, 998)
-  // Current requests: List(998)
-  // Current requests: List(129, 768, 998)
-  // Current requests: List(245)
+  // Current requests: List(807)
+  // Current requests: List(351, 807)
+  // Current requests: List(255, 351, 807)
+  // Current requests: List(743)
+  // Current requests: List(333, 743)
+  // Current requests: List(339, 333, 743)
+  // Current requests: List(795, 394, 339)
+  // Current requests: List(394, 339)
+  // Current requests: List(387, 795, 394)
+  // Current requests: List(475, 387)
   // Result: All Requests Succeeded
 
 

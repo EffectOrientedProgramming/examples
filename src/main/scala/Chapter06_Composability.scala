@@ -612,8 +612,9 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 val daily =
