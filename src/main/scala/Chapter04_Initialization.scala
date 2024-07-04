@@ -25,7 +25,6 @@ object App0 extends helpers.ZIOAppDebug:
   // Bread: Eating
 
 
-// todo: explain the letRise being an Effect, i.e. dependencies can themselves be Effects
 case class Dough():
   val letRise =
     Console.printLine:
@@ -73,8 +72,8 @@ object App1 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -372,17 +371,17 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Heads
-  // Tails
-  // Tails
-  // Tails
   // Heads
   // Heads
   // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
   // Tails
-  // Tails
-  // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Heads
+  // Num Heads = 9
+  // Result: 9
 
 
 val nightlyBatch =
