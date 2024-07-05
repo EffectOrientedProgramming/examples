@@ -21,12 +21,13 @@ object Test0 extends ZIOSpecDefault:
 
 object Test1 extends ZIOSpecDefault:
   import zio.test.*
+  import zio.Console._
   
   def spec =
     test("flaky test!"):
       defer:
         spottyLogic.run
-        Console.printLine("Continuing...").run
+        printLine("Continuing...").run
         assertCompletes
     @@ TestAspect.flaky
   // Failed!

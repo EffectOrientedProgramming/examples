@@ -119,6 +119,8 @@ object App1 extends helpers.ZIOAppDebug:
   // Result: Amount owed: $1
 
 
+import zio.Console._
+
 val expensiveApiCall =
   ZIO.unit
 
@@ -129,12 +131,10 @@ extension [R, E, A](z: ZIO[R, E, A])
     z.timed
       .tap:
         (duration, _) =>
-          Console
-            .printLine(
-              message + " [took " +
-                duration.getSeconds + "s]"
-            )
-            .orDie
+          printLine(
+            message + " [took " +
+              duration.getSeconds + "s]"
+          ).orDie
       .map(_._2)
 
 import nl.vroste.rezilience.RateLimiter
@@ -186,17 +186,19 @@ object App3 extends helpers.ZIOAppDebug:
           "Total time"
         .unit // ignores the list of unit
         .run
-  // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // James called API [took 2s]
-  // Bill called API [took 3s]
+  // Bruce called API [took 0s]
+  // James called API [took 1s]
+  // Bill called API [took 2s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
   // Bill called API [took 3s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
+  // Bill called API [took 3s]
   // Total time [took 8s]
 
+
+import zio.Console._
 
 trait DelicateResource:
   val request: ZIO[Any, String, Int]
@@ -243,14 +245,12 @@ object DelicateResource:
   val live =
     ZLayer.fromZIO:
       defer:
-        Console
-          .printLine:
-            "Delicate Resource constructed."
-          .run
-        Console
-          .printLine:
-            "Do not make more than 3 concurrent requests!"
-          .run
+        printLine:
+          "Delicate Resource constructed."
+        .run
+        printLine:
+          "Do not make more than 3 concurrent requests!"
+        .run
         Live(
           Ref
             .make[List[Int]](List.empty)
@@ -271,10 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(32)
-  // Current requests: List(317, 32)
-  // Current requests: List(957, 317, 32)
-  // Current requests: List(290, 957, 317, 32)
+  // Current requests: List(564, 294, 603)
+  // Current requests: List(603)
+  // Current requests: List(294, 603)
+  // Current requests: List(810, 564, 294, 603)
   // Result: Crashed the server!!
 
 
@@ -305,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(674)
-  // Current requests: List(515, 674)
-  // Current requests: List(93, 515, 674)
-  // Current requests: List(754, 262)
-  // Current requests: List(262)
-  // Current requests: List(663, 754, 262)
-  // Current requests: List(238)
-  // Current requests: List(291, 238)
-  // Current requests: List(520, 291, 238)
-  // Current requests: List(927)
+  // Current requests: List(426)
+  // Current requests: List(226, 426)
+  // Current requests: List(0, 226, 426)
+  // Current requests: List(318, 82)
+  // Current requests: List(82)
+  // Current requests: List(280, 318, 82)
+  // Current requests: List(815, 641, 280)
+  // Current requests: List(641, 280)
+  // Current requests: List(585, 815, 641)
+  // Current requests: List(689)
   // Result: All Requests Succeeded
 
 
@@ -573,6 +573,8 @@ object App8 extends helpers.ZIOAppDebug:
   // Result: 0
 
 
+import zio.Console._
+
 val attemptsR =
   Unsafe.unsafe {
     implicit unsafe =>
@@ -588,8 +590,8 @@ def spottyLogic =
     val attemptsCur =
       attemptsR.getAndUpdate(_ + 1).run
     if ZIO.attempt(attemptsCur).run == 3 then
-      Console.printLine("Success!").run
+      printLine("Success!").run
       ZIO.succeed(1).run
     else
-      Console.printLine("Failed!").run
+      printLine("Failed!").run
       ZIO.fail("Failed").run
