@@ -187,14 +187,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // James called API [took 1s]
-  // Bruce called API [took 2s]
-  // Bill called API [took 3s]
-  // James called API [took 3s]
+  // Bruce called API [took 1s]
+  // Bill called API [took 2s]
+  // James called API [took 2s]
   // Bruce called API [took 3s]
   // Bill called API [took 3s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 2s]
   // Total time [took 8s]
 
 
@@ -271,10 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(940)
-  // Current requests: List(507, 177, 940)
-  // Current requests: List(177, 940)
-  // Current requests: List(278, 507, 177, 940)
+  // Current requests: List(38)
+  // Current requests: List(254, 38)
+  // Current requests: List(588, 254, 38)
+  // Current requests: List(953, 588, 254, 38)
   // Result: Crashed the server!!
 
 
@@ -305,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(219)
-  // Current requests: List(450, 219)
-  // Current requests: List(372, 450, 219)
-  // Current requests: List(893)
-  // Current requests: List(184, 893)
-  // Current requests: List(36, 184, 893)
-  // Current requests: List(985, 219, 36)
-  // Current requests: List(219, 36)
-  // Current requests: List(519, 985, 219)
-  // Current requests: List(679)
+  // Current requests: List(465)
+  // Current requests: List(107, 465)
+  // Current requests: List(330, 107, 465)
+  // Current requests: List(888)
+  // Current requests: List(221, 888)
+  // Current requests: List(650, 221, 888)
+  // Current requests: List(968, 989, 650)
+  // Current requests: List(989, 650)
+  // Current requests: List(660, 968, 989)
+  // Current requests: List(970)
   // Result: All Requests Succeeded
 
 
@@ -573,19 +573,21 @@ object App8 extends helpers.ZIOAppDebug:
   // Result: 0
 
 
-// TODO: Maybe use a Ref to avoid zio.direct warning
-var attempts =
-  0
+val attemptsR =
+  Unsafe.unsafe {
+    implicit unsafe =>
+      Runtime
+        .default
+        .unsafe
+        .run(Ref.make(0))
+        .getOrThrowFiberFailure()
+  }
 
 def spottyLogic =
   defer:
-    ZIO
-      .attempt {
-        attempts =
-          attempts + 1
-      }
-      .run
-    if ZIO.attempt(attempts).run == 3 then
+    val attemptsCur =
+      attemptsR.getAndUpdate(_ + 1).run
+    if ZIO.attempt(attemptsCur).run == 3 then
       Console.printLine("Success!").run
       ZIO.succeed(1).run
     else

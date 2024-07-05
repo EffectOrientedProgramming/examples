@@ -23,12 +23,15 @@ object Test1 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
-    test("long test!"):
+    test("flaky test!"):
       defer:
         spottyLogic.run
+        Console.printLine("Continuing...").run
         assertCompletes
     @@ TestAspect.flaky
   // Failed!
   // Failed!
+  // Failed!
   // Success!
-  // + long test!
+  // Continuing...
+  // + flaky test!
