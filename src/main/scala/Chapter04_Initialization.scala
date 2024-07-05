@@ -3,9 +3,11 @@ package Chapter04_Initialization
 import zio.*
 import zio.direct.*
 
+import zio.Console._
+
 trait Bread:
   def eat =
-    Console.printLine:
+    printLine:
       "Bread: Eating"
 
 case class BreadStoreBought() extends Bread
@@ -25,25 +27,33 @@ object App0 extends helpers.ZIOAppDebug:
   // Bread: Eating
 
 
+import zio.Console._
+
 case class Dough():
   val letRise =
-    Console.printLine:
+    printLine:
       "Dough: rising"
+
+import zio.Console._
 
 object Dough:
   val fresh =
     ZLayer.fromZIO:
       defer:
-        Console.printLine("Dough: Mixed").run
+        printLine("Dough: Mixed").run
         Dough()
+
+import zio.Console._
 
 case class Heat()
 
 val oven =
   ZLayer.fromZIO:
     defer:
-      Console.printLine("Oven: Heated").run
+      printLine("Oven: Heated").run
       Heat()
+
+import zio.Console._
 
 case class BreadHomeMade(
     heat: Heat,
@@ -54,9 +64,7 @@ object Bread:
   val homemade =
     ZLayer.fromZIO:
       defer:
-        Console
-          .printLine("BreadHomeMade: Baked")
-          .run
+        printLine("BreadHomeMade: Baked").run
         BreadHomeMade(
           ZIO.service[Heat].run,
           ZIO.service[Dough].run
@@ -78,16 +86,18 @@ object App1 extends helpers.ZIOAppDebug:
   // Bread: Eating
 
 
+import zio.Console._
+
 case class Toast(heat: Heat, bread: Bread):
   val eat =
-    Console.printLine:
+    printLine:
       "Toast: Eating"
 
 object Toast:
   val make =
     ZLayer.fromZIO:
       defer:
-        Console.printLine("Toast: Made").run
+        printLine("Toast: Made").run
         Toast(
           ZIO.service[Heat].run,
           ZIO.service[Bread].run
@@ -110,12 +120,12 @@ object App2 extends helpers.ZIOAppDebug:
   // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
+import zio.Console._
+
 val toaster =
   ZLayer.fromZIO:
     defer:
-      Console
-        .printLine("Toaster: Heated")
-        .run
+      printLine("Toaster: Heated").run
       Heat()
 
 object App3 extends helpers.ZIOAppDebug:
@@ -128,29 +138,31 @@ object App3 extends helpers.ZIOAppDebug:
   // Result: Heat()
 
 
+import zio.Console._
+
 case class Toaster()
 object Toaster:
   val layer =
     ZLayer.fromZIO:
       defer:
-        Console
-          .printLine("Toaster: Heating")
-          .run
+        printLine("Toaster: Heating").run
         Toaster()
+
+import zio.Console._
 
 case class ToastZ(
     heat: Toaster,
     bread: Bread
 ):
   val eat =
-    Console.printLine:
+    printLine:
       "Toast: Eating"
 
 object ToastZ:
   val make =
     ZLayer.fromZIO:
       defer:
-        Console.printLine("ToastZ: Made").run
+        printLine("ToastZ: Made").run
         ToastZ(
           ZIO.service[Toaster].run,
           ZIO.service[Bread].run
@@ -176,20 +188,21 @@ object App4 extends helpers.ZIOAppDebug:
   // Toast: Eating
 
 
+import zio.Console._
+
 val ovenSafe =
   ZLayer.fromZIO:
     ZIO
       .succeed(Heat())
       .tap:
         _ =>
-          Console.printLine:
+          printLine:
             "Oven: Heated"
       .withFinalizer:
         _ =>
-          Console
-            .printLine:
-              "Oven: Turning off!"
-            .orDie
+          printLine:
+            "Oven: Turning off!"
+          .orDie
 
 object App5 extends helpers.ZIOAppDebug:
   def run =
@@ -202,22 +215,22 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
 
 
+import zio.Console._
+
 case class BreadFromFriend() extends Bread()
 object Friend:
   def forcedFailure(invocations: Int) =
     defer:
-      Console
-        .printLine(
-          s"Attempt $invocations: Failure(Friend Unreachable)"
-        )
-        .run
+      printLine(
+        s"Attempt $invocations: Failure(Friend Unreachable)"
+      ).run
       ZIO
         .when(true)(
           ZIO.fail(
@@ -238,11 +251,9 @@ object Friend:
       else if invocations == 1 then
         ZIO.succeed(BreadFromFriend())
       else
-        Console
-          .printLine(
-            s"Attempt $invocations: Succeeded"
-          )
-          .orDie
+        printLine(
+          s"Attempt $invocations: Succeeded"
+        ).orDie
           .as:
             BreadFromFriend()
 end Friend
@@ -370,18 +381,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Tails
-  // Tails
   // Tails
   // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Heads
   // Heads
   // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Num Heads = 3
-  // Result: 3
+  // Heads
+  // Heads
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
