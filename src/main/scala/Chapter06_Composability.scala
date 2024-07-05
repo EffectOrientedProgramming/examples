@@ -323,16 +323,17 @@ object App7 extends helpers.ZIOAppDebug:
 
 
 object App8 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   def run =
     defer:
       val file1 =
         openFileZ("file1.txt").run
       val file2 =
         openFileZ("file2.txt").run
-      Console
-        .printLine:
-          file1.sameContent(file2)
-        .run
+      printLine:
+        file1.sameContent(file2)
+      .run
   // File - OPEN
   // File - OPEN
   // side-effect print: comparing content
@@ -409,7 +410,7 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: AITooSlow()
+  // Result: short summary
 
 
 object App11 extends helpers.ZIOAppDebug:
@@ -612,8 +613,9 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 val daily =
