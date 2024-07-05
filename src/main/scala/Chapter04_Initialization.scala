@@ -28,7 +28,7 @@ object App0 extends helpers.ZIOAppDebug:
 case class Dough():
   val letRise =
     Console.printLine:
-      "Dough is rising"
+      "Dough: rising"
 
 object Dough:
   val fresh =
@@ -72,8 +72,8 @@ object App1 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -371,17 +371,17 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Heads
-  // Heads
-  // Tails
-  // Heads
-  // Tails
   // Tails
   // Tails
   // Tails
   // Heads
+  // Heads
   // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =

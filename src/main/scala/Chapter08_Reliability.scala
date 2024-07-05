@@ -187,14 +187,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // Bill called API [took 2s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
+  // Bill called API [took 3s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
   // Bill called API [took 3s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
-  // James called API [took 2s]
   // Total time [took 8s]
 
 
@@ -271,10 +271,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(573)
-  // Current requests: List(285, 573)
-  // Current requests: List(374, 285, 573)
-  // Current requests: List(325, 374, 285, 573)
+  // Current requests: List(894)
+  // Current requests: List(619, 894)
+  // Current requests: List(115, 619, 894)
+  // Current requests: List(746, 115, 619, 894)
   // Result: Crashed the server!!
 
 
@@ -305,16 +305,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(603)
-  // Current requests: List(286, 603)
-  // Current requests: List(438, 286, 603)
-  // Current requests: List(774, 438)
-  // Current requests: List(251, 774)
-  // Current requests: List(720, 251, 774)
-  // Current requests: List(233, 600, 720)
-  // Current requests: List(600, 720)
-  // Current requests: List(24, 233, 600)
-  // Current requests: List(277)
+  // Current requests: List(761)
+  // Current requests: List(796, 761)
+  // Current requests: List(346, 796, 761)
+  // Current requests: List(94)
+  // Current requests: List(193, 94)
+  // Current requests: List(42, 193, 94)
+  // Current requests: List(715, 352, 42)
+  // Current requests: List(352, 42)
+  // Current requests: List(355, 715, 352)
+  // Current requests: List(640)
   // Result: All Requests Succeeded
 
 
