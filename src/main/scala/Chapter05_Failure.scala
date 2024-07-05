@@ -126,20 +126,23 @@ object App1 extends helpers.ZIOAppDebug:
 
 
 object App2 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   override val bootstrap =
     networkFailure
   
   def run =
     defer:
       getTemperature.run
-      Console
-        .printLine:
-          "only prints if getTemperature succeeds"
-        .run
+      printLine:
+        "only prints if getTemperature succeeds"
+      .run
   // Result: Defect: NetworkException: Network Failure
 
 
 object App3 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   override val bootstrap =
     networkFailure
   
@@ -152,10 +155,9 @@ object App3 extends helpers.ZIOAppDebug:
   
     defer:
       safeGetTemperature.run
-      Console
-        .printLine:
-          "will not print if getTemperature fails"
-        .run
+      printLine:
+        "will not print if getTemperature fails"
+      .run
   // will not print if getTemperature fails
 
 
@@ -181,6 +183,8 @@ val temperatureAppComplete =
         "GPS Hardware Failure"
 
 object App4 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   override val bootstrap =
     gpsFailure
   
@@ -188,10 +192,9 @@ object App4 extends helpers.ZIOAppDebug:
     defer:
       val result =
         temperatureAppComplete.run
-      Console
-        .printLine:
-          s"Didn't fail, despite: $result"
-        .run
+      printLine:
+        s"Didn't fail, despite: $result"
+      .run
   // Didn't fail, despite: GPS Hardware Failure
 
 
@@ -202,13 +205,15 @@ val getTemperatureBad =
         e.getMessage
 
 object App5 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   override val bootstrap =
     gpsFailure
   
   def run =
     getTemperatureBad.catchAll:
       case s: String =>
-        Console.printLine(s)
+        printLine(s)
   // GPS Failure
 
 
@@ -243,16 +248,18 @@ object App6 extends helpers.ZIOAppDebug:
 
 
 object App7 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   override val bootstrap =
     weird
   
   def run =
     getTemperatureWithCheck.catchAll:
       case exception: Exception =>
-        Console.printLine:
+        printLine:
           exception.getMessage
       case failure: ClimateFailure =>
-        Console.printLine:
+        printLine:
           failure.message
   // **Machine froze**
 
