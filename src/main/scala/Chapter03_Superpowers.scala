@@ -3,6 +3,8 @@ package Chapter03_Superpowers
 import zio.*
 import zio.direct.*
 
+import zio.Console._
+
 enum Scenario:
   case HappyPath
   case NeverWorks
@@ -70,7 +72,7 @@ def saveUser(username: String) =
         "**Database crashed!!**"
       .tapError:
         error =>
-          Console.printLine:
+          printLine:
             "Log: " + error
 
   def saveForScenario(
@@ -222,6 +224,7 @@ object App7 extends helpers.ZIOAppDebug:
     effect4
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -249,7 +252,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.017507377S,User saved)
+  // Result: (PT0.061180651S,User saved)
 
 
 val effect7 =
@@ -265,24 +268,30 @@ object App10 extends helpers.ZIOAppDebug:
 
 
 object App11 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   def run =
-    Console.printLine("Before save")
+    printLine("Before save")
     effect1
   // Result: User saved
 
 
 object App12 extends helpers.ZIOAppDebug:
+  import zio.Console._
+  
   def run =
     defer:
-      Console.printLine("Before save").run
+      printLine("Before save").run
       effect1.run // Display each save
   // Before save
   // Result: User saved
 
 
+import zio.Console._
+
 val effect8 =
   defer:
-    Console.printLine("Before save").run
+    printLine("Before save").run
     effect1.run
 
 object App13 extends helpers.ZIOAppDebug:
@@ -309,13 +318,15 @@ object App14 extends helpers.ZIOAppDebug:
   // Result: User saved
 
 
+import zio.Console._
+
 val surroundedProgram =
   defer:
-    Console.printLine("**Before**").run
+    printLine("**Before**").run
     effect8
       .debug // Display each save
       .repeatN(1).run
-    Console.printLine("**After**").run
+    printLine("**After**").run
 
 object App15 extends helpers.ZIOAppDebug:
   def run =

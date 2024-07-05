@@ -141,6 +141,7 @@ object App3 extends helpers.ZIOAppDebug:
 import zio.Console._
 
 case class Toaster()
+
 object Toaster:
   val layer =
     ZLayer.fromZIO:
@@ -381,18 +382,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
   // Heads
   // Tails
   // Tails
   // Tails
   // Heads
-  // Heads
+  // Tails
+  // Tails
   // Tails
   // Heads
   // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 4
+  // Result: 4
 
 
 val nightlyBatch =
