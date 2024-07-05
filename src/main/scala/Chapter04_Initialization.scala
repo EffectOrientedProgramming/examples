@@ -113,8 +113,8 @@ object App2 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Toast: Made
   // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
@@ -216,8 +216,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -383,17 +383,17 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Tails
-  // Heads
-  // Heads
-  // Tails
-  // Heads
-  // Heads
-  // Heads
   // Tails
   // Tails
   // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Tails
+  // Tails
+  // Tails
+  // Heads
+  // Tails
+  // Tails
+  // Num Heads = 2
+  // Result: 2
 
 
 val nightlyBatch =

@@ -579,8 +579,19 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
+  // Network - Getting headline
+  // Analytics - Scanning for topic
+  // Analytics - topic: Some(stock market)
+  // File - OPEN
+  // File - contains(stock market) => false
+  // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: AITooSlow()
+  // File - CLOSE
+  // Result: market is not rational
 
 
 val strictResearch =
@@ -602,9 +613,9 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
+  // AI **INTERRUPTED**
   // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 val daily =
