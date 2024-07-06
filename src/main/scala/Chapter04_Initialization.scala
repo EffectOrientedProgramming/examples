@@ -80,8 +80,8 @@ object App1 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -356,16 +356,10 @@ val coinToss =
   defer:
     if Random.nextBoolean.run then
       ZIO.debug("Heads").run
-      ZIO
-        .succeed:
-          "Heads"
-        .run
+      ZIO.succeed("Heads").run
     else
       ZIO.debug("Tails").run
-      ZIO
-        .fail:
-          "Tails"
-        .run
+      ZIO.fail("Tails").run
 
 val flipTen =
   defer:
@@ -382,18 +376,18 @@ val flipTen =
 object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Heads
-  // Heads
-  // Tails
   // Tails
   // Tails
   // Heads
   // Tails
+  // Heads
+  // Heads
+  // Heads
   // Tails
+  // Heads
   // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
