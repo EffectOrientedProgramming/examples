@@ -377,15 +377,15 @@ object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Heads
-  // Tails
-  // Tails
-  // Tails
-  // Heads
   // Heads
   // Heads
   // Heads
   // Tails
   // Heads
+  // Tails
+  // Heads
+  // Tails
+  // Tails
   // Num Heads = 6
   // Result: 6
 
