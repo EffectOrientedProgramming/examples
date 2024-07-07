@@ -536,9 +536,9 @@ object App17 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
+  // AI **INTERRUPTED**
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App18 extends helpers.ZIOAppDebug:
@@ -560,44 +560,12 @@ object App18 extends helpers.ZIOAppDebug:
   // Result: market is not rational
 
 
-object App19 extends helpers.ZIOAppDebug:
-  // TODO: enables, reuse, repeats, delays, etc
-  override val bootstrap =
-    stockMarketHeadline
-  
-  def run =
-    defer:
-      researchHeadline.run
-      researchHeadline.run
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market) => false
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
-  // Network - Getting headline
-  // Analytics - Scanning for topic
-  // Analytics - topic: Some(stock market)
-  // File - OPEN
-  // File - contains(stock market) => false
-  // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
-  // File - CLOSE
-  // File - CLOSE
-  // Result: market is not rational
-
-
 val strictResearch =
   researchHeadline
     .timeoutFail("strict timeout"):
-      1.second
+      1.millisecond
 
-object App20 extends helpers.ZIOAppDebug:
+object App19 extends helpers.ZIOAppDebug:
   override val bootstrap =
     stockMarketHeadline
   
