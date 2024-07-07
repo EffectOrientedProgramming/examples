@@ -152,12 +152,17 @@ object App2 extends helpers.ZIOAppDebug:
     defer:
       val rateLimiter =
         makeRateLimiter.run
+  
       rateLimiter:
         expensiveApiCall
       .timedSecondsDebug:
         s"called API"
-      .repeatN(2) // Repeats as fast as allowed
-        .timedSecondsDebug("Result").run
+        // Repeats as fast as allowed
+      .repeatN:
+        2
+      .timedSecondsDebug:
+        "Result"
+      .run
   // called API [took 0s]
   // called API [took 1s]
   // called API [took 1s]
@@ -187,14 +192,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bruce called API [took 1s]
-  // Bill called API [took 2s]
-  // James called API [took 2s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
+  // Bill called API [took 3s]
+  // James called API [took 3s]
   // Bruce called API [took 3s]
   // Bill called API [took 3s]
   // James called API [took 3s]
   // Bruce called API [took 3s]
-  // James called API [took 2s]
   // Total time [took 8s]
 
 
@@ -271,11 +276,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(80)
-  // Current requests: List(210, 811, 362, 80)
-  // Current requests: List(362, 80)
-  // Current requests: List(811, 362, 80)
-  // Current requests: List(425, 210, 811, 362, 80)
+  // Current requests: List(68, 291)
+  // Current requests: List(291)
+  // Current requests: List(27, 68, 291)
+  // Current requests: List(9, 27, 68, 291)
   // Result: Crashed the server!!
 
 
@@ -306,16 +310,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(693)
-  // Current requests: List(91, 693)
-  // Current requests: List(574, 91, 693)
-  // Current requests: List(781)
-  // Current requests: List(818, 781)
-  // Current requests: List(655, 818, 781)
-  // Current requests: List(940, 655)
-  // Current requests: List(627, 940, 655)
-  // Current requests: List(211, 627, 940)
-  // Current requests: List(231)
+  // Current requests: List(512)
+  // Current requests: List(976, 512)
+  // Current requests: List(524, 976, 512)
+  // Current requests: List(649)
+  // Current requests: List(362, 649)
+  // Current requests: List(392, 362, 649)
+  // Current requests: List(182, 392)
+  // Current requests: List(104, 182, 392)
+  // Current requests: List(323, 104, 182)
+  // Current requests: List(126)
   // Result: All Requests Succeeded
 
 
@@ -517,7 +521,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 74 Calls made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -530,6 +534,7 @@ val logicThatSporadicallyLocksUp =
       case _ =>
         10.millis
 
+// eh?
 case class LogicHolder(
     logic: ZIO[Any, Nothing, Duration]
 )
@@ -554,8 +559,9 @@ object App8 extends helpers.ZIOAppDebug:
   
       // TODO: explain the reason for silly
       // List of ()
-      //       talk about how it'd be nice to have a
-      //       ZIO operator for repeatNPar
+      //       talk about how it'd be nice to
+      //       have a ZIO operator for
+      //       repeatNPar
       //       happy birthday bill
       ZIO
         .foreachPar(List.fill(50_000)(())):
@@ -565,6 +571,7 @@ object App8 extends helpers.ZIOAppDebug:
       contractBreaches
         .get
         .debug("Contract Breaches")
+        .unit
         .run
   
   def run =
@@ -575,8 +582,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic(
       LogicHolder(logicThatSporadicallyLocksUp)
     )
-  // Contract Breaches: 48
-  // Result: 48
+  // Contract Breaches: 46
 
 
 import zio.Console._
