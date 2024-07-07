@@ -519,7 +519,6 @@ object App16 extends helpers.ZIOAppDebug:
   // File - contains(space) => false
   // Wiki - articleFor(space)
   // AI - summarize - start
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
 
@@ -613,8 +612,9 @@ object App20 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 val daily =
