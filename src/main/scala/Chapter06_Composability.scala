@@ -417,6 +417,7 @@ object App11 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("space")
   // AI - summarize - start
+  // AI **INTERRUPTED**
   // Result: AITooSlow()
 
 
@@ -508,7 +509,6 @@ object App16 extends helpers.ZIOAppDebug:
   
   def run =
     researchHeadline
-  // TODO: make sure onInterrupt debug shows up
   // Network - Getting headline
   // Analytics - Scanning for topic
   // Analytics - topic: Some(space)
@@ -576,6 +576,9 @@ object App19 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: strict timeout
 
