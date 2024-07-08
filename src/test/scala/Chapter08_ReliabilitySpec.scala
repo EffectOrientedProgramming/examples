@@ -7,7 +7,6 @@ import zio.test.*
 object Test0 extends ZIOSpecDefault:
   import zio.test.*
   
-  // TODO: Watch for indeterminate output - test should fail
   def spec =
     test("long testZ"):
       defer:

@@ -279,12 +279,12 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(523)
-  // Current requests: List(903, 523)
-  // Current requests: List(733, 903, 523)
-  // Current requests: List(903, 733, 903, 523)
-  // Current requests: List(414, 903, 733, 903, 523)
-  // Current requests: List(313, 414, 903, 733, 903, 523)
+  // Current requests: List(424)
+  // Current requests: List(803, 424)
+  // Current requests: List(108, 803, 424)
+  // Current requests: List(592, 108, 803, 424)
+  // Current requests: List(228, 592, 108, 803, 424)
+  // Current requests: List(291, 228, 592, 108, 803, 424)
   // Result: Crashed the server!!
 
 
@@ -315,16 +315,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(751)
-  // Current requests: List(921, 751)
-  // Current requests: List(53, 921, 751)
-  // Current requests: List(838)
-  // Current requests: List(962, 838)
-  // Current requests: List(518, 962, 838)
-  // Current requests: List(595, 518)
-  // Current requests: List(433, 595, 518)
-  // Current requests: List(699, 433, 595)
-  // Current requests: List(675)
+  // Current requests: List(634)
+  // Current requests: List(902, 634)
+  // Current requests: List(977, 902, 634)
+  // Current requests: List(731, 550)
+  // Current requests: List(550)
+  // Current requests: List(999, 731, 550)
+  // Current requests: List(235, 999)
+  // Current requests: List(998, 235, 999)
+  // Current requests: List(413, 998, 235)
+  // Current requests: List(962, 413)
   // Result: All Requests Succeeded
 
 
@@ -527,7 +527,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Calls prevented: $prevented Calls made: $made"
-  // Result: Calls prevented: 75 Calls made: 66
+  // Result: Calls prevented: 74 Calls made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -579,7 +579,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 64
+  // Result: Contract Breaches: 51
 
 
 val hedged =

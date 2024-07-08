@@ -577,6 +577,8 @@ object App19 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
   // File - CLOSE
   // Result: strict timeout
 
