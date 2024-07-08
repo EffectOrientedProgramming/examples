@@ -27,6 +27,33 @@ object App0 extends helpers.ZIOAppDebug:
   // Bread: Eating
 
 
+import zio.Console.*
+case class X():
+  val f =
+    defer:
+      printLine("X.f").run
+
+val make =
+  defer:
+    printLine("Creating X").run
+    X()
+
+object App1 extends helpers.ZIOAppDebug:
+  object X:
+    val made =
+      ZLayer.fromZIO:
+        make
+  
+  def run =
+    ZIO
+      .serviceWithZIO[X]:
+        x => x.f
+      .provide:
+        X.made
+  // Creating X
+  // X.f
+
+
 import zio.Console._
 
 case class Dough():
@@ -70,7 +97,7 @@ object Bread:
           ZIO.service[Dough].run
         )
 
-object App1 extends helpers.ZIOAppDebug:
+object App2 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[Bread]:
@@ -103,7 +130,7 @@ object Toast:
           ZIO.service[Bread].run
         )
 
-object App2 extends helpers.ZIOAppDebug:
+object App3 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Toast]
@@ -128,7 +155,7 @@ val toaster =
       printLine("Toaster: Heated").run
       Heat()
 
-object App3 extends helpers.ZIOAppDebug:
+object App4 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Heat]
@@ -169,7 +196,7 @@ object ToastZ:
           ZIO.service[Bread].run
         )
 
-object App4 extends helpers.ZIOAppDebug:
+object App5 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[ToastZ]:
@@ -181,10 +208,10 @@ object App4 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Toaster: Heating
   // Oven: Heated
   // Dough: Mixed
   // BreadHomeMade: Baked
+  // Toaster: Heating
   // ToastZ: Made
   // Toast: Eating
 
@@ -205,7 +232,7 @@ val ovenSafe =
             "Oven: Turning off!"
           .orDie
 
-object App5 extends helpers.ZIOAppDebug:
+object App6 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[Bread]:
@@ -216,8 +243,8 @@ object App5 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -259,7 +286,7 @@ object Friend:
             BreadFromFriend()
 end Friend
 
-object App6 extends helpers.ZIOAppDebug:
+object App7 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -271,7 +298,7 @@ object App6 extends helpers.ZIOAppDebug:
   // Result: Failure(Friend Unreachable)
 
 
-object App7 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -299,7 +326,7 @@ def logicWithRetries(retries: Int) =
           Schedule.recurs:
             retries
 
-object App8 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   def run =
     logicWithRetries(retries =
       2
@@ -331,7 +358,7 @@ val config =
       configDescriptor.from:
         configProvider
 
-object App9 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[RetryConfig]:
@@ -373,21 +400,21 @@ val flipTen =
     ZIO.debug(s"Num Heads = $numHeads").run
     numHeads
 
-object App10 extends helpers.ZIOAppDebug:
+object App11 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Heads
-  // Heads
-  // Heads
-  // Heads
   // Heads
   // Tails
   // Tails
+  // Heads
+  // Tails
   // Tails
   // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Tails
+  // Heads
+  // Heads
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
