@@ -417,7 +417,6 @@ object App11 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("space")
   // AI - summarize - start
-  // AI **INTERRUPTED**
   // Result: AITooSlow()
 
 
@@ -577,11 +576,8 @@ object App19 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 val daily =
