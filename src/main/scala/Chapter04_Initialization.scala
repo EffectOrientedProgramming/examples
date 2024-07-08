@@ -30,8 +30,7 @@ object App0 extends helpers.ZIOAppDebug:
 import zio.Console.*
 case class X():
   val f =
-    defer:
-      printLine("X.f").run
+    printLine("X.f")
 
 val make =
   defer:
@@ -403,18 +402,18 @@ val flipTen =
 object App11 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Heads
-  // Tails
   // Tails
   // Heads
   // Tails
   // Heads
+  // Heads
+  // Heads
+  // Tails
+  // Heads
   // Tails
   // Tails
-  // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
