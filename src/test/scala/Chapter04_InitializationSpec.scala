@@ -70,8 +70,6 @@ object Test4 extends ZIOSpecDefault:
 
 
 object Test5 extends ZIOSpecDefault:
-  import zio.test.*
-  
   def spec =
     test("batch runs after 24 hours"):
       defer:
