@@ -262,7 +262,7 @@ object Friend:
         .when(true)(
           ZIO.fail(
             "Failure(Friend Unreachable)"
-          ) // TODO: Replace error with failure pervasively
+          )
         )
         .as(???)
         .run
@@ -403,17 +403,17 @@ object App11 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Tails
-  // Heads
   // Tails
-  // Heads
-  // Heads
-  // Heads
   // Tails
   // Heads
   // Tails
   // Tails
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Tails
+  // Tails
+  // Heads
+  // Num Heads = 2
+  // Result: 2
 
 
 val nightlyBatch =
@@ -422,3 +422,9 @@ val nightlyBatch =
       24.hours
     .debug:
       "Parsing CSV"
+
+import zio.test.*
+
+val timeTravel =
+  TestClock.adjust:
+    24.hours

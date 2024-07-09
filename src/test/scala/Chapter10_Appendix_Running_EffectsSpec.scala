@@ -14,4 +14,5 @@ object Test0 extends ZIOSpecDefault:
         assertTrue:
           10 > 2
   // ** logic **
+  // AI **INTERRUPTED**
   // + random is random

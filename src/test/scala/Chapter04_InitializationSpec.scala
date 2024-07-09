@@ -74,19 +74,8 @@ object Test5 extends ZIOSpecDefault:
   
   def spec =
     test("batch runs after 24 hours"):
-      val timeTravel =
-        TestClock.adjust:
-          24.hours
-  
       defer:
         nightlyBatch.zipPar(timeTravel).run
-  //      val fork =
-  //        nightlyBatch.fork.run
-  //      timeTravel.run
-  //      fork.join.run
-  
         assertCompletes
-  
-  // TODO: update prose on zip
   // Parsing CSV: ()
   // + batch runs after 24 hours
