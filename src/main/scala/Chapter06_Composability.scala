@@ -556,9 +556,8 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
-  // File - disk full!
   // File - CLOSE
-  // Result: DiskFull()
+  // Result: AITooSlow()
 
 
 object App20 extends helpers.ZIOAppDebug:
@@ -597,6 +596,8 @@ object App21 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
   // File - CLOSE
   // Result: strict timeout
 

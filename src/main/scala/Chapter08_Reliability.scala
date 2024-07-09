@@ -279,12 +279,12 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(175)
-  // Current requests: List(868, 175)
-  // Current requests: List(460, 868, 175)
-  // Current requests: List(979, 460, 868, 175)
-  // Current requests: List(530, 979, 460, 868, 175)
-  // Current requests: List(424, 530, 979, 460, 868, 175)
+  // Current requests: List(539)
+  // Current requests: List(694, 539)
+  // Current requests: List(376, 694, 539)
+  // Current requests: List(752, 376, 694, 539)
+  // Current requests: List(480, 752, 376, 694, 539)
+  // Current requests: List(182, 480, 752, 376, 694, 539)
   // Result: Crashed the server!!
 
 
@@ -315,16 +315,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(163)
-  // Current requests: List(395, 163)
-  // Current requests: List(18, 395, 163)
-  // Current requests: List(211)
-  // Current requests: List(525, 211)
-  // Current requests: List(817, 525, 211)
-  // Current requests: List(952, 817)
-  // Current requests: List(800, 952, 817)
-  // Current requests: List(159, 800, 952)
-  // Current requests: List(748, 159)
+  // Current requests: List(17)
+  // Current requests: List(753, 17)
+  // Current requests: List(365, 753, 17)
+  // Current requests: List(499, 365)
+  // Current requests: List(365)
+  // Current requests: List(179, 499, 365)
+  // Current requests: List(613)
+  // Current requests: List(336, 613)
+  // Current requests: List(60, 336, 613)
+  // Current requests: List(714)
   // Result: All Requests Succeeded
 
 
@@ -581,7 +581,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 57
+  // Result: Contract Breaches: 44
 
 
 val hedged =
