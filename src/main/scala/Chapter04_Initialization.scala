@@ -403,17 +403,17 @@ object App11 extends helpers.ZIOAppDebug:
   def run =
     flipTen
   // Tails
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Tails
   // Heads
   // Tails
   // Heads
-  // Num Heads = 8
-  // Result: 8
+  // Tails
+  // Heads
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =
@@ -422,9 +422,3 @@ val nightlyBatch =
       24.hours
     .debug:
       "Parsing CSV"
-
-import zio.test.*
-
-val timeTravel =
-  TestClock.adjust:
-    24.hours

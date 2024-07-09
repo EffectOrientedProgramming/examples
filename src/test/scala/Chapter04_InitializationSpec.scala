@@ -69,7 +69,13 @@ object Test4 extends ZIOSpecDefault:
   // + flips 10 times
 
 
-object Test5 extends ZIOSpecDefault:
+import zio.test.*
+
+val timeTravel =
+  TestClock.adjust:
+    24.hours
+
+object Test6 extends ZIOSpecDefault:
   def spec =
     test("batch runs after 24 hours"):
       defer:

@@ -197,7 +197,7 @@ object App3 extends helpers.ZIOAppDebug:
   // Bill called API [took 0s]
   // Bruce called API [took 1s]
   // James called API [took 2s]
-  // Bill called API [took 3s]
+  // Bill called API [took 2s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
   // Bill called API [took 3s]
@@ -279,10 +279,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(528)
-  // Current requests: List(925, 528)
-  // Current requests: List(124, 925, 528)
-  // Current requests: List(375, 124, 925, 528)
+  // Current requests: List(67)
+  // Current requests: List(786, 67)
+  // Current requests: List(59, 786, 67)
+  // Current requests: List(594, 59, 786, 67)
   // Result: Crashed the server!!
 
 
@@ -313,16 +313,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(182)
-  // Current requests: List(598, 182)
-  // Current requests: List(907, 598, 182)
-  // Current requests: List(812)
-  // Current requests: List(573, 812)
-  // Current requests: List(713, 573, 812)
-  // Current requests: List(330)
-  // Current requests: List(610, 330)
-  // Current requests: List(715, 610, 330)
-  // Current requests: List(963)
+  // Current requests: List(590, 458)
+  // Current requests: List(458)
+  // Current requests: List(737, 590, 458)
+  // Current requests: List(171, 538)
+  // Current requests: List(538)
+  // Current requests: List(749, 171, 538)
+  // Current requests: List(952, 749)
+  // Current requests: List(411, 952)
+  // Current requests: List(504, 411, 952)
+  // Current requests: List(632)
   // Result: All Requests Succeeded
 
 
@@ -577,7 +577,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 42
+  // Result: Contract Breaches: 65
 
 
 val hedged =
