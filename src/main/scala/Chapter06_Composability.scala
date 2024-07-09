@@ -597,9 +597,6 @@ object App21 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
   // Result: strict timeout
 
