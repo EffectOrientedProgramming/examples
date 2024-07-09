@@ -195,14 +195,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // James called API [took 1s]
-  // Bill called API [took 2s]
+  // Bruce called API [took 1s]
+  // James called API [took 2s]
+  // Bill called API [took 3s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
   // Bill called API [took 3s]
   // Bruce called API [took 3s]
   // James called API [took 3s]
-  // Bruce called API [took 2s]
   // Total time [took 8s]
 
 
@@ -279,12 +279,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(886)
-  // Current requests: List(838, 886)
-  // Current requests: List(954, 838, 886)
-  // Current requests: List(812, 760, 954, 838, 886)
-  // Current requests: List(760, 954, 838, 886)
-  // Current requests: List(242, 812, 760, 954, 838, 886)
+  // Current requests: List(701)
+  // Current requests: List(267, 701)
+  // Current requests: List(246, 267, 701)
+  // Current requests: List(477, 246, 267, 701)
+  // Current requests: List(235, 477, 246, 267, 701)
   // Result: Crashed the server!!
 
 
@@ -315,16 +314,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(820, 488)
-  // Current requests: List(488)
-  // Current requests: List(695, 820, 488)
-  // Current requests: List(988)
-  // Current requests: List(557, 988)
-  // Current requests: List(76, 557, 988)
-  // Current requests: List(355, 502, 76)
-  // Current requests: List(502, 76)
-  // Current requests: List(753, 355, 502)
-  // Current requests: List(362, 753)
+  // Current requests: List(675)
+  // Current requests: List(644, 675)
+  // Current requests: List(328, 644, 675)
+  // Current requests: List(173)
+  // Current requests: List(562, 173)
+  // Current requests: List(972, 562, 173)
+  // Current requests: List(679, 830, 972)
+  // Current requests: List(830, 972)
+  // Current requests: List(629, 679, 830)
+  // Current requests: List(894)
   // Result: All Requests Succeeded
 
 
@@ -529,7 +528,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 74 Made: 67
+  // Result: Prevented: 75 Made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -550,7 +549,7 @@ case class LogicHolder(
 //  of to let us pass in the original and
 //  hedged logic without re-writing everything
 //  around it. Worthwhile, or just a
-//  complicated distraction?
+//  complicated distraction? Consider using bootstrap
 def businessLogic(logicHolder: LogicHolder) =
   defer:
     val makeRequest =
@@ -581,7 +580,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 51
+  // Result: Contract Breaches: 40
 
 
 val hedged =
