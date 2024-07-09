@@ -1,4 +1,4 @@
-package Chapter08_Reliability
+package Chapter08_Resilience
 
 import zio.*
 import zio.direct.*
@@ -279,10 +279,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(53)
-  // Current requests: List(144, 53)
-  // Current requests: List(492, 144, 53)
-  // Current requests: List(497, 492, 144, 53)
+  // Current requests: List(99)
+  // Current requests: List(131, 99)
+  // Current requests: List(428, 131, 99)
+  // Current requests: List(418, 428, 131, 99)
   // Result: Crashed the server!!
 
 
@@ -313,16 +313,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(222, 138)
-  // Current requests: List(138)
-  // Current requests: List(174, 222, 138)
-  // Current requests: List(27)
-  // Current requests: List(219, 27)
-  // Current requests: List(106, 219, 27)
-  // Current requests: List(855, 106, 219)
-  // Current requests: List(797, 855)
-  // Current requests: List(909, 797, 855)
-  // Current requests: List(602, 909)
+  // Current requests: List(480)
+  // Current requests: List(223, 237, 480)
+  // Current requests: List(237, 480)
+  // Current requests: List(272)
+  // Current requests: List(916, 272)
+  // Current requests: List(514, 916, 272)
+  // Current requests: List(660)
+  // Current requests: List(177, 660)
+  // Current requests: List(485, 177, 660)
+  // Current requests: List(386)
   // Result: All Requests Succeeded
 
 
@@ -579,7 +579,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 52
+  // Result: Contract Breaches: 43
 
 
 val hedged =
@@ -592,7 +592,7 @@ object App9 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         hedged
-  // Result: Contract Breaches: 0
+  // Result: Contract Breaches: 1
 
 
 import zio.Console._
