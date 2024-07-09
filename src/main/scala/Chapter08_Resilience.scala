@@ -3,11 +3,6 @@ package Chapter08_Resilience
 import zio.*
 import zio.direct.*
 
-// TODO: really "advanced recover techniques" as basic ones should have already been covered
-//    Bill - Disagree with this name/framing proposal. "Recovery" is for when things have already gone wrong, and you're trying to respond to them.
-//           Caching, RateLimiting, Bulk-heading (and possibly Hedging) are all _proactive_ steps we take to ensure the program runs as
-//           desired. There might be a better name here, but I think "recovery" is a step in the wrong direction.
-
 import zio.{ZIO, ZLayer}
 import zio.cache.{Cache, Lookup}
 
@@ -279,10 +274,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(99)
-  // Current requests: List(131, 99)
-  // Current requests: List(428, 131, 99)
-  // Current requests: List(418, 428, 131, 99)
+  // Current requests: List(767)
+  // Current requests: List(333, 767)
+  // Current requests: List(471, 333, 767)
+  // Current requests: List(628, 471, 333, 767)
+  // Current requests: List(609, 628, 471, 333, 767)
   // Result: Crashed the server!!
 
 
@@ -313,16 +309,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(480)
-  // Current requests: List(223, 237, 480)
-  // Current requests: List(237, 480)
-  // Current requests: List(272)
-  // Current requests: List(916, 272)
-  // Current requests: List(514, 916, 272)
-  // Current requests: List(660)
-  // Current requests: List(177, 660)
-  // Current requests: List(485, 177, 660)
-  // Current requests: List(386)
+  // Current requests: List(478)
+  // Current requests: List(885, 478)
+  // Current requests: List(846, 885, 478)
+  // Current requests: List(767)
+  // Current requests: List(612, 767)
+  // Current requests: List(638, 612, 767)
+  // Current requests: List(288, 638)
+  // Current requests: List(712, 288, 638)
+  // Current requests: List(858, 712, 288)
+  // Current requests: List(592)
   // Result: All Requests Succeeded
 
 
@@ -527,7 +523,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 74 Made: 67
+  // Result: Prevented: 75 Made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -579,7 +575,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 43
+  // Result: Contract Breaches: 33
 
 
 val hedged =
@@ -592,7 +588,7 @@ object App9 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         hedged
-  // Result: Contract Breaches: 1
+  // Result: Contract Breaches: 0
 
 
 import zio.Console._

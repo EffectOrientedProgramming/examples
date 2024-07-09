@@ -183,7 +183,7 @@ object App4 extends helpers.ZIOAppDebug:
 
 val effect2 =
   effect1.orElseFail:
-    "ERROR: User could not be saved"
+    "FAILURE: User could not be saved"
 
 object App5 extends helpers.ZIOAppDebug:
   override val bootstrap =
@@ -194,7 +194,7 @@ object App5 extends helpers.ZIOAppDebug:
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Log: **Database crashed!!**
-  // Result: ERROR: User could not be saved
+  // Result: FAILURE: User could not be saved
 
 
 val effect3 =
@@ -250,7 +250,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.041022549S,User saved)
+  // Result: (PT0.001348833S,User saved)
 
 
 val effect7 =

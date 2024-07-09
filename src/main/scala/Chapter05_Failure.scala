@@ -3,8 +3,6 @@ package Chapter05_Failure
 import zio.*
 import zio.direct.*
 
-// TODO: Replace error with failure pervasively
-
 enum Scenario:
   case HappyPath,
     TooCold,
