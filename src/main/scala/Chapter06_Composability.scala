@@ -379,8 +379,10 @@ def summarize(article: String): String =
   println(s"AI - summarize - start")
   // Represents the AI taking a long time to
   // summarize the content
-  if (article.contains("space"))
+  if (article.contains("space")) {
+    println("AI - taking a long time")
     Thread.sleep(5000)
+  }
 
   println(s"AI - summarize - end")
   if (article.contains("stock market"))
@@ -410,14 +412,14 @@ object App10 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: AITooSlow()
+  // Result: short summary
 
 
 object App11 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("space")
   // AI - summarize - start
-  // AI **INTERRUPTED**
+  // AI - taking a long time
   // Result: AITooSlow()
 
 
@@ -516,6 +518,7 @@ object App16 extends helpers.ZIOAppDebug:
   // File - contains(space) => false
   // Wiki - articleFor(space)
   // AI - summarize - start
+  // AI - taking a long time
   // AI **INTERRUPTED**
   // File - CLOSE
   // Result: AITooSlow()
@@ -576,9 +579,6 @@ object App19 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: strict timeout
 

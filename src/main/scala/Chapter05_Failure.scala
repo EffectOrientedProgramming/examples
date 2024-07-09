@@ -240,7 +240,6 @@ val getTemperatureWithCheck =
     check(temperature).run
 
 object App6 extends helpers.ZIOAppDebug:
-  // TODO: some prose needed to explain short-circuiting run example
   override val bootstrap =
     gpsFailure
   
