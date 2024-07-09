@@ -279,11 +279,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(876)
-  // Current requests: List(40, 806, 876)
-  // Current requests: List(806, 876)
-  // Current requests: List(387, 40, 806, 876)
-  // Current requests: List(468, 387, 40, 806, 876)
+  // Current requests: List(253)
+  // Current requests: List(54, 253)
+  // Current requests: List(322, 54, 253)
+  // Current requests: List(533, 322, 54, 253)
   // Result: Crashed the server!!
 
 
@@ -314,16 +313,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(349)
-  // Current requests: List(918, 349)
-  // Current requests: List(895, 918, 349)
-  // Current requests: List(963)
-  // Current requests: List(628, 963)
-  // Current requests: List(61, 628, 963)
-  // Current requests: List(870, 288, 61)
-  // Current requests: List(288, 61)
-  // Current requests: List(167, 870, 288)
-  // Current requests: List(505)
+  // Current requests: List(503)
+  // Current requests: List(815, 503)
+  // Current requests: List(746, 815, 503)
+  // Current requests: List(630, 746)
+  // Current requests: List(286, 630, 746)
+  // Current requests: List(934, 286, 630)
+  // Current requests: List(368, 934)
+  // Current requests: List(633, 368, 934)
+  // Current requests: List(741, 633, 368)
+  // Current requests: List(494)
   // Result: All Requests Succeeded
 
 
@@ -528,7 +527,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -580,7 +579,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 68
+  // Result: Contract Breaches: 55
 
 
 val hedged =
