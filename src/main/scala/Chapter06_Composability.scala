@@ -429,7 +429,7 @@ object App12 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: short summary
+  // Result: AITooSlow()
 
 
 object App13 extends helpers.ZIOAppDebug:
@@ -556,8 +556,9 @@ object App19 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(genome)
   // AI - summarize - start
   // AI - summarize - end
+  // File - disk full!
   // File - CLOSE
-  // Result: AITooSlow()
+  // Result: DiskFull()
 
 
 object App20 extends helpers.ZIOAppDebug:
@@ -596,11 +597,8 @@ object App21 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
-  // AI - summarize - start
-  // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 val daily =
