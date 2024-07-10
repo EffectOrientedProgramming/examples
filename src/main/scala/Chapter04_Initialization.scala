@@ -7,8 +7,7 @@ import zio.Console._
 
 trait Bread:
   def eat =
-    printLine:
-      "Bread: Eating"
+    printLine("Bread: Eating")
 
 case class BreadStoreBought() extends Bread
 
@@ -24,33 +23,36 @@ object App0 extends helpers.ZIOAppDebug:
         bread => bread.eat
       .provide:
         BreadStoreBought.layer
-  // Bread: Eating
 
 
 import zio.Console.*
 case class X():
-  val f =
+  val display =
     printLine("X.f")
 
-val make =
+val makeX =
   defer:
     printLine("Creating X").run
     X()
 
+val dependency =
+  ZLayer.fromZIO:
+    makeX
+
+object X:
+  val dependent =
+    ZLayer.fromZIO:
+      makeX
+
 object App1 extends helpers.ZIOAppDebug:
-  object X:
-    val dependency =
-      ZLayer.fromZIO:
-        make
-  
-  def run =
-    ZIO
-      .serviceWithZIO[X]:
-        x => x.f
-      .provide:
-        X.dependency
-  // Creating X
-  // X.f
+  object NamingExampleX extends ZIOAppDefault:
+    def run =
+      ZIO
+        .serviceWithZIO[X]:
+          x => x.display
+        .provide:
+          X.dependent // The "adjectivized object"
+        // dependency // Or the noun version
 
 
 import zio.Console._
@@ -106,10 +108,6 @@ object App2 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Bread: Eating
 
 
 import zio.Console._
@@ -139,11 +137,6 @@ object App3 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Toast: Made
-  // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
 
 
 import zio.Console._
@@ -160,8 +153,6 @@ object App4 extends helpers.ZIOAppDebug:
       .service[Heat]
       .provide:
         toaster
-  // Toaster: Heated
-  // Result: Heat()
 
 
 import zio.Console._
@@ -207,12 +198,6 @@ object App5 extends helpers.ZIOAppDebug:
         Dough.fresh,
         oven
       )
-  // Toaster: Heating
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // ToastZ: Made
-  // Toast: Eating
 
 
 import zio.Console._
@@ -242,11 +227,6 @@ object App6 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Bread: Eating
-  // Oven: Turning off!
 
 
 import zio.Console._
@@ -293,8 +273,6 @@ object App7 extends helpers.ZIOAppDebug:
         Friend.bread(worksOnAttempt =
           3
         )
-  // Attempt 1: Failure(Friend Unreachable)
-  // Result: Failure(Friend Unreachable)
 
 
 object App8 extends helpers.ZIOAppDebug:
@@ -308,8 +286,6 @@ object App8 extends helpers.ZIOAppDebug:
           )
           .orElse:
             BreadStoreBought.layer
-  // Attempt 1: Failure(Friend Unreachable)
-  // Result: BreadStoreBought()
 
 
 def logicWithRetries(retries: Int) =
@@ -330,10 +306,6 @@ object App9 extends helpers.ZIOAppDebug:
     logicWithRetries(retries =
       2
     )
-  // Attempt 1: Failure(Friend Unreachable)
-  // Attempt 2: Failure(Friend Unreachable)
-  // Attempt 3: Succeeded
-  // Bread: Eating
 
 
 import zio.config.*
@@ -367,10 +339,6 @@ object App10 extends helpers.ZIOAppDebug:
           )
       .provide:
         config
-  // Attempt 1: Failure(Friend Unreachable)
-  // Attempt 2: Failure(Friend Unreachable)
-  // Attempt 3: Succeeded
-  // Bread: Eating
 
 
 object IdealFriend:
@@ -402,18 +370,6 @@ val flipTen =
 object App11 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Heads
-  // Tails
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Tails
-  // Heads
-  // Tails
-  // Num Heads = 6
-  // Result: 6
 
 
 val nightlyBatch =
