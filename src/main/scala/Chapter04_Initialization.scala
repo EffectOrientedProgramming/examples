@@ -39,7 +39,7 @@ val make =
 
 object App1 extends helpers.ZIOAppDebug:
   object X:
-    val made =
+    val dependency =
       ZLayer.fromZIO:
         make
   
@@ -48,7 +48,7 @@ object App1 extends helpers.ZIOAppDebug:
       .serviceWithZIO[X]:
         x => x.f
       .provide:
-        X.made
+        X.dependency
   // Creating X
   // X.f
 
@@ -63,7 +63,7 @@ case class Dough():
 import zio.Console._
 
 object Dough:
-  val fresh =
+  val fresh = // TODO: should be a noun
     ZLayer.fromZIO:
       defer:
         printLine("Dough: Mixed").run
@@ -87,7 +87,7 @@ case class BreadHomeMade(
 ) extends Bread
 
 object Bread:
-  val homemade =
+  val homemade = // TODO: should be a noun
     ZLayer.fromZIO:
       defer:
         printLine("BreadHomeMade: Baked").run
@@ -120,7 +120,7 @@ case class Toast(heat: Heat, bread: Bread):
       "Toast: Eating"
 
 object Toast:
-  val make =
+  val make = // TODO: should be a noun
     ZLayer.fromZIO:
       defer:
         printLine("Toast: Made").run
@@ -186,7 +186,7 @@ case class ToastZ(
       "Toast: Eating"
 
 object ToastZ:
-  val make =
+  val make = // TODO: should be a noun
     ZLayer.fromZIO:
       defer:
         printLine("ToastZ: Made").run
@@ -402,18 +402,18 @@ val flipTen =
 object App11 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Heads
-  // Tails
-  // Tails
-  // Tails
   // Tails
   // Heads
   // Tails
+  // Heads
+  // Heads
+  // Heads
+  // Heads
   // Tails
   // Heads
-  // Num Heads = 4
-  // Result: 4
+  // Tails
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =

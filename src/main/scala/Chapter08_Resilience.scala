@@ -274,10 +274,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(83)
-  // Current requests: List(223, 560, 662, 83)
-  // Current requests: List(560, 662, 83)
-  // Current requests: List(662, 83)
+  // Current requests: List(993)
+  // Current requests: List(785, 877, 978, 993)
+  // Current requests: List(978, 993)
+  // Current requests: List(877, 978, 993)
+  // Current requests: List(360, 785, 877, 978, 993)
   // Result: Crashed the server!!
 
 
@@ -308,16 +309,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(217)
-  // Current requests: List(116, 217)
-  // Current requests: List(377, 116, 217)
-  // Current requests: List(785)
-  // Current requests: List(389, 785)
-  // Current requests: List(609, 389, 785)
-  // Current requests: List(188, 327)
-  // Current requests: List(327)
-  // Current requests: List(244, 188, 327)
-  // Current requests: List(747)
+  // Current requests: List(906)
+  // Current requests: List(869, 906)
+  // Current requests: List(397, 869, 906)
+  // Current requests: List(187, 397)
+  // Current requests: List(983, 187)
+  // Current requests: List(485, 983, 187)
+  // Current requests: List(596, 485)
+  // Current requests: List(701, 596, 485)
+  // Current requests: List(421, 701, 596)
+  // Current requests: List(632, 421)
   // Result: All Requests Succeeded
 
 
@@ -522,7 +523,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -574,7 +575,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 48
+  // Result: Contract Breaches: 52
 
 
 val hedged =
@@ -587,7 +588,7 @@ object App9 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         hedged
-  // Result: Contract Breaches: 0
+  // Result: Contract Breaches: 1
 
 
 import zio.Console._
