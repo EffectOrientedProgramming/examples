@@ -190,14 +190,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // James called API [took 1s]
-  // Bruce called API [took 2s]
+  // Bruce called API [took 1s]
+  // James called API [took 2s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Total time [took 8s]
 
 
@@ -274,12 +274,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(658)
-  // Current requests: List(829, 658)
-  // Current requests: List(321, 829, 658)
-  // Current requests: List(543, 321, 829, 658)
-  // Current requests: List(475, 543, 321, 829, 658)
-  // Current requests: List(542, 475, 543, 321, 829, 658)
+  // Current requests: List(83)
+  // Current requests: List(223, 560, 662, 83)
+  // Current requests: List(560, 662, 83)
+  // Current requests: List(662, 83)
   // Result: Crashed the server!!
 
 
@@ -310,16 +308,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(889)
-  // Current requests: List(495, 889)
-  // Current requests: List(779, 495, 889)
-  // Current requests: List(319, 525)
-  // Current requests: List(525)
-  // Current requests: List(983, 319, 525)
-  // Current requests: List(875, 983)
-  // Current requests: List(118, 875, 983)
-  // Current requests: List(926, 118, 875)
-  // Current requests: List(140)
+  // Current requests: List(217)
+  // Current requests: List(116, 217)
+  // Current requests: List(377, 116, 217)
+  // Current requests: List(785)
+  // Current requests: List(389, 785)
+  // Current requests: List(609, 389, 785)
+  // Current requests: List(188, 327)
+  // Current requests: List(327)
+  // Current requests: List(244, 188, 327)
+  // Current requests: List(747)
   // Result: All Requests Succeeded
 
 
@@ -524,7 +522,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 74 Made: 67
+  // Result: Prevented: 75 Made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -576,7 +574,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 44
+  // Result: Contract Breaches: 48
 
 
 val hedged =
