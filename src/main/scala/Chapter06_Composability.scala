@@ -411,8 +411,14 @@ def summarize(article: String): String =
   else
     ???
 
-val summaryTmp: String =
-  summarize("long article")
+object App12 extends helpers.ZIOAppDebug:
+  def run =
+    defer:
+      summarize("long article")
+  // AI - summarize - start
+  // AI - summarize - end
+  // Result: short summary
+
 
 def summarizeZ(article: String) =
   ZIO
@@ -424,16 +430,15 @@ def summarizeZ(article: String) =
     .timeoutFail(AITooSlow()):
       4000.millis
 
-object App12 extends helpers.ZIOAppDebug:
+object App13 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // AI **INTERRUPTED**
-  // Result: AITooSlow()
+  // Result: short summary
 
 
-object App13 extends helpers.ZIOAppDebug:
+object App14 extends helpers.ZIOAppDebug:
   def run =
     summarizeZ("space")
   // AI - summarize - start
@@ -469,7 +474,7 @@ val researchHeadline =
       writeToFileZ(summaryFile, summary).run
       summary
 
-object App14 extends helpers.ZIOAppDebug:
+object App15 extends helpers.ZIOAppDebug:
   override val bootstrap =
     headlineNotAvailable
   
@@ -479,7 +484,7 @@ object App14 extends helpers.ZIOAppDebug:
   // Result: HeadlineNotAvailable
 
 
-object App15 extends helpers.ZIOAppDebug:
+object App16 extends helpers.ZIOAppDebug:
   override val bootstrap =
     noInterestingTopic
   
@@ -491,7 +496,7 @@ object App15 extends helpers.ZIOAppDebug:
   // Result: NoInterestingTopic()
 
 
-object App16 extends helpers.ZIOAppDebug:
+object App17 extends helpers.ZIOAppDebug:
   override val bootstrap =
     summaryReadThrows
   
@@ -508,7 +513,7 @@ object App16 extends helpers.ZIOAppDebug:
   // Result: NoSummaryAvailable(unicode)
 
 
-object App17 extends helpers.ZIOAppDebug:
+object App18 extends helpers.ZIOAppDebug:
   override val bootstrap =
     noWikiArticleAvailable
   
@@ -524,7 +529,7 @@ object App17 extends helpers.ZIOAppDebug:
   // Result: NoWikiArticleAvailable()
 
 
-object App18 extends helpers.ZIOAppDebug:
+object App19 extends helpers.ZIOAppDebug:
   override val bootstrap =
     aiTooSlow
   
@@ -543,7 +548,7 @@ object App18 extends helpers.ZIOAppDebug:
   // Result: AITooSlow()
 
 
-object App19 extends helpers.ZIOAppDebug:
+object App20 extends helpers.ZIOAppDebug:
   override val bootstrap =
     diskFull
   
@@ -562,7 +567,7 @@ object App19 extends helpers.ZIOAppDebug:
   // Result: DiskFull()
 
 
-object App20 extends helpers.ZIOAppDebug:
+object App21 extends helpers.ZIOAppDebug:
   override val bootstrap =
     stockMarketHeadline
   
@@ -586,7 +591,7 @@ val strictResearch =
     .timeoutFail("strict timeout"):
       1.millisecond
 
-object App21 extends helpers.ZIOAppDebug:
+object App22 extends helpers.ZIOAppDebug:
   override val bootstrap =
     stockMarketHeadline
   
@@ -598,6 +603,9 @@ object App21 extends helpers.ZIOAppDebug:
   // File - OPEN
   // File - contains(stock market) => false
   // Wiki - articleFor(stock market)
+  // AI - summarize - start
+  // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
   // Result: strict timeout
 
