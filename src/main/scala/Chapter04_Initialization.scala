@@ -63,11 +63,8 @@ case class Y():
 
 val makeY =
   defer:
-    printLine("makeY Creating Y").run
-    val y =
-      Y()
-    printLine(s"makeY returns: $y").run
-    y
+    printLine("makeY.run creating Y()").run
+    Y()
 
 object Y:
   val dependency =
@@ -84,7 +81,6 @@ object App2 extends helpers.ZIOAppDebug:
       val r =
         makeY.run
       printLine(s"makeY.run returned $r").run
-  
       printLine(
         s"Y.dependency: ${_type(Y.dependency)}"
       ).run
@@ -104,13 +100,11 @@ object App2 extends helpers.ZIOAppDebug:
       program.run
       printLine("program.run complete").run
   // makeY: zio.ZIO
-  // makeY Creating Y
-  // makeY returns: Y()
+  // makeY.run creating Y()
   // makeY.run returned Y()
   // Y.dependency: zio.ZLayer
   // program: zio.ZIO
-  // makeY Creating Y
-  // makeY returns: Y()
+  // makeY.run creating Y()
   // y: Y()
   // Y.display
   // program.run complete
@@ -465,16 +459,16 @@ val flipTen =
 object App12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Tails
+  // Tails
   // Heads
   // Tails
   // Tails
   // Heads
   // Heads
-  // Tails
-  // Tails
-  // Tails
   // Heads
   // Heads
+  // Tails
   // Num Heads = 5
   // Result: 5
 
