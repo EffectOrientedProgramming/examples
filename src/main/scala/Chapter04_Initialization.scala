@@ -74,17 +74,19 @@ object Y:
     ZLayer.fromZIO:
       makeY
 
+def _type(obj: Any): String =
+  obj.getClass.getName.split("\\$")(0)
+
 object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      printLine(s"makeY: ${makeY.getClass}")
-        .run
+      printLine(s"makeY: ${_type(makeY)}").run
       val r =
         makeY.run
       printLine(s"makeY.run returned $r").run
   
       printLine(
-        s"Y.dependency: ${Y.dependency.getClass}"
+        s"Y.dependency: ${_type(Y.dependency)}"
       ).run
   
       val program =
@@ -97,17 +99,16 @@ object App2 extends helpers.ZIOAppDebug:
           .provide:
             Y.dependency
   
-      printLine(
-        s"program: ${program.getClass}"
-      ).run
+      printLine(s"program: ${_type(program)}")
+        .run
       program.run
       printLine("program.run complete").run
-  // makeY: class zio.ZIO$FlatMap
+  // makeY: zio.ZIO
   // makeY Creating Y
   // makeY returns: Y()
   // makeY.run returned Y()
-  // Y.dependency: class zio.ZLayer$Suspend
-  // program: class zio.ZIO$FlatMap
+  // Y.dependency: zio.ZLayer
+  // program: zio.ZIO
   // makeY Creating Y
   // makeY returns: Y()
   // y: Y()
@@ -270,8 +271,8 @@ object App6 extends helpers.ZIOAppDebug:
         oven
       )
   // Toaster: Heating
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -464,14 +465,14 @@ val flipTen =
 object App12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Tails
-  // Tails
+  // Heads
   // Tails
   // Tails
   // Heads
+  // Heads
   // Tails
-  // Heads
-  // Heads
+  // Tails
+  // Tails
   // Heads
   // Heads
   // Num Heads = 5

@@ -599,6 +599,7 @@ object App21 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // AI **INTERRUPTED**
   // File - CLOSE
   // Result: strict timeout
 
