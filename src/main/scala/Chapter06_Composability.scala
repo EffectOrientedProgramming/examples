@@ -435,7 +435,7 @@ object App13 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: short summary
+  // Result: AITooSlow()
 
 
 object App14 extends helpers.ZIOAppDebug:
@@ -607,7 +607,7 @@ object App22 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 val daily =

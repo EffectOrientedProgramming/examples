@@ -12,7 +12,7 @@ trait Bread:
 case class BreadStoreBought() extends Bread
 
 object BreadStoreBought:
-  val layer =
+  val purchased =
     ZLayer.succeed:
       BreadStoreBought()
 
@@ -22,8 +22,7 @@ object App0 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide:
-        BreadStoreBought.layer
-  // Bread: Eating
+        BreadStoreBought.purchased
 
 
 import zio.Console.*
@@ -53,8 +52,6 @@ object App1 extends helpers.ZIOAppDebug:
       .provide:
         X.dependent // The "adjectivized object"
       // dependency // Or the noun version
-  // Creating X
-  // X.display
 
 
 case class Y():
@@ -100,23 +97,13 @@ object App2 extends helpers.ZIOAppDebug:
       showType("main", main).run
       main.run
       printLine("main.run complete").run
-  // makeY is a zio.ZIO
-  // makeY.run creating Y()
-  // makeY.run returned Y()
-  // Y.dependency is a zio.ZLayer
-  // main is a zio.ZIO
-  // makeY.run creating Y()
-  // y: Y()
-  // Y.display
-  // main.run complete
 
 
 import zio.Console._
 
 case class Dough():
   val letRise =
-    printLine:
-      "Dough: rising"
+    printLine("Dough: rising")
 
 import zio.Console._
 
@@ -129,13 +116,15 @@ object Dough:
 
 import zio.Console._
 
-case class Heat()
+trait HeatSource
+case class Oven() extends HeatSource
 
-val oven =
-  ZLayer.fromZIO:
-    defer:
-      printLine("Oven: Heated").run
-      Heat()
+object Oven:
+  val heated =
+    ZLayer.fromZIO:
+      defer:
+        printLine("Oven: Heated").run
+        Oven()
 
 import zio.Console._
 
@@ -144,13 +133,13 @@ case class BreadHomeMade(
     dough: Dough
 ) extends Bread
 
-object Bread:
-  val homemade =
+object BreadHomeMade:
+  val baked =
     ZLayer.fromZIO:
       defer:
         printLine("BreadHomeMade: Baked").run
         BreadHomeMade(
-          ZIO.service[Heat].run,
+          ZIO.service[Oven].run,
           ZIO.service[Dough].run
         )
 
@@ -160,156 +149,134 @@ object App3 extends helpers.ZIOAppDebug:
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(
-        Bread.homemade,
+        BreadHomeMade.baked,
         Dough.fresh,
-        oven
+        Oven.heated
       )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Bread: Eating
 
 
 import zio.Console._
 
-case class Toast(heat: Heat, bread: Bread):
+trait Toast:
+  def bread: Bread
+  def heat: HeatSource
   val eat =
-    printLine:
-      "Toast: Eating"
+    printLine("Toast: Eating")
 
-object Toast:
-  val make =
+case class ToastA(
+    heat: HeatSource,
+    bread: Bread
+) extends Toast
+
+object ToastA:
+  val toasted =
     ZLayer.fromZIO:
       defer:
-        printLine("Toast: Made").run
-        Toast(
-          ZIO.service[Heat].run,
+        printLine("ToastA: Made").run
+        ToastA(
+          ZIO.service[HeatSource].run,
+          ZIO.service[Bread].run
+        )
+
+case class Toaster() extends HeatSource
+
+object Toaster:
+  val ready =
+    ZLayer.fromZIO:
+      defer:
+        printLine("Toaster: Ready").run
+        Toaster()
+
+trait Toast:
+  def bread: Bread
+  def heat: HeatSource
+  val eat =
+    printLine("Toast: Eating")
+
+case class ToastA(
+    heat: HeatSource,
+    bread: Bread
+) extends Toast
+
+object ToastA:
+  val toasted =
+    ZLayer.fromZIO:
+      defer:
+        printLine("ToastA: Made").run
+        ToastA(
+          ZIO.service[HeatSource].run,
+          ZIO.service[Bread].run
+        )
+
+import zio.Console._
+
+case class ToastB(
+    heat: Toaster,
+    bread: Bread
+) extends Toast
+// ToastA used HeatSource for heat
+
+object ToastB:
+  val toasted =
+    ZLayer.fromZIO:
+      defer:
+        printLine("ToastB: Made").run
+        ToastB(
+          ZIO.service[Toaster].run,
           ZIO.service[Bread].run
         )
 
 object App4 extends helpers.ZIOAppDebug:
   def run =
     ZIO
-      .service[Toast]
-      .provide(
-        Toast.make,
-        Bread.homemade,
-        Dough.fresh,
-        oven
-      )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Toast: Made
-  // Result: Toast(Heat(),BreadHomeMade(Heat(),Dough()))
-
-
-import zio.Console._
-
-val toaster =
-  ZLayer.fromZIO:
-    defer:
-      printLine("Toaster: Heated").run
-      Heat()
-
-object App5 extends helpers.ZIOAppDebug:
-  def run =
-    ZIO
-      .service[Heat]
-      .provide:
-        toaster
-  // Toaster: Heated
-  // Result: Heat()
-
-
-import zio.Console._
-
-case class Toaster()
-
-object Toaster:
-  val layer =
-    ZLayer.fromZIO:
-      defer:
-        printLine("Toaster: Heating").run
-        Toaster()
-
-import zio.Console._
-
-case class ToastZ(
-    heat: Toaster,
-    bread: Bread
-):
-  val eat =
-    printLine:
-      "Toast: Eating"
-
-object ToastZ:
-  val make =
-    ZLayer.fromZIO:
-      defer:
-        printLine("ToastZ: Made").run
-        ToastZ(
-          ZIO.service[Toaster].run,
-          ZIO.service[Bread].run
-        )
-
-object App6 extends helpers.ZIOAppDebug:
-  def run =
-    ZIO
-      .serviceWithZIO[ToastZ]:
+      .serviceWithZIO[Toast]:
         toast => toast.eat
       .provide(
-        ToastZ.make,
-        Toaster.layer,
-        Bread.homemade,
+        ToastB.toasted,
         Dough.fresh,
-        oven
+        BreadHomeMade.baked,
+        // The two HeatSources don't clash:
+        Oven.heated,
+        Toaster.ready
       )
-  // Toaster: Heating
-  // Dough: Mixed
-  // Oven: Heated
-  // BreadHomeMade: Baked
-  // ToastZ: Made
-  // Toast: Eating
 
 
 import zio.Console._
 
-val ovenSafe =
-  ZLayer.fromZIO:
-    ZIO
-      .succeed(Heat())
-      .tap:
-        _ =>
-          printLine:
-            "Oven: Heated"
-      .withFinalizer:
-        _ =>
-          printLine:
-            "Oven: Turning off!"
-          .orDie
+case class OvenSafe() extends HeatSource
 
-object App7 extends helpers.ZIOAppDebug:
+object OvenSafe:
+  val heated =
+    ZLayer.fromZIO:
+      ZIO
+        .succeed(Heat())
+        .tap:
+          _ =>
+            printLine:
+              "Oven: Heated"
+        .withFinalizer:
+          _ =>
+            printLine:
+              "Oven: Turning off!"
+            .orDie
+
+object App5 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[Bread]:
         bread => bread.eat
       .provide(
-        Bread.homemade,
+        BreadHomeMade.baked,
         Dough.fresh,
-        ovenSafe,
+        OvenSafe.heated,
         Scope.default
       )
-  // Oven: Heated
-  // Dough: Mixed
-  // BreadHomeMade: Baked
-  // Bread: Eating
-  // Oven: Turning off!
 
 
 import zio.Console._
 
 case class BreadFromFriend() extends Bread()
+
 object Friend:
   def forcedFailure(invocations: Int) =
     defer:
@@ -343,7 +310,7 @@ object Friend:
             BreadFromFriend()
 end Friend
 
-object App8 extends helpers.ZIOAppDebug:
+object App6 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -351,11 +318,9 @@ object App8 extends helpers.ZIOAppDebug:
         Friend.bread(worksOnAttempt =
           3
         )
-  // Attempt 1: Failure(Friend Unreachable)
-  // Result: Failure(Friend Unreachable)
 
 
-object App9 extends helpers.ZIOAppDebug:
+object App7 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .service[Bread]
@@ -366,32 +331,23 @@ object App9 extends helpers.ZIOAppDebug:
           )
           .orElse:
             BreadStoreBought.layer
-  // Attempt 1: Failure(Friend Unreachable)
-  // Result: BreadStoreBought()
 
 
-def logicWithRetries(retries: Int) =
-  ZIO
-    .serviceWithZIO[Bread]:
-      bread => bread.eat
-    .provide:
-      Friend
-        .bread(worksOnAttempt =
-          3
-        )
-        .retry:
-          Schedule.recurs:
-            retries
-
-object App10 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   def run =
-    logicWithRetries(retries =
+    val retries =
       2
-    )
-  // Attempt 1: Failure(Friend Unreachable)
-  // Attempt 2: Failure(Friend Unreachable)
-  // Attempt 3: Succeeded
-  // Bread: Eating
+    ZIO
+      .serviceWithZIO[Bread]:
+        bread => bread.eat
+      .provide:
+        Friend
+          .bread(worksOnAttempt =
+            3
+          )
+          .retry:
+            Schedule.recurs:
+              retries
 
 
 import zio.config.*
@@ -415,7 +371,7 @@ val config =
       configDescriptor.from:
         configProvider
 
-object App11 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   def run =
     ZIO
       .serviceWithZIO[RetryConfig]:
@@ -425,10 +381,6 @@ object App11 extends helpers.ZIOAppDebug:
           )
       .provide:
         config
-  // Attempt 1: Failure(Friend Unreachable)
-  // Attempt 2: Failure(Friend Unreachable)
-  // Attempt 3: Succeeded
-  // Bread: Eating
 
 
 object IdealFriend:
@@ -457,21 +409,9 @@ val flipTen =
     ZIO.debug(s"Num Heads = $numHeads").run
     numHeads
 
-object App12 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Tails
-  // Tails
-  // Tails
-  // Heads
-  // Heads
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Num Heads = 3
-  // Result: 3
 
 
 val nightlyBatch =

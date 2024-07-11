@@ -19,7 +19,6 @@ val testCase =
 object Test2 extends ZIOSpecDefault:
   def spec =
     testCase
-  // + eat Bread
 
 
 object Test3 extends ZIOSpecDefault:
@@ -39,8 +38,6 @@ object Test3 extends ZIOSpecDefault:
         )
     .provide:
       IdealFriend.bread
-  // Bread: Eating
-  // + eat Bread
 
 
 object Test4 extends ZIOSpecDefault:
@@ -55,18 +52,6 @@ object Test4 extends ZIOSpecDefault:
           .run
         assertTrue:
           flipTen.run == 10
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Num Heads = 10
-  // + flips 10 times
 
 
 import zio.test.*
@@ -81,5 +66,3 @@ object Test6 extends ZIOSpecDefault:
       defer:
         nightlyBatch.zipPar(timeTravel).run
         assertCompletes
-  // Parsing CSV: ()
-  // + batch runs after 24 hours
