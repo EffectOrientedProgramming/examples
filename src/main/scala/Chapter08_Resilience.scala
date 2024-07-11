@@ -274,11 +274,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(843)
-  // Current requests: List(238, 843)
-  // Current requests: List(662, 238, 843)
-  // Current requests: List(595, 662, 238, 843)
-  // Current requests: List(378, 595, 662, 238, 843)
+  // Current requests: List(262)
+  // Current requests: List(943, 262)
+  // Current requests: List(397, 943, 262)
+  // Current requests: List(887, 397, 943, 262)
   // Result: Crashed the server!!
 
 
@@ -309,16 +308,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(103)
-  // Current requests: List(721, 103)
-  // Current requests: List(890, 721, 103)
-  // Current requests: List(614, 973)
-  // Current requests: List(973)
-  // Current requests: List(502, 614, 973)
-  // Current requests: List(484)
-  // Current requests: List(595, 484)
-  // Current requests: List(478, 595, 484)
-  // Current requests: List(793)
+  // Current requests: List(733)
+  // Current requests: List(912, 733)
+  // Current requests: List(881, 912, 733)
+  // Current requests: List(978, 245)
+  // Current requests: List(245)
+  // Current requests: List(654, 978, 245)
+  // Current requests: List(845)
+  // Current requests: List(210, 845)
+  // Current requests: List(785, 210, 845)
+  // Current requests: List(866)
   // Result: All Requests Succeeded
 
 
@@ -523,7 +522,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 76 Made: 65
+  // Result: Prevented: 75 Made: 66
 
 
 val logicThatSporadicallyLocksUp =
@@ -575,7 +574,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 54
+  // Result: Contract Breaches: 37
 
 
 val hedged =

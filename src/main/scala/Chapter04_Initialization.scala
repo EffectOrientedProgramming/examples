@@ -74,18 +74,20 @@ object Y:
 def _type(obj: Any): String =
   obj.getClass.getName.split("\\$")(0)
 
+def showType(id: String, obj: Any) =
+  printLine(s"$id is a ${_type(obj)}")
+
 object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      printLine(s"makeY: ${_type(makeY)}").run
+      showType("makeY", makeY).run
       val r =
         makeY.run
       printLine(s"makeY.run returned $r").run
-      printLine(
-        s"Y.dependency: ${_type(Y.dependency)}"
-      ).run
+      showType("Y.dependency", Y.dependency)
+        .run
   
-      val program =
+      val main =
         ZIO
           .serviceWithZIO[Y]:
             y =>
@@ -95,19 +97,18 @@ object App2 extends helpers.ZIOAppDebug:
           .provide:
             Y.dependency
   
-      printLine(s"program: ${_type(program)}")
-        .run
-      program.run
-      printLine("program.run complete").run
-  // makeY: zio.ZIO
+      showType("main", main).run
+      main.run
+      printLine("main.run complete").run
+  // makeY is a zio.ZIO
   // makeY.run creating Y()
   // makeY.run returned Y()
-  // Y.dependency: zio.ZLayer
-  // program: zio.ZIO
+  // Y.dependency is a zio.ZLayer
+  // main is a zio.ZIO
   // makeY.run creating Y()
   // y: Y()
   // Y.display
-  // program.run complete
+  // main.run complete
 
 
 import zio.Console._
@@ -120,7 +121,7 @@ case class Dough():
 import zio.Console._
 
 object Dough:
-  val fresh = // TODO: should be a noun
+  val fresh =
     ZLayer.fromZIO:
       defer:
         printLine("Dough: Mixed").run
@@ -144,7 +145,7 @@ case class BreadHomeMade(
 ) extends Bread
 
 object Bread:
-  val homemade = // TODO: should be a noun
+  val homemade =
     ZLayer.fromZIO:
       defer:
         printLine("BreadHomeMade: Baked").run
@@ -177,7 +178,7 @@ case class Toast(heat: Heat, bread: Bread):
       "Toast: Eating"
 
 object Toast:
-  val make = // TODO: should be a noun
+  val make =
     ZLayer.fromZIO:
       defer:
         printLine("Toast: Made").run
@@ -243,7 +244,7 @@ case class ToastZ(
       "Toast: Eating"
 
 object ToastZ:
-  val make = // TODO: should be a noun
+  val make =
     ZLayer.fromZIO:
       defer:
         printLine("ToastZ: Made").run
@@ -299,8 +300,8 @@ object App7 extends helpers.ZIOAppDebug:
         ovenSafe,
         Scope.default
       )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off!
@@ -459,18 +460,18 @@ val flipTen =
 object App12 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Heads
+  // Heads
+  // Tails
   // Tails
   // Tails
   // Heads
   // Tails
-  // Tails
   // Heads
   // Heads
   // Heads
-  // Heads
-  // Tails
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =
