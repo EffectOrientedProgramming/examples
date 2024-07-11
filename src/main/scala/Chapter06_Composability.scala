@@ -429,7 +429,7 @@ object App12 extends helpers.ZIOAppDebug:
     summarizeZ("long article")
   // AI - summarize - start
   // AI - summarize - end
-  // Result: AITooSlow()
+  // Result: short summary
 
 
 object App13 extends helpers.ZIOAppDebug:

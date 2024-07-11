@@ -77,13 +77,14 @@ object Y:
 object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      printLine(s"makeY: $makeY").run
+      printLine(s"makeY: ${makeY.getClass}")
+        .run
       val r =
         makeY.run
-      printLine(s"makeY.run: $r").run
+      printLine(s"makeY.run returned $r").run
   
       printLine(
-        s"Y.dependency = ${Y.dependency}"
+        s"Y.dependency: ${Y.dependency.getClass}"
       ).run
   
       val program =
@@ -91,23 +92,25 @@ object App2 extends helpers.ZIOAppDebug:
           .serviceWithZIO[Y]:
             y =>
               defer:
-                printLine(s"y = $y").run
+                printLine(s"y: $y").run
                 y.display.run
           .provide:
             Y.dependency
   
-      printLine(s"program = $program").run
+      printLine(
+        s"program: ${program.getClass}"
+      ).run
       program.run
       printLine("program.run complete").run
-  // makeY: FlatMap(zio.direct.ZioMonad.Success.$anon.flatMap(ZioMonad.scala:19),Stateful(repl.MdocSession.MdocApp.makeY(<input>:106),zio.FiberRef$unsafe$$anon$2$$Lambda$3408/0x0000000800dd4040@2a7dbb19),repl.MdocSession$MdocApp$$Lambda$4395/0x0000000801102840@65c57027)
+  // makeY: class zio.ZIO$FlatMap
   // makeY Creating Y
   // makeY returns: Y()
-  // makeY.run: Y()
-  // Y.dependency = Suspend(zio.ZLayer$$$Lambda$3422/0x0000000800de6c40@2a570b06)
-  // program = FlatMap(repl.MdocSession.MdocApp.Chapter141.run(<input>:125),FlatMap(repl.MdocSession.MdocApp.Chapter141.run(<input>:125),Sync(repl.MdocSession.MdocApp.Chapter141.run(<input>:125),zio.ZIOCompanionVersionSpecific$$Lambda$3393/0x0000000800dc1840@4ca44737),zio.ZIO$$Lambda$3460/0x0000000800e10040@7b4390d5),zio.ZIO$$$Lambda$4368/0x00000008010ed840@3b7cbf4)
+  // makeY.run returned Y()
+  // Y.dependency: class zio.ZLayer$Suspend
+  // program: class zio.ZIO$FlatMap
   // makeY Creating Y
   // makeY returns: Y()
-  // y = Y()
+  // y: Y()
   // Y.display
   // program.run complete
 
@@ -267,8 +270,8 @@ object App6 extends helpers.ZIOAppDebug:
         oven
       )
   // Toaster: Heating
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // ToastZ: Made
   // Toast: Eating
@@ -463,16 +466,16 @@ object App12 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Tails
-  // Heads
   // Tails
   // Tails
   // Heads
   // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Num Heads = 2
-  // Result: 2
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Num Heads = 5
+  // Result: 5
 
 
 val nightlyBatch =
