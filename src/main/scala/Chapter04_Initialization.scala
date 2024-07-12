@@ -89,7 +89,6 @@ object App2 extends helpers.ZIOAppDebug:
       .provide:
         Y.layer
   
-  // TODO scalafmt rule change to not make that y wrap lines
   def run =
     defer:
       showType("makeY", makeY).run
@@ -160,8 +159,8 @@ object App3 extends helpers.ZIOAppDebug:
       Dough.fresh,
       Oven.heated,
     )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -301,7 +300,6 @@ object Friend:
 end Friend
 
 object App6 extends helpers.ZIOAppDebug:
-  // TODO the formatting on the named params is terrible
   def run =
     eatBread.provide:
       Friend.bread(worksOnAttempt = 3)

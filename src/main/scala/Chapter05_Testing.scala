@@ -42,11 +42,11 @@ object App0 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Heads
-  // Heads
   // Tails
   // Heads
-  // Tails
   // Heads
+  // Heads
+  // Tails
   // Heads
   // Heads
   // Tails

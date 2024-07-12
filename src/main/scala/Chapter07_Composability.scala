@@ -114,7 +114,6 @@ def wikiArticle(topic: String): Either[
 import scala.concurrent.Future
 
 def getHeadlineZ() =
-// TODO should we put .from on the same line as ZIO
   ZIO
     .from:
       getHeadLine()
@@ -587,7 +586,7 @@ object App22 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 val daily =
