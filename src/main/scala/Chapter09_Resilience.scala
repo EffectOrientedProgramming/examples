@@ -191,13 +191,13 @@ object App3 extends helpers.ZIOAppDebug:
         .run
   // Bill called API [took 0s]
   // Bruce called API [took 1s]
-  // Bill called API [took 2s]
   // James called API [took 2s]
-  // Bruce called API [took 3s]
   // Bill called API [took 3s]
-  // James called API [took 3s]
   // Bruce called API [took 3s]
-  // James called API [took 2s]
+  // James called API [took 3s]
+  // Bill called API [took 3s]
+  // Bruce called API [took 3s]
+  // James called API [took 3s]
   // Total time [took 8s]
 
 
@@ -275,10 +275,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(707)
-  // Current requests: List(195, 707)
-  // Current requests: List(896, 195, 707)
-  // Current requests: List(214, 896, 195, 707)
+  // Current requests: List(595)
+  // Current requests: List(33, 595)
+  // Current requests: List(466, 33, 595)
+  // Current requests: List(345, 466, 33, 595)
   // Result: Crashed the server!!
 
 
@@ -309,16 +309,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(185)
-  // Current requests: List(787, 185)
-  // Current requests: List(102, 787, 185)
-  // Current requests: List(939)
-  // Current requests: List(332, 939)
-  // Current requests: List(475, 332, 939)
-  // Current requests: List(338)
-  // Current requests: List(28, 338)
-  // Current requests: List(422, 28, 338)
-  // Current requests: List(376)
+  // Current requests: List(275)
+  // Current requests: List(879, 275)
+  // Current requests: List(98, 879, 275)
+  // Current requests: List(432)
+  // Current requests: List(34, 432)
+  // Current requests: List(325, 34, 432)
+  // Current requests: List(634, 399, 325)
+  // Current requests: List(399, 325)
+  // Current requests: List(930, 634, 399)
+  // Current requests: List(297)
   // Result: All Requests Succeeded
 
 
@@ -382,7 +382,7 @@ def scheduledValues[A](
     A,
   ],
 ] =
-  defer {
+  defer:
     val startTime =
       Clock.instant.run
     val timeTable =
@@ -392,7 +392,6 @@ def scheduledValues[A](
         values* // Yay Scala3 :)
       )
     accessX(timeTable)
-  }
 
 // make this function more obvious
 private def createTimeTableX[A](
@@ -405,7 +404,7 @@ private def createTimeTableX[A](
       startTime.plusZ(value._1),
       value._2,
     )
-  ) {
+  ):
     case (
           ExpiringValue(elapsed, _),
           (duration, value),
@@ -414,7 +413,6 @@ private def createTimeTableX[A](
         elapsed.plusZ(duration),
         value,
       )
-  }
 
 /** Input: (1 minute, "value1") (2 minute,
   * "value2")
@@ -431,21 +429,19 @@ private def createTimeTableX[A](
 private def accessX[A](
     timeTable: Seq[ExpiringValue[A]]
 ): ZIO[Any, TimeoutException, A] =
-  defer {
+  defer:
     val now =
       Clock.instant.run
     ZIO
       .getOrFailWith(
         new TimeoutException("TOO LATE")
-      ) {
+      ):
         timeTable
           .find(
             _.expirationTime.isAfter(now)
           )
           .map(_.value)
-      }
       .run
-  }
 
 private case class ExpiringValue[A](
     expirationTime: Instant,
@@ -523,7 +519,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -574,7 +570,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 52
+  // Result: Contract Breaches: 54
 
 
 val hedged =
@@ -593,14 +589,13 @@ object App9 extends helpers.ZIOAppDebug:
 import zio.Console.*
 
 val attemptsR =
-  Unsafe.unsafe {
+  Unsafe.unsafe:
     implicit unsafe =>
       Runtime
         .default
         .unsafe
         .run(Ref.make(0))
         .getOrThrowFiberFailure()
-  }
 
 def spottyLogic =
   defer:
