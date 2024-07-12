@@ -20,8 +20,7 @@ case class FSLive(requests: Ref[Int])
 
   val invoice: ZIO[Any, Nothing, String] =
     defer:
-      val count =
-        requests.get.run
+      val count = requests.get.run
 
       "Amount owed: $" + count
 
@@ -97,10 +96,8 @@ val makeCachedPopularService =
     val cache =
       Cache
         .make(
-          capacity =
-            100,
-          timeToLive =
-            Duration.Infinity,
+          capacity = 100,
+          timeToLive = Duration.Infinity,
           lookup =
             Lookup(cloudStorage.retrieve),
         )
@@ -119,8 +116,7 @@ object App1 extends helpers.ZIOAppDebug:
 
 import zio.Console.*
 
-val expensiveApiCall =
-  ZIO.unit
+val expensiveApiCall = ZIO.unit
 
 extension [R, E, A](z: ZIO[R, E, A])
   def timedSecondsDebug(
@@ -138,18 +134,13 @@ extension [R, E, A](z: ZIO[R, E, A])
 import nl.vroste.rezilience.RateLimiter
 
 val makeRateLimiter =
-  RateLimiter.make(
-    max =
-      1,
-    interval =
-      1.second,
-  )
+  RateLimiter
+    .make(max = 1, interval = 1.second)
 
 object App2 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val rateLimiter =
-        makeRateLimiter.run
+      val rateLimiter = makeRateLimiter.run
   
       rateLimiter:
         expensiveApiCall
@@ -170,8 +161,7 @@ object App2 extends helpers.ZIOAppDebug:
 object App3 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val rateLimiter =
-        makeRateLimiter.run
+      val rateLimiter = makeRateLimiter.run
       val people =
         List("Bill", "Bruce", "James")
   
@@ -190,14 +180,14 @@ object App3 extends helpers.ZIOAppDebug:
         .unit // ignores the list of unit
         .run
   // Bill called API [took 0s]
-  // Bruce called API [took 1s]
+  // Bill called API [took 1s]
+  // James called API [took 1s]
+  // Bruce called API [took 2s]
+  // Bill called API [took 3s]
+  // James called API [took 3s]
+  // Bruce called API [took 3s]
   // James called API [took 2s]
-  // Bill called API [took 3s]
-  // Bruce called API [took 3s]
-  // James called API [took 3s]
-  // Bill called API [took 3s]
-  // Bruce called API [took 3s]
-  // James called API [took 3s]
+  // Bruce called API [took 2s]
   // Total time [took 8s]
 
 
@@ -275,24 +265,21 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(595)
-  // Current requests: List(33, 595)
-  // Current requests: List(466, 33, 595)
-  // Current requests: List(345, 466, 33, 595)
+  // Current requests: List(360)
+  // Current requests: List(240, 360)
+  // Current requests: List(682, 240, 360)
+  // Current requests: List(871, 682, 240, 360)
   // Result: Crashed the server!!
 
 
 import nl.vroste.rezilience.Bulkhead
 val makeOurBulkhead =
-  Bulkhead.make(maxInFlightCalls =
-    3
-  )
+  Bulkhead.make(maxInFlightCalls = 3)
 
 object App5 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val bulkhead =
-        makeOurBulkhead.run
+      val bulkhead = makeOurBulkhead.run
   
       val delicateResource =
         ZIO.service[DelicateResource].run
@@ -309,16 +296,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(275)
-  // Current requests: List(879, 275)
-  // Current requests: List(98, 879, 275)
-  // Current requests: List(432)
-  // Current requests: List(34, 432)
-  // Current requests: List(325, 34, 432)
-  // Current requests: List(634, 399, 325)
-  // Current requests: List(399, 325)
-  // Current requests: List(930, 634, 399)
-  // Current requests: List(297)
+  // Current requests: List(119)
+  // Current requests: List(95, 119)
+  // Current requests: List(934, 95, 119)
+  // Current requests: List(3, 789)
+  // Current requests: List(789)
+  // Current requests: List(164, 3, 789)
+  // Current requests: List(106)
+  // Current requests: List(121, 106)
+  // Current requests: List(482, 121, 106)
+  // Current requests: List(33)
   // Result: All Requests Succeeded
 
 
@@ -348,8 +335,7 @@ val timeSensitiveValue =
 def externalSystem(numCalls: Ref[Int]) =
   defer:
     numCalls.update(_ + 1).run
-    val b =
-      timeSensitiveValue.run
+    val b = timeSensitiveValue.run
     if b then
       ZIO.unit.run
     else
@@ -383,8 +369,7 @@ def scheduledValues[A](
   ],
 ] =
   defer:
-    val startTime =
-      Clock.instant.run
+    val startTime = Clock.instant.run
     val timeTable =
       createTimeTableX(
         startTime,
@@ -430,8 +415,7 @@ private def accessX[A](
     timeTable: Seq[ExpiringValue[A]]
 ): ZIO[Any, TimeoutException, A] =
   defer:
-    val now =
-      Clock.instant.run
+    val now = Clock.instant.run
     ZIO
       .getOrFailWith(
         new TimeoutException("TOO LATE")
@@ -455,16 +439,14 @@ val repeatSchedule =
 object App6 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val numCalls =
-        Ref.make[Int](0).run
+      val numCalls = Ref.make[Int](0).run
   
       externalSystem(numCalls)
         .ignore
         .repeat(repeatSchedule)
         .run
   
-      val made =
-        numCalls.get.run
+      val made = numCalls.get.run
   
       s"Calls made: $made"
   // Result: Calls made: 141
@@ -480,11 +462,8 @@ val makeCircuitBreaker =
   CircuitBreaker.make(
     trippingStrategy =
       TrippingStrategy
-        .failureCount(maxFailures =
-          2
-        ),
-    resetPolicy =
-      Retry.Schedules.common(),
+        .failureCount(maxFailures = 2),
+    resetPolicy = Retry.Schedules.common(),
   )
 
 object App7 extends helpers.ZIOAppDebug:
@@ -492,13 +471,10 @@ object App7 extends helpers.ZIOAppDebug:
   
   def run =
     defer:
-      val cb =
-        makeCircuitBreaker.run
+      val cb = makeCircuitBreaker.run
   
-      val numCalls =
-        Ref.make[Int](0).run
-      val numPrevented =
-        Ref.make[Int](0).run
+      val numCalls     = Ref.make[Int](0).run
+      val numPrevented = Ref.make[Int](0).run
   
       val protectedCall =
         // TODO Note/explain `catchSome`
@@ -513,11 +489,9 @@ object App7 extends helpers.ZIOAppDebug:
         .repeat(repeatSchedule)
         .run
   
-      val prevented =
-        numPrevented.get.run
+      val prevented = numPrevented.get.run
   
-      val made =
-        numCalls.get.run
+      val made = numCalls.get.run
       s"Prevented: $prevented Made: $made"
   // Result: Prevented: 74 Made: 67
 
@@ -549,8 +523,7 @@ def businessLogic(logicHolder: LogicHolder) =
           1.second
         )
 
-    val totalRequests =
-      50_000
+    val totalRequests = 50_000
 
     val successes =
       ZIO

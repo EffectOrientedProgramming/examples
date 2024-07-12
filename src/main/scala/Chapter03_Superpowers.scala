@@ -119,8 +119,7 @@ val logUserSignup =
       s"Log: Signup initiated for $userName"
     .orDie
 
-val userName =
-  "Morty"
+val userName = "Morty"
 
 val effect0 =
   saveUser:
@@ -137,8 +136,7 @@ object App0 extends helpers.ZIOAppDebug:
 
 
 object App1 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    happyPath
+  override val bootstrap = happyPath
   
   def run =
     effect0
@@ -146,8 +144,7 @@ object App1 extends helpers.ZIOAppDebug:
 
 
 object App2 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    neverWorks
+  override val bootstrap = neverWorks
   
   def run =
     effect0
@@ -155,12 +152,10 @@ object App2 extends helpers.ZIOAppDebug:
   // Result: **Database crashed!!**
 
 
-val effect1 =
-  effect0.retryN(2)
+val effect1 = effect0.retryN(2)
 
 object App3 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    doesNotWorkInitially
+  override val bootstrap = doesNotWorkInitially
   
   def run =
     effect1
@@ -170,8 +165,7 @@ object App3 extends helpers.ZIOAppDebug:
 
 
 object App4 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    neverWorks
+  override val bootstrap = neverWorks
   
   def run =
     effect1
@@ -186,8 +180,7 @@ val effect2 =
     "FAILURE: User could not be saved"
 
 object App5 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    neverWorks
+  override val bootstrap = neverWorks
   
   def run =
     effect2
@@ -203,8 +196,7 @@ val effect3 =
       5.seconds
 
 object App6 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    slow
+  override val bootstrap = slow
   
   def run =
     effect3
@@ -217,11 +209,12 @@ val effect4 =
       userName
 
 object App7 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    neverWorks
+  override val bootstrap = neverWorks
   
   def run =
     effect4
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
@@ -231,8 +224,7 @@ val effect5 =
     _ => logUserSignup
 
 object App8 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    happyPath
+  override val bootstrap = happyPath
   
   def run =
     effect5
@@ -240,25 +232,22 @@ object App8 extends helpers.ZIOAppDebug:
   // Result: User saved
 
 
-val effect6 =
-  effect5.timed
+val effect6 = effect5.timed
 
 object App9 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    happyPath
+  override val bootstrap = happyPath
   
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.002058978S,User saved)
+  // Result: (PT5.012283753S,User saved)
 
 
 val effect7 =
   effect6.when(userName != "Morty")
 
 object App10 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    happyPath
+  override val bootstrap = happyPath
   
   def run =
     effect7
@@ -293,8 +282,7 @@ val effect8 =
     effect1.run
 
 object App13 extends helpers.ZIOAppDebug:
-  val run =
-    effect8
+  val run = effect8
   // Before save
   // Result: User saved
 

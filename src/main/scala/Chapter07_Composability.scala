@@ -22,42 +22,34 @@ import Scenario.*
 
 // the scenario is used from non-ZIO code, so we don't use the config / bootstrap approach to passing it.
 // but we do still use bootstrap to set the scenario, just for consistency with how the scenario is set in other chapters
-var scenario: Scenario =
-  StockMarketHeadline
+var scenario: Scenario = StockMarketHeadline
 
 def stockMarketHeadline =
-  scenario =
-    StockMarketHeadline
+  scenario = StockMarketHeadline
   ZLayer.empty
 
 def headlineNotAvailable =
-  scenario =
-    HeadlineNotAvailable
+  scenario = HeadlineNotAvailable
   ZLayer.empty
 
 def noInterestingTopic =
-  scenario =
-    NoInterestingTopic()
+  scenario = NoInterestingTopic()
   ZLayer.empty
 
 def summaryReadThrows =
-  scenario =
-    SummaryReadThrows()
+  scenario = SummaryReadThrows()
   ZLayer.empty
 
 def noWikiArticleAvailable =
-  scenario =
-    NoWikiArticleAvailable()
+  scenario = NoWikiArticleAvailable()
   ZLayer.empty
 
 def aiTooSlow =
-  scenario =
-    AITooSlow()
+  scenario = AITooSlow()
   ZLayer.empty
 
 def diskFull =
-  scenario =
-    DiskFull()
+  scenario = DiskFull()
   ZLayer.empty
 
 import scala.concurrent.Future
@@ -99,8 +91,7 @@ def findTopicOfInterest(
       "unicode",
       "genome",
     )
-  val res =
-    topics.find(content.contains)
+  val res = topics.find(content.contains)
   println(s"Analytics - topic: $res")
   res
 
@@ -131,8 +122,7 @@ def getHeadlineZ() =
       HeadlineNotAvailable
 
 object App0 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    stockMarketHeadline
+  override val bootstrap = stockMarketHeadline
   
   def run =
     getHeadlineZ()
@@ -141,8 +131,7 @@ object App0 extends helpers.ZIOAppDebug:
 
 
 object App1 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    headlineNotAvailable
+  override val bootstrap = headlineNotAvailable
   
   def run =
     getHeadlineZ()
@@ -278,8 +267,7 @@ def openFile(path: String) =
         )
       else
         println("File - write: " + entry)
-        contents =
-          entry :: contents
+        contents = entry :: contents
         Try(entry)
 
 def openFileZ(path: String) =
@@ -290,8 +278,7 @@ def openFileZ(path: String) =
 object App6 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val file =
-        openFileZ("file1.txt").run
+      val file = openFileZ("file1.txt").run
       file.contains:
         "topicOfInterest"
   // File - OPEN
@@ -329,10 +316,8 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     defer:
-      val file1 =
-        openFileZ("file1.txt").run
-      val file2 =
-        openFileZ("file2.txt").run
+      val file1 = openFileZ("file1.txt").run
+      val file2 = openFileZ("file2.txt").run
       printLine:
         file1.sameContent(file2)
       .run
@@ -358,8 +343,7 @@ def writeToFileZ(
 object App9 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val file =
-        openFileZ("file1").run
+      val file = openFileZ("file1").run
       writeToFileZ(file, "New data on topic")
         .run
   // File - OPEN
@@ -453,8 +437,7 @@ object App14 extends helpers.ZIOAppDebug:
 
 val researchHeadline =
   defer:
-    val headline: String =
-      getHeadlineZ().run
+    val headline: String = getHeadlineZ().run
 
     val topic: String =
       topicOfInterestZ(headline).run
@@ -479,8 +462,7 @@ val researchHeadline =
       summary
 
 object App15 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    headlineNotAvailable
+  override val bootstrap = headlineNotAvailable
   
   def run =
     researchHeadline
@@ -489,8 +471,7 @@ object App15 extends helpers.ZIOAppDebug:
 
 
 object App16 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    noInterestingTopic
+  override val bootstrap = noInterestingTopic
   
   def run =
     researchHeadline
@@ -501,8 +482,7 @@ object App16 extends helpers.ZIOAppDebug:
 
 
 object App17 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    summaryReadThrows
+  override val bootstrap = summaryReadThrows
   
   def run =
     researchHeadline
@@ -534,8 +514,7 @@ object App18 extends helpers.ZIOAppDebug:
 
 
 object App19 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    aiTooSlow
+  override val bootstrap = aiTooSlow
   
   def run =
     researchHeadline
@@ -553,8 +532,7 @@ object App19 extends helpers.ZIOAppDebug:
 
 
 object App20 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    diskFull
+  override val bootstrap = diskFull
   
   def run =
     researchHeadline
@@ -572,8 +550,7 @@ object App20 extends helpers.ZIOAppDebug:
 
 
 object App21 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    stockMarketHeadline
+  override val bootstrap = stockMarketHeadline
   
   def run =
     researchHeadline
@@ -596,8 +573,7 @@ val strictResearch =
       1.millisecond
 
 object App22 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    stockMarketHeadline
+  override val bootstrap = stockMarketHeadline
   
   def run =
     strictResearch

@@ -64,8 +64,7 @@ def gpsFailure =
   )
 
 def weird =
-  scenarioForNonZio =
-    Some(Scenario.TooCold)
+  scenarioForNonZio = Some(Scenario.TooCold)
 
   Runtime.setConfigProvider(
     ErrorsStaticConfigProvider(
@@ -108,8 +107,7 @@ val getTemperature: ZIO[
     end match
 
 object App0 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    happyPath
+  override val bootstrap = happyPath
   
   def run =
     getTemperature
@@ -117,8 +115,7 @@ object App0 extends helpers.ZIOAppDebug:
 
 
 object App1 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    networkFailure
+  override val bootstrap = networkFailure
   
   def run =
     getTemperature
@@ -128,8 +125,7 @@ object App1 extends helpers.ZIOAppDebug:
 object App2 extends helpers.ZIOAppDebug:
   import zio.Console.*
   
-  override val bootstrap =
-    networkFailure
+  override val bootstrap = networkFailure
   
   def run =
     defer:
@@ -143,8 +139,7 @@ object App2 extends helpers.ZIOAppDebug:
 object App3 extends helpers.ZIOAppDebug:
   import zio.Console.*
   
-  override val bootstrap =
-    networkFailure
+  override val bootstrap = networkFailure
   
   def run =
     val safeGetTemperature =
@@ -185,13 +180,11 @@ val temperatureAppComplete =
 object App4 extends helpers.ZIOAppDebug:
   import zio.Console.*
   
-  override val bootstrap =
-    gpsFailure
+  override val bootstrap = gpsFailure
   
   def run =
     defer:
-      val result =
-        temperatureAppComplete.run
+      val result = temperatureAppComplete.run
       printLine:
         s"Didn't fail, despite: $result"
       .run
@@ -207,8 +200,7 @@ val getTemperatureBad =
 object App5 extends helpers.ZIOAppDebug:
   import zio.Console.*
   
-  override val bootstrap =
-    gpsFailure
+  override val bootstrap = gpsFailure
   
   def run =
     getTemperatureBad.catchAll:
@@ -231,15 +223,13 @@ def check(temperature: Temperature) =
 val getTemperatureWithCheck =
   defer:
     // can fail with an Exception
-    val temperature =
-      getTemperature.run
+    val temperature = getTemperature.run
 
     // can fail with a ClimateFailure
     check(temperature).run
 
 object App6 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    gpsFailure
+  override val bootstrap = gpsFailure
   
   def run =
     getTemperatureWithCheck
@@ -249,8 +239,7 @@ object App6 extends helpers.ZIOAppDebug:
 object App7 extends helpers.ZIOAppDebug:
   import zio.Console.*
   
-  override val bootstrap =
-    weird
+  override val bootstrap = weird
   
   def run =
     getTemperatureWithCheck.catchAll:
@@ -274,8 +263,7 @@ def getTemperatureOrThrow(): String =
       "35 degrees"
 
 object App8 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    networkFailure
+  override val bootstrap = networkFailure
   
   def run =
     ZIO.succeed:
@@ -288,8 +276,7 @@ val safeTemperatureApp =
     getTemperatureOrThrow()
 
 object App9 extends helpers.ZIOAppDebug:
-  override val bootstrap =
-    networkFailure
+  override val bootstrap = networkFailure
   
   def run =
     safeTemperatureApp.orElse:
