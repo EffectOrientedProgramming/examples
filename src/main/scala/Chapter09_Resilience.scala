@@ -275,12 +275,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(156)
-  // Current requests: List(2, 156)
-  // Current requests: List(304, 2, 156)
-  // Current requests: List(549, 304, 2, 156)
-  // Current requests: List(219, 549, 304, 2, 156)
-  // Current requests: List(589, 219, 549, 304, 2, 156)
+  // Current requests: List(824)
+  // Current requests: List(550, 824)
+  // Current requests: List(108, 550, 824)
+  // Current requests: List(677, 108, 550, 824)
+  // Current requests: List(657, 677, 108, 550, 824)
   // Result: Crashed the server!!
 
 
@@ -311,16 +310,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(895)
-  // Current requests: List(342, 895)
-  // Current requests: List(70, 342, 895)
-  // Current requests: List(156, 486)
-  // Current requests: List(486)
-  // Current requests: List(610, 156, 486)
-  // Current requests: List(694)
-  // Current requests: List(176, 694)
-  // Current requests: List(652, 176, 694)
-  // Current requests: List(426)
+  // Current requests: List(736)
+  // Current requests: List(862, 736)
+  // Current requests: List(526, 862, 736)
+  // Current requests: List(332)
+  // Current requests: List(533, 332)
+  // Current requests: List(343, 533, 332)
+  // Current requests: List(440)
+  // Current requests: List(690, 440)
+  // Current requests: List(326, 690, 440)
+  // Current requests: List(236)
   // Result: All Requests Succeeded
 
 
@@ -576,7 +575,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 42
+  // Result: Contract Breaches: 43
 
 
 val hedged =
@@ -589,7 +588,7 @@ object App9 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         hedged
-  // Result: Contract Breaches: 0
+  // Result: Contract Breaches: 1
 
 
 import zio.Console.*

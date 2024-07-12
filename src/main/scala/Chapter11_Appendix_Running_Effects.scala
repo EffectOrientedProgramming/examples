@@ -35,4 +35,4 @@ val out =
         .run:
           ZIO.debug:
             "hello, world"
-        .getOrThrowFiberFailure()
+        .getOrThrow()

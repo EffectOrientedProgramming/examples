@@ -358,7 +358,7 @@ case class RetryConfig(times: Int)
 
 import zio.config.magnolia.deriveConfig
 
-val configDescriptor: Config[RetryConfig] =
+val configDescriptor =
   deriveConfig[RetryConfig]
 
 import zio.config.typesafe.*
