@@ -275,10 +275,12 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(6)
-  // Current requests: List(876, 6)
-  // Current requests: List(431, 876, 6)
-  // Current requests: List(857, 431, 876, 6)
+  // Current requests: List(156)
+  // Current requests: List(2, 156)
+  // Current requests: List(304, 2, 156)
+  // Current requests: List(549, 304, 2, 156)
+  // Current requests: List(219, 549, 304, 2, 156)
+  // Current requests: List(589, 219, 549, 304, 2, 156)
   // Result: Crashed the server!!
 
 
@@ -309,16 +311,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(143)
-  // Current requests: List(355, 143)
-  // Current requests: List(795, 355, 143)
-  // Current requests: List(388)
-  // Current requests: List(218, 388)
-  // Current requests: List(239, 218, 388)
-  // Current requests: List(657)
-  // Current requests: List(58, 657)
-  // Current requests: List(27, 58, 657)
-  // Current requests: List(13)
+  // Current requests: List(895)
+  // Current requests: List(342, 895)
+  // Current requests: List(70, 342, 895)
+  // Current requests: List(156, 486)
+  // Current requests: List(486)
+  // Current requests: List(610, 156, 486)
+  // Current requests: List(694)
+  // Current requests: List(176, 694)
+  // Current requests: List(652, 176, 694)
+  // Current requests: List(426)
   // Result: All Requests Succeeded
 
 
@@ -523,7 +525,7 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -574,7 +576,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 58
+  // Result: Contract Breaches: 42
 
 
 val hedged =
