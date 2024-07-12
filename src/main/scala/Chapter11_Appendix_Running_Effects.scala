@@ -9,7 +9,7 @@ object HelloWorld extends zio.ZIOAppDefault:
       "hello, world"
 
 object App0 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   def run =
     ZIO.debug:
@@ -17,7 +17,7 @@ object App0 extends helpers.ZIOAppDebug:
   // hello, world
 
 
-import zio.Console._
+import zio.Console.*
 
 // NOTE We cannot invoke main on this
 // because it crashes mdoc in the CI process

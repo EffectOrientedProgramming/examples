@@ -3,7 +3,7 @@ package Chapter04_Initialization
 import zio.*
 import zio.direct.*
 
-import zio.Console._
+import zio.Console.*
 
 trait Bread:
   def eat =
@@ -16,13 +16,14 @@ object BreadStoreBought:
     ZLayer.succeed:
       BreadStoreBought()
 
+val eatBread =
+  ZIO.serviceWithZIO[Bread]:
+    bread => bread.eat
+
 object App0 extends helpers.ZIOAppDebug:
   def run =
-    ZIO
-      .serviceWithZIO[Bread]:
-        bread => bread.eat
-      .provide:
-        BreadStoreBought.purchased
+    eatBread.provide:
+      BreadStoreBought.purchased
   // Bread: Eating
 
 
@@ -111,13 +112,13 @@ object App2 extends helpers.ZIOAppDebug:
   // main.run complete
 
 
-import zio.Console._
+import zio.Console.*
 
 case class Dough():
   val letRise =
     printLine("Dough: rising")
 
-import zio.Console._
+import zio.Console.*
 
 object Dough:
   val fresh =
@@ -126,7 +127,7 @@ object Dough:
         printLine("Dough: Mixed").run
         Dough()
 
-import zio.Console._
+import zio.Console.*
 
 trait HeatSource
 case class Oven() extends HeatSource
@@ -138,11 +139,11 @@ object Oven:
         printLine("Oven: Heated").run
         Oven()
 
-import zio.Console._
+import zio.Console.*
 
 case class BreadHomeMade(
     heat: HeatSource,
-    dough: Dough
+    dough: Dough,
 ) extends Bread
 
 object BreadHomeMade:
@@ -152,26 +153,23 @@ object BreadHomeMade:
         printLine("BreadHomeMade: Baked").run
         BreadHomeMade(
           ZIO.service[Oven].run,
-          ZIO.service[Dough].run
+          ZIO.service[Dough].run,
         )
 
 object App3 extends helpers.ZIOAppDebug:
   def run =
-    ZIO
-      .serviceWithZIO[Bread]:
-        bread => bread.eat
-      .provide(
-        BreadHomeMade.baked,
-        Dough.fresh,
-        Oven.heated
-      )
-  // Oven: Heated
+    eatBread.provide(
+      BreadHomeMade.baked,
+      Dough.fresh,
+      Oven.heated,
+    )
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
 
-import zio.Console._
+import zio.Console.*
 
 trait Toast:
   def bread: Bread
@@ -181,7 +179,7 @@ trait Toast:
 
 case class ToastA(
     heat: HeatSource,
-    bread: Bread
+    bread: Bread,
 ) extends Toast
 
 object ToastA:
@@ -191,7 +189,7 @@ object ToastA:
         printLine("ToastA: Made").run
         ToastA(
           ZIO.service[HeatSource].run,
-          ZIO.service[Bread].run
+          ZIO.service[Bread].run,
         )
 
 case class Toaster() extends HeatSource
@@ -203,11 +201,11 @@ object Toaster:
         printLine("Toaster: Ready").run
         Toaster()
 
-import zio.Console._
+import zio.Console.*
 
 case class ToastB(
     heat: Toaster,
-    bread: Bread
+    bread: Bread,
 ) extends Toast
 // ToastA used HeatSource for heat
 
@@ -218,7 +216,7 @@ object ToastB:
         printLine("ToastB: Made").run
         ToastB(
           ZIO.service[Toaster].run,
-          ZIO.service[Bread].run
+          ZIO.service[Bread].run,
         )
 
 object App4 extends helpers.ZIOAppDebug:
@@ -232,7 +230,7 @@ object App4 extends helpers.ZIOAppDebug:
         BreadHomeMade.baked,
         // The two HeatSources don't clash:
         Oven.heated,
-        Toaster.ready
+        Toaster.ready,
       )
   // Toaster: Ready
   // Oven: Heated
@@ -242,7 +240,7 @@ object App4 extends helpers.ZIOAppDebug:
   // Toast: Eating
 
 
-import zio.Console._
+import zio.Console.*
 
 object OvenSafe:
   val heated =
@@ -257,15 +255,12 @@ object OvenSafe:
 
 object App5 extends helpers.ZIOAppDebug:
   def run =
-    ZIO
-      .serviceWithZIO[Bread]:
-        bread => bread.eat
-      .provide(
-        BreadHomeMade.baked,
-        Dough.fresh,
-        OvenSafe.heated,
-        Scope.default
-      )
+    eatBread.provide(
+      BreadHomeMade.baked,
+      Dough.fresh,
+      OvenSafe.heated,
+      Scope.default,
+    )
   // Oven: Heated
   // Dough: Mixed
   // BreadHomeMade: Baked
@@ -273,7 +268,7 @@ object App5 extends helpers.ZIOAppDebug:
   // Oven: Turning off
 
 
-import zio.Console._
+import zio.Console.*
 
 case class BreadFromFriend() extends Bread()
 
@@ -311,13 +306,12 @@ object Friend:
 end Friend
 
 object App6 extends helpers.ZIOAppDebug:
+  // TODO the formatting on the named params is terrible
   def run =
-    ZIO
-      .service[Bread]
-      .provide:
-        Friend.bread(worksOnAttempt =
-          3
-        )
+    eatBread.provide:
+      Friend.bread(worksOnAttempt =
+        3
+      )
   // Attempt 1: Failure(Friend Unreachable)
   // Result: Failure(Friend Unreachable)
 
@@ -338,17 +332,14 @@ object App7 extends helpers.ZIOAppDebug:
 
 
 def logicWithRetries(retries: Int) =
-  ZIO
-    .serviceWithZIO[Bread]:
-      bread => bread.eat
-    .provide:
-      Friend
-        .bread(worksOnAttempt =
-          3
-        )
-        .retry:
-          Schedule.recurs:
-            retries
+  eatBread.provide:
+    Friend
+      .bread(worksOnAttempt =
+        3
+      )
+      .retry:
+        Schedule.recurs:
+          retries
 
 object App8 extends helpers.ZIOAppDebug:
   def run =

@@ -51,7 +51,7 @@ case class PopularService(
     retrieveContents: Path => ZIO[
       Any,
       Nothing,
-      FileContents
+      FileContents,
     ]
 ):
   def retrieve(name: Path) =
@@ -85,7 +85,7 @@ object App0 extends helpers.ZIOAppDebug:
   def run =
     thunderingHerds.provide(
       CloudStorage.live,
-      ZLayer.fromZIO(makePopularService)
+      ZLayer.fromZIO(makePopularService),
     )
   // Result: Amount owed: $100
 
@@ -102,7 +102,7 @@ val makeCachedPopularService =
           timeToLive =
             Duration.Infinity,
           lookup =
-            Lookup(cloudStorage.retrieve)
+            Lookup(cloudStorage.retrieve),
         )
         .run
 
@@ -112,12 +112,12 @@ object App1 extends helpers.ZIOAppDebug:
   def run =
     thunderingHerds.provide(
       CloudStorage.live,
-      ZLayer.fromZIO(makeCachedPopularService)
+      ZLayer.fromZIO(makeCachedPopularService),
     )
   // Result: Amount owed: $1
 
 
-import zio.Console._
+import zio.Console.*
 
 val expensiveApiCall =
   ZIO.unit
@@ -142,7 +142,7 @@ val makeRateLimiter =
     max =
       1,
     interval =
-      1.second
+      1.second,
   )
 
 object App2 extends helpers.ZIOAppDebug:
@@ -201,7 +201,7 @@ object App3 extends helpers.ZIOAppDebug:
   // Total time [took 8s]
 
 
-import zio.Console._
+import zio.Console.*
 
 trait DelicateResource:
   val request: ZIO[Any, String, Int]
@@ -210,14 +210,15 @@ trait DelicateResource:
 // that has usage constraints
 case class Live(
     currentRequests: Ref[List[Int]],
-    alive: Ref[Boolean]
+    alive: Ref[Boolean],
 ) extends DelicateResource:
   val request =
     defer:
       val res =
         Random.nextIntBounded(1000).run
 
-      if (currentRequests.get.run.length > 3)
+      if currentRequests.get.run.length > 3
+      then
         alive.set(false).run
         ZIO.fail("Crashed the server!!").run
 
@@ -231,7 +232,7 @@ case class Live(
       ZIO.sleep(1.second).run
       removeRequest(res).run
 
-      if (alive.get.run)
+      if alive.get.run then
         res
       else
         ZIO
@@ -258,7 +259,7 @@ object DelicateResource:
           Ref
             .make[List[Int]](List.empty)
             .run,
-          Ref.make(true).run
+          Ref.make(true).run,
         )
 
 object App4 extends helpers.ZIOAppDebug:
@@ -274,11 +275,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(495)
-  // Current requests: List(18, 311, 888, 495)
-  // Current requests: List(730, 18, 311, 888, 495)
-  // Current requests: List(888, 495)
-  // Current requests: List(311, 888, 495)
+  // Current requests: List(738)
+  // Current requests: List(68, 738)
+  // Current requests: List(644, 68, 738)
+  // Current requests: List(772, 644, 68, 738)
+  // Current requests: List(910, 772, 644, 68, 738)
   // Result: Crashed the server!!
 
 
@@ -305,20 +306,20 @@ object App5 extends helpers.ZIOAppDebug:
         .run
     .provide(
       DelicateResource.live,
-      Scope.default
+      Scope.default,
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(515)
-  // Current requests: List(573, 515)
-  // Current requests: List(670, 573, 515)
-  // Current requests: List(131)
-  // Current requests: List(934, 131)
-  // Current requests: List(836, 934, 131)
-  // Current requests: List(687, 496)
-  // Current requests: List(496)
-  // Current requests: List(526, 687, 496)
-  // Current requests: List(655)
+  // Current requests: List(856)
+  // Current requests: List(752, 856)
+  // Current requests: List(468, 752, 856)
+  // Current requests: List(158)
+  // Current requests: List(56, 158)
+  // Current requests: List(797, 56, 158)
+  // Current requests: List(907, 797)
+  // Current requests: List(78, 907)
+  // Current requests: List(741, 78, 907)
+  // Current requests: List(33, 741)
   // Result: All Requests Succeeded
 
 
@@ -339,7 +340,7 @@ val timeSensitiveValue =
           scheduledValues(
             (1100.millis, true),
             (4100.millis, false),
-            (5000.millis, true)
+            (5000.millis, true),
           )
         )
         .getOrThrowFiberFailure()
@@ -362,7 +363,7 @@ object InstantOps:
     ): Instant =
       i.plus(duration.asJava)
 
-import InstantOps._
+import InstantOps.*
 
 /* Goal: If I accessed this from:
  * 0-1 seconds, I would get "First Value" 1-4
@@ -379,8 +380,8 @@ def scheduledValues[A](
   ZIO[
     Any, // access time
     TimeoutException,
-    A
-  ]
+    A,
+  ],
 ] =
   defer {
     val startTime =
@@ -403,16 +404,16 @@ private def createTimeTableX[A](
   values.scanLeft(
     ExpiringValue(
       startTime.plusZ(value._1),
-      value._2
+      value._2,
     )
   ) {
     case (
           ExpiringValue(elapsed, _),
-          (duration, value)
+          (duration, value),
         ) =>
       ExpiringValue(
         elapsed.plusZ(duration),
-        value
+        value,
       )
   }
 
@@ -449,7 +450,7 @@ private def accessX[A](
 
 private case class ExpiringValue[A](
     expirationTime: Instant,
-    value: A
+    value: A,
 )
 
 val repeatSchedule =
@@ -477,7 +478,7 @@ object App6 extends helpers.ZIOAppDebug:
 import nl.vroste.rezilience.{
   CircuitBreaker,
   TrippingStrategy,
-  Retry
+  Retry,
 }
 
 val makeCircuitBreaker =
@@ -488,7 +489,7 @@ val makeCircuitBreaker =
           2
         ),
     resetPolicy =
-      Retry.Schedules.common()
+      Retry.Schedules.common(),
   )
 
 object App7 extends helpers.ZIOAppDebug:
@@ -523,14 +524,13 @@ object App7 extends helpers.ZIOAppDebug:
       val made =
         numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 74 Made: 67
+  // Result: Prevented: 75 Made: 66
 
 
 val logicThatSporadicallyLocksUp =
   defer:
-    if (
-      Random.nextIntBounded(1_000).run == 0
-    )
+    if Random.nextIntBounded(1_000).run == 0
+    then
       ZIO
         .sleep:
           3.second
@@ -575,7 +575,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 64
+  // Result: Contract Breaches: 49
 
 
 val hedged =
@@ -591,7 +591,7 @@ object App9 extends helpers.ZIOAppDebug:
   // Result: Contract Breaches: 0
 
 
-import zio.Console._
+import zio.Console.*
 
 val attemptsR =
   Unsafe.unsafe {

@@ -97,7 +97,7 @@ def findTopicOfInterest(
       "space",
       "barn",
       "unicode",
-      "genome"
+      "genome",
     )
   val res =
     topics.find(content.contains)
@@ -107,7 +107,7 @@ def findTopicOfInterest(
 import scala.util.Either
 def wikiArticle(topic: String): Either[
   Scenario.NoWikiArticleAvailable,
-  String
+  String,
 ] =
   println(s"Wiki - articleFor($topic)")
   topic match
@@ -123,6 +123,7 @@ def wikiArticle(topic: String): Either[
 import scala.concurrent.Future
 
 def getHeadlineZ() =
+// TODO should we put .from on the same line as ZIO
   ZIO
     .from:
       getHeadLine()
@@ -254,12 +255,13 @@ def openFile(path: String) =
       println(
         s"File - summaryFor($searchTerm)"
       )
-      if (searchTerm == "unicode")
+      if searchTerm == "unicode" then
         println("File - * Threw Exception *")
         throw Exception(s"No summary found")
-      else if (searchTerm == "stock market")
+      else if searchTerm == "stock market"
+      then
         "stock markets are neat"
-      else if (searchTerm == "space")
+      else if searchTerm == "space" then
         "space is huge"
       else
         ???
@@ -267,19 +269,18 @@ def openFile(path: String) =
     override def write(
         entry: String
     ): Try[String] =
-      if (entry.contains("genome")) {
+      if entry.contains("genome") then
         println("File - disk full!")
         Try(
           throw new Exception(
             "Disk is full!"
           )
         )
-      } else {
+      else
         println("File - write: " + entry)
         contents =
           entry :: contents
         Try(entry)
-      }
 
 def openFileZ(path: String) =
   ZIO.fromAutoCloseable:
@@ -321,7 +322,7 @@ object App7 extends helpers.ZIOAppDebug:
 
 
 object App8 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   def run =
     defer:
@@ -342,7 +343,7 @@ object App8 extends helpers.ZIOAppDebug:
 
 def writeToFileZ(
     file: File,
-    content: String
+    content: String,
 ) =
   ZIO
     .from:
@@ -396,17 +397,17 @@ def summarize(article: String): String =
   println(s"AI - summarize - start")
   // Represents the AI taking a long time to
   // summarize the content
-  if (article.contains("space")) {
+  if article.contains("space") then
     println("AI - taking a long time")
     Thread.sleep(5000)
-  }
 
   println(s"AI - summarize - end")
-  if (article.contains("stock market"))
+  if article.contains("stock market") then
     s"market is not rational"
-  else if (article.contains("genome"))
+  else if article.contains("genome") then
     "The human genome is huge!"
-  else if (article.contains("long article"))
+  else if article.contains("long article")
+  then
     "short summary"
   else
     ???
@@ -462,7 +463,7 @@ val researchHeadline =
       summaryFile.contains:
         topic
 
-    if (knownTopic)
+    if knownTopic then
       summaryForZ(summaryFile, topic).run
     else
       val wikiArticle: String =

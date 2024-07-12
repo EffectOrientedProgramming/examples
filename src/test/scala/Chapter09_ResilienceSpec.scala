@@ -20,7 +20,7 @@ object Test0 extends ZIOSpecDefault:
 
 object Test1 extends ZIOSpecDefault:
   import zio.test.*
-  import zio.Console._
+  import zio.Console.*
   
   def spec =
     test("flaky test!"):

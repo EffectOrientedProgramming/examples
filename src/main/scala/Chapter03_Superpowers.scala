@@ -3,7 +3,7 @@ package Chapter03_Superpowers
 import zio.*
 import zio.direct.*
 
-import zio.Console._
+import zio.Console.*
 
 enum Scenario:
   case HappyPath
@@ -11,7 +11,7 @@ enum Scenario:
   case Slow
   case WorksOnTry(
       attempts: Int,
-      ref: Ref[Int]
+      ref: Ref[Int],
   )
 
 // This configuration is used by Effects to get the scenario that
@@ -56,7 +56,7 @@ val doesNotWorkInitially =
             .default
             .unsafe
             .run(Ref.make(1))
-            .getOrThrow()
+            .getOrThrow(),
         )
   Runtime.setConfigProvider:
     StaticConfigProvider(scenario)
@@ -223,6 +223,8 @@ object App7 extends helpers.ZIOAppDebug:
   def run =
     effect4
   // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
+  // Log: **Database crashed!!**
   // Result: Please manually provision Morty
 
 
@@ -250,7 +252,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.021578306S,User saved)
+  // Result: (PT5.139472261S,User saved)
 
 
 val effect7 =
@@ -266,7 +268,7 @@ object App10 extends helpers.ZIOAppDebug:
 
 
 object App11 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   def run =
     printLine("Before save")
@@ -275,7 +277,7 @@ object App11 extends helpers.ZIOAppDebug:
 
 
 object App12 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   def run =
     defer:
@@ -285,7 +287,7 @@ object App12 extends helpers.ZIOAppDebug:
   // Result: User saved
 
 
-import zio.Console._
+import zio.Console.*
 
 val effect8 =
   defer:
@@ -316,7 +318,7 @@ object App14 extends helpers.ZIOAppDebug:
   // Result: User saved
 
 
-import zio.Console._
+import zio.Console.*
 
 val surroundedProgram =
   defer:

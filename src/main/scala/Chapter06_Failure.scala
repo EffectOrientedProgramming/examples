@@ -78,7 +78,7 @@ case class Temperature(degrees: Int)
 val getTemperature: ZIO[
   Any,
   GpsException | NetworkException,
-  Temperature
+  Temperature,
 ] =
   defer:
     val maybeScenario =
@@ -126,7 +126,7 @@ object App1 extends helpers.ZIOAppDebug:
 
 
 object App2 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   override val bootstrap =
     networkFailure
@@ -141,7 +141,7 @@ object App2 extends helpers.ZIOAppDebug:
 
 
 object App3 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   override val bootstrap =
     networkFailure
@@ -183,7 +183,7 @@ val temperatureAppComplete =
         "GPS Hardware Failure"
 
 object App4 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   override val bootstrap =
     gpsFailure
@@ -205,7 +205,7 @@ val getTemperatureBad =
         e.getMessage
 
 object App5 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   override val bootstrap =
     gpsFailure
@@ -247,7 +247,7 @@ object App6 extends helpers.ZIOAppDebug:
 
 
 object App7 extends helpers.ZIOAppDebug:
-  import zio.Console._
+  import zio.Console.*
   
   override val bootstrap =
     weird
