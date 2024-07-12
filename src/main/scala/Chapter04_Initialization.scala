@@ -160,8 +160,8 @@ object App3 extends helpers.ZIOAppDebug:
       Dough.fresh,
       Oven.heated,
     )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -229,8 +229,8 @@ object App4 extends helpers.ZIOAppDebug:
         Toaster.ready,
       )
   // Toaster: Ready
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastB: Made
   // Toast: Eating
