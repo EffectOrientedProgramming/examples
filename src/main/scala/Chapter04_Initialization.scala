@@ -261,8 +261,8 @@ object App5 extends helpers.ZIOAppDebug:
       OvenSafe.heated,
       Scope.default,
     )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off
