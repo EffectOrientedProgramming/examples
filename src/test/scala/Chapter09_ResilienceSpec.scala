@@ -1,4 +1,4 @@
-package Chapter08_Resilience
+package Chapter09_Resilience
 
 import zio.*
 import zio.direct.*

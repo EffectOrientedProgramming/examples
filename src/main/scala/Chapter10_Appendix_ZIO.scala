@@ -1,4 +1,4 @@
-package Chapter09_Appendix_ZIO
+package Chapter10_Appendix_ZIO
 
 import zio.*
 import zio.direct.*

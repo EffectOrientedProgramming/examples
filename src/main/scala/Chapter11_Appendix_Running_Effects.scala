@@ -1,4 +1,4 @@
-package Chapter10_Appendix_Running_Effects
+package Chapter11_Appendix_Running_Effects
 
 import zio.*
 import zio.direct.*
