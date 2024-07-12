@@ -50,9 +50,9 @@ object App1 extends helpers.ZIOAppDebug:
     ZIO
       .serviceWithZIO[X]:
         x => x.display
+      // dependency // Or the noun version
       .provide:
         X.dependent // The "adjectivized object"
-      // dependency // Or the noun version
   // Creating X
   // X.display
 
@@ -247,16 +247,12 @@ import zio.Console._
 object OvenSafe:
   val heated =
     ZLayer.fromZIO:
-      ZIO
-        .succeed(Oven())
-        .tap:
-          _ =>
-            printLine:
-              "Oven: Heated"
-        .withFinalizer:
-          _ =>
-            printLine:
-              "Oven: Turning off!"
+      defer:
+        printLine("Oven: Heated").run
+        Oven()
+      .withFinalizer:
+        _ =>
+          printLine("Oven: Turning off")
             .orDie
 
 object App5 extends helpers.ZIOAppDebug:
@@ -274,7 +270,7 @@ object App5 extends helpers.ZIOAppDebug:
   // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
-  // Oven: Turning off!
+  // Oven: Turning off
 
 
 import zio.Console._
