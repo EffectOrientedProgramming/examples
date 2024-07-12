@@ -42,7 +42,7 @@ val dependency =
     makeX
 
 object X:
-  val dependent =
+  val layer =
     ZLayer.fromZIO:
       makeX
 
@@ -53,7 +53,7 @@ object App1 extends helpers.ZIOAppDebug:
         x => x.display
       // dependency // Or the noun version
       .provide:
-        X.dependent // The "adjectivized object"
+        X.layer // The "adjectivized object"
   // Creating X
   // X.display
 
@@ -68,7 +68,7 @@ val makeY =
     Y()
 
 object Y:
-  val dependency =
+  val layer =
     ZLayer.fromZIO:
       makeY
 
@@ -79,32 +79,33 @@ def showType(id: String, obj: Any) =
   printLine(s"$id is a ${_type(obj)}")
 
 object App2 extends helpers.ZIOAppDebug:
+  def show(y: Y) =
+    defer:
+      printLine(s"y: $y").run
+      y.display.run
+  
+  val main =
+    ZIO
+      .serviceWithZIO[Y]:
+        y => show(y)
+      .provide:
+        Y.layer
+  
+  // TODO scalafmt rule change to not make that y wrap lines
   def run =
     defer:
       showType("makeY", makeY).run
-      val r =
+      val y =
         makeY.run
-      printLine(s"makeY.run returned $r").run
-      showType("Y.dependency", Y.dependency)
-        .run
-  
-      val main =
-        ZIO
-          .serviceWithZIO[Y]:
-            y =>
-              defer:
-                printLine(s"y: $y").run
-                y.display.run
-          .provide:
-            Y.dependency
-  
+      printLine(s"makeY.run returned $y").run
+      showType("Y.layer", Y.layer).run
       showType("main", main).run
       main.run
       printLine("main.run complete").run
   // makeY is a zio.ZIO
   // makeY.run creating Y()
   // makeY.run returned Y()
-  // Y.dependency is a zio.ZLayer
+  // Y.layer is a zio.ZLayer
   // main is a zio.ZIO
   // makeY.run creating Y()
   // y: Y()

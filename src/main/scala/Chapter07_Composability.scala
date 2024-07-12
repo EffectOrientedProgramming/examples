@@ -304,15 +304,18 @@ object App7 extends helpers.ZIOAppDebug:
   import scala.util.Using
   import java.io.FileReader
   
+  val staticScoped =
+    Using(openFile("file1.txt")):
+      file1 =>
+        Using(openFile("file2.txt")):
+          file2 =>
+            println:
+              file1.sameContent(file2)
+  
   def run =
     defer:
-      Using(openFile("file1.txt")):
-        file1 =>
-          Using(openFile("file2.txt")):
-            file2 =>
-              println:
-                file1.sameContent(file2)
-      () // Don't care about result
+      staticScoped
+    .ignore
   // File - OPEN
   // File - OPEN
   // side-effect print: comparing content
