@@ -265,11 +265,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(844, 587)
-  // Current requests: List(587)
-  // Current requests: List(936, 844, 587)
-  // Current requests: List(824, 936, 844, 587)
-  // Current requests: List(986, 824, 936, 844, 587)
+  // Current requests: List(312)
+  // Current requests: List(104, 312)
+  // Current requests: List(973, 104, 312)
+  // Current requests: List(584, 973, 104, 312)
   // Result: Crashed the server!!
 
 
@@ -297,16 +296,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(398)
-  // Current requests: List(106, 398)
-  // Current requests: List(780, 106, 398)
-  // Current requests: List(760)
-  // Current requests: List(243, 760)
-  // Current requests: List(462, 243, 760)
-  // Current requests: List(496)
-  // Current requests: List(474, 496)
-  // Current requests: List(931, 474, 496)
-  // Current requests: List(423)
+  // Current requests: List(288)
+  // Current requests: List(773, 288)
+  // Current requests: List(976, 773, 288)
+  // Current requests: List(42, 377)
+  // Current requests: List(377)
+  // Current requests: List(128, 42, 377)
+  // Current requests: List(856, 128)
+  // Current requests: List(48, 856, 128)
+  // Current requests: List(251, 48, 856)
+  // Current requests: List(581)
   // Result: All Requests Succeeded
 
 
@@ -494,7 +493,7 @@ object App7 extends helpers.ZIOAppDebug:
   
       val made = numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 val logicThatSporadicallyLocksUp =
@@ -544,7 +543,7 @@ object App8 extends helpers.ZIOAppDebug:
     businessLogic:
       LogicHolder:
         logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 47
+  // Result: Contract Breaches: 43
 
 
 val hedged =
