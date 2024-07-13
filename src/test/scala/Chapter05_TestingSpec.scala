@@ -6,7 +6,7 @@ import zio.test.*
 
 import zio.test.assertTrue
 
-val logic =
+val testLogic =
   defer:
     assertTrue(1 == 1)
 
@@ -14,7 +14,7 @@ import zio.test.test
 
 val testCase =
   test("eat Bread"):
-    logic
+    testLogic
 
 object Test2 extends ZIOSpecDefault:
   def spec =
