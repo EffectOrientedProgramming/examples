@@ -586,7 +586,7 @@ object App22 extends helpers.ZIOAppDebug:
   // AI - summarize - end
   // File - write: market is not rational
   // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 val daily =
