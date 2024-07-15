@@ -228,8 +228,8 @@ object App4 extends helpers.ZIOAppDebug:
         Toaster.ready,
       )
   // Toaster: Ready
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastB: Made
   // Toast: Eating
