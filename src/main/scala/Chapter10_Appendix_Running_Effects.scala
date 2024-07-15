@@ -1,7 +1,8 @@
-package Chapter11_Appendix_Running_Effects
+package Chapter10_Appendix_Running_Effects
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 
 object HelloWorld extends zio.ZIOAppDefault:
   def run =
@@ -9,15 +10,11 @@ object HelloWorld extends zio.ZIOAppDefault:
       "hello, world"
 
 object App0 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   def run =
     ZIO.debug:
       "hello, world"
   // hello, world
 
-
-import zio.Console.*
 
 // NOTE We cannot invoke main on this
 // because it crashes mdoc in the CI process

@@ -1,7 +1,8 @@
-package Chapter11_Appendix_Running_Effects
+package Chapter10_Appendix_Running_Effects
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:

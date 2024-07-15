@@ -2,6 +2,7 @@ package Chapter09_Resilience
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 
 import zio.{ZIO, ZLayer}
 import zio.cache.{Cache, Lookup}
@@ -114,8 +115,6 @@ object App1 extends helpers.ZIOAppDebug:
   // Result: Amount owed: $1
 
 
-import zio.Console.*
-
 val expensiveApiCall = ZIO.unit
 
 extension [R, E, A](z: ZIO[R, E, A])
@@ -179,19 +178,17 @@ object App3 extends helpers.ZIOAppDebug:
           "Total time"
         .unit // ignores the list of unit
         .run
-  // Bill called API [took 0s]
+  // Bruce called API [took 0s]
   // James called API [took 1s]
-  // Bruce called API [took 2s]
-  // Bill called API [took 3s]
-  // James called API [took 3s]
+  // Bill called API [took 2s]
   // Bruce called API [took 3s]
-  // Bill called API [took 3s]
   // James called API [took 3s]
+  // Bill called API [took 3s]
   // Bruce called API [took 3s]
+  // James called API [took 3s]
+  // Bill called API [took 3s]
   // Total time [took 8s]
 
-
-import zio.Console.*
 
 trait DelicateResource:
   val request: ZIO[Any, String, Int]
@@ -265,11 +262,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(955)
-  // Current requests: List(48, 955)
-  // Current requests: List(210, 48, 955)
-  // Current requests: List(829, 210, 48, 955)
-  // Current requests: List(321, 829, 210, 48, 955)
+  // Current requests: List(865, 278)
+  // Current requests: List(447, 809, 865, 278)
+  // Current requests: List(809, 865, 278)
+  // Current requests: List(278)
+  // Current requests: List(356, 447, 809, 865, 278)
   // Result: Crashed the server!!
 
 
@@ -297,16 +294,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(141)
-  // Current requests: List(167, 141)
-  // Current requests: List(776, 167, 141)
-  // Current requests: List(566, 141)
-  // Current requests: List(264, 566, 141)
-  // Current requests: List(767, 264, 566)
-  // Current requests: List(588, 823, 767)
-  // Current requests: List(823, 767)
-  // Current requests: List(382, 588, 823)
-  // Current requests: List(566, 382)
+  // Current requests: List(206)
+  // Current requests: List(118, 206)
+  // Current requests: List(356, 118, 206)
+  // Current requests: List(631)
+  // Current requests: List(23, 631)
+  // Current requests: List(689, 23, 631)
+  // Current requests: List(281)
+  // Current requests: List(512, 281)
+  // Current requests: List(99, 512, 281)
+  // Current requests: List(9)
   // Result: All Requests Succeeded
 
 
@@ -478,7 +475,7 @@ object App7 extends helpers.ZIOAppDebug:
       val numPrevented = Ref.make[Int](0).run
   
       val protectedCall =
-  // TODO Note/explain `catchSome`
+        // TODO Note/explain `catchSome`
         cb(externalSystem(numCalls)).catchAll:
           case CircuitBreakerOpen =>
             numPrevented.update(_ + 1)
@@ -494,42 +491,61 @@ object App7 extends helpers.ZIOAppDebug:
   
       val made = numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 74 Made: 67
+  // Result: Prevented: 75 Made: 66
 
 
-val logicThatSporadicallyLocksUp =
+object Scenario:
+  def apply(
+      z: ZIO[Any, String, Unit]
+  ): ZLayer[Any, Nothing, Unit] =
+    Runtime.setConfigProvider:
+      StaticConfigProvider(z)
+
+// This configuration is used by Effects to get the scenario that
+// may have been passed in via `bootstrap`
+// The configuration is optional and the default of `Config.fail`
+// sets the Option to None.
+val scenarioConfig: Config[
+  Option[ZIO[Any, String, Unit]]
+] =
+  Config.Optional[ZIO[Any, String, Unit]]:
+    Config.fail("no default scenario")
+
+class StaticConfigProvider(
+    z: ZIO[Any, String, Unit]
+) extends ConfigProvider:
+  override def load[A](config: Config[A])(
+      implicit trace: Trace
+  ): IO[Config.Error, A] =
+    ZIO.succeed:
+      Some(z).asInstanceOf[A]
+
+val sometimesSlowRequest =
   defer:
     if Random.nextIntBounded(1_000).run == 0
     then
-      ZIO
-        .sleep:
-          3.second
-        .run
+      ZIO.sleep(3.second).run
 
-case class LogicHolder(
-    logic: ZIO[Any, Nothing, Unit]
-)
-
-// TODO LogicHolder is the only approach I could think of to let us pass in the original and  hedged logic without re-writing everything
-//  around it. Worthwhile, or just a
-//  complicated distraction? Consider using bootstrap
-def businessLogic(logicHolder: LogicHolder) =
+// based on our config from bootstrap, make the request with the additional logic
+val makeRequest =
   defer:
-    val makeRequest =
-      logicHolder
-        .logic
-        .timeoutFail("took too long")(
-          1.second
-        )
+    ZIO.config(scenarioConfig).run match
+      case Some(z: ZIO[Any, String, Unit]) =>
+        z.run
+      case _ =>
+        ZIO.fail("No scenario")
 
+// TODO not sure yet how I feel about this
+//   It should be a def that takes a ZIO, but we are avoiding that
+val makeLotsOfRequests =
+  defer:
     val totalRequests = 50_000
 
     val successes =
       ZIO
-        .collectAllSuccessesPar(
+        .collectAllSuccessesPar:
           List
             .fill(totalRequests)(makeRequest)
-        )
         .run
 
     val contractBreaches =
@@ -537,28 +553,35 @@ def businessLogic(logicHolder: LogicHolder) =
 
     "Contract Breaches: " + contractBreaches
 
+val requestWithTimeout =
+  sometimesSlowRequest
+    .timeoutFail("took too long"):
+      1.second
+
 object App8 extends helpers.ZIOAppDebug:
+  override val bootstrap =
+    Scenario:
+      requestWithTimeout
+  
   def run =
-    businessLogic:
-      LogicHolder:
-        logicThatSporadicallyLocksUp
-  // Result: Contract Breaches: 40
+    makeLotsOfRequests
+  // Result: Contract Breaches: 47
 
 
 val hedged =
-  logicThatSporadicallyLocksUp.race:
-    logicThatSporadicallyLocksUp.delay:
+  sometimesSlowRequest.race:
+    sometimesSlowRequest.delay:
       25.millis
 
 object App9 extends helpers.ZIOAppDebug:
+  override val bootstrap =
+    Scenario:
+      hedged
+  
   def run =
-    businessLogic:
-      LogicHolder:
-        hedged
+    makeLotsOfRequests
   // Result: Contract Breaches: 0
 
-
-import zio.Console.*
 
 val attemptsR =
   Unsafe.unsafe:

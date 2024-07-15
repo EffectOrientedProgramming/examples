@@ -2,6 +2,7 @@ package Chapter08_State
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 
 val unreliableCounting =
   var counter = 0
@@ -22,7 +23,7 @@ val unreliableCounting =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     unreliableCounting
-  // Result: Final count: 99742
+  // Result: Final count: 99952
 
 
 object App1 extends helpers.ZIOAppDebug:

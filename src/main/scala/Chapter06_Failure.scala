@@ -2,6 +2,7 @@ package Chapter06_Failure
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 
 enum Scenario:
   case HappyPath,
@@ -123,8 +124,6 @@ object App1 extends helpers.ZIOAppDebug:
 
 
 object App2 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   override val bootstrap = networkFailure
   
   def run =
@@ -137,8 +136,6 @@ object App2 extends helpers.ZIOAppDebug:
 
 
 object App3 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   override val bootstrap = networkFailure
   
   def run =
@@ -178,8 +175,6 @@ val temperatureAppComplete =
         "GPS Hardware Failure"
 
 object App4 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   override val bootstrap = gpsFailure
   
   def run =
@@ -198,8 +193,6 @@ val getTemperatureBad =
         e.getMessage
 
 object App5 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   override val bootstrap = gpsFailure
   
   def run =
@@ -237,8 +230,6 @@ object App6 extends helpers.ZIOAppDebug:
 
 
 object App7 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   override val bootstrap = weird
   
   def run =

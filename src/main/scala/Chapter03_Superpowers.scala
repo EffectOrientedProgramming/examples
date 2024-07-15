@@ -2,7 +2,6 @@ package Chapter03_Superpowers
 
 import zio.*
 import zio.direct.*
-
 import zio.Console.*
 
 enum Scenario:
@@ -240,7 +239,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.033370981S,User saved)
+  // Result: (PT0.001194481S,User saved)
 
 
 val effect7 =
@@ -255,8 +254,6 @@ object App10 extends helpers.ZIOAppDebug:
 
 
 object App11 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   def run =
     printLine("Before save")
     effect1
@@ -264,8 +261,6 @@ object App11 extends helpers.ZIOAppDebug:
 
 
 object App12 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   def run =
     defer:
       printLine("Before save").run
@@ -273,8 +268,6 @@ object App12 extends helpers.ZIOAppDebug:
   // Before save
   // Result: User saved
 
-
-import zio.Console.*
 
 val effect8 =
   defer:
@@ -303,8 +296,6 @@ object App14 extends helpers.ZIOAppDebug:
   // User saved
   // Result: User saved
 
-
-import zio.Console.*
 
 val surroundedProgram =
   defer:

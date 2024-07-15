@@ -2,6 +2,7 @@ package Chapter07_Composability
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 
 enum Scenario:
   case StockMarketHeadline
@@ -311,8 +312,6 @@ object App7 extends helpers.ZIOAppDebug:
 
 
 object App8 extends helpers.ZIOAppDebug:
-  import zio.Console.*
-  
   def run =
     defer:
       val file1 = openFileZ("file1.txt").run
@@ -584,9 +583,8 @@ object App22 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
-  // File - write: market is not rational
   // File - CLOSE
-  // Result: market is not rational
+  // Result: strict timeout
 
 
 val daily =

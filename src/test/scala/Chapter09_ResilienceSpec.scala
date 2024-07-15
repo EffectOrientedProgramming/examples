@@ -2,6 +2,7 @@ package Chapter09_Resilience
 
 import zio.*
 import zio.direct.*
+import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
@@ -20,8 +21,6 @@ object Test0 extends ZIOSpecDefault:
 
 object Test1 extends ZIOSpecDefault:
   import zio.test.*
-  import zio.Console.*
-  
   def spec =
     test("flaky test!"):
       defer:
