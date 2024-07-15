@@ -4,6 +4,10 @@ import zio.*
 import zio.direct.*
 import zio.test.*
 
+def spec =
+  test("basic"):
+    assertTrue(1 == 1)
+
 import zio.test.assertTrue
 
 val testLogic =
@@ -16,13 +20,13 @@ val testCase =
   test("eat Bread"):
     testLogic
 
-object Test2 extends ZIOSpecDefault:
+object Test3 extends ZIOSpecDefault:
   def spec =
     testCase
   // + eat Bread
 
 
-object Test3 extends ZIOSpecDefault:
+object Test4 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -42,7 +46,7 @@ object Test3 extends ZIOSpecDefault:
   // + eat Bread
 
 
-object Test4 extends ZIOSpecDefault:
+object Test5 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -74,7 +78,7 @@ val timeTravel =
   TestClock.adjust:
     24.hours
 
-object Test6 extends ZIOSpecDefault:
+object Test7 extends ZIOSpecDefault:
   def spec =
     test("batch runs after 24 hours"):
       defer:

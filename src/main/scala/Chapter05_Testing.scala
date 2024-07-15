@@ -3,6 +3,13 @@ package Chapter05_Testing
 import zio.*
 import zio.direct.*
 
+import zio.test.*
+
+object Basic extends ZIOSpecDefault:
+  def spec =
+    test("basic"):
+      assertTrue(1 == 1)
+
 import zio.Console.*
 
 trait Bread:
@@ -42,11 +49,11 @@ object App0 extends helpers.ZIOAppDebug:
     flipTen
   // Heads
   // Tails
-  // Heads
+  // Tails
   // Tails
   // Heads
   // Heads
-  // Tails
+  // Heads
   // Heads
   // Heads
   // Heads
