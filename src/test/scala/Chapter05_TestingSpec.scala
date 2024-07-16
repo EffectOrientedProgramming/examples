@@ -142,21 +142,3 @@ object Test7 extends ZIOSpecDefault:
   // Heads
   // Num Heads = 10
   // + flips 10 times
-
-
-val timeTravel =
-  TestClock.adjust:
-    24.hours
-
-object Test9 extends ZIOSpecDefault:
-  import zio.test.*
-  
-  def spec =
-    zio
-      .test
-      .test("batch runs after 24 hours"):
-        defer:
-          nightlyBatch.zipPar(timeTravel).run
-          assertCompletes
-  // Parsing CSV: ()
-  // + batch runs after 24 hours

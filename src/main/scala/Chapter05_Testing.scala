@@ -4,15 +4,6 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-import zio.test.*
-
-object Basic extends ZIOSpecDefault:
-  def spec =
-    zio
-      .test
-      .test("basic"):
-        assertTrue(1 == 1)
-
 trait Bread:
   def eat =
     printLine("Bread: Eating")
@@ -54,12 +45,12 @@ object App0 extends helpers.ZIOAppDebug:
   // Heads
   // Tails
   // Tails
-  // Tails
+  // Heads
+  // Heads
   // Heads
   // Tails
-  // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =
