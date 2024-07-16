@@ -207,8 +207,7 @@ object Test12 extends ZIOSpecDefault:
           .feedBooleans(true)
           .repeatN(9)
           .run
-        assertTrue:
-          flipTen.run == 10
+        assertTrue(flipTen.run == 10)
   // Heads
   // Heads
   // Heads
