@@ -46,7 +46,14 @@ object Test3 extends ZIOSpecDefault:
   // + basic4
 
 
-object Test4 extends ZIOSpecDefault:
+import zio.test.assertCompletes
+
+val basic5 =
+  defer:
+    printLine("testing basic5").run
+    assertCompletes
+
+object Test5 extends ZIOSpecDefault:
   import zio.test.test
   
   def spec =
@@ -56,7 +63,7 @@ object Test4 extends ZIOSpecDefault:
   // + basic5
 
 
-object Test5 extends ZIOSpecDefault:
+object Test6 extends ZIOSpecDefault:
   import zio.test.{test, suite, assertTrue}
   
   val basic6 =
@@ -79,7 +86,7 @@ object Test5 extends ZIOSpecDefault:
   //   + basic6 in suite
 
 
-object Test6 extends ZIOSpecDefault:
+object Test7 extends ZIOSpecDefault:
   import zio.test.{
     test,
     assertTrue,
@@ -102,7 +109,7 @@ object Test6 extends ZIOSpecDefault:
   // + eat Bread
 
 
-object Test7 extends ZIOSpecDefault:
+object Test8 extends ZIOSpecDefault:
   import zio.test.{
     test,
     assertTrue,

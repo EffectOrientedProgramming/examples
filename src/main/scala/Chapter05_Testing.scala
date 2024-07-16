@@ -4,13 +4,6 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-import zio.test.assertCompletes
-
-val basic5 =
-  defer:
-    printLine("testing basic5").run
-    assertCompletes
-
 trait Bread:
   def eat =
     printLine("Bread: Eating")
@@ -46,18 +39,18 @@ val flipTen =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Heads
+  // Heads
+  // Tails
   // Tails
   // Heads
   // Tails
   // Heads
+  // Heads
   // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Num Heads = 2
-  // Result: 2
+  // Heads
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =
