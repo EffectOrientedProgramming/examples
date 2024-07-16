@@ -6,7 +6,7 @@ import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
-  import zio.test.{test, assertTrue}
+  import zio.test.{test, *}
   
   def spec =
     test("basic"):
@@ -15,7 +15,7 @@ object Test0 extends ZIOSpecDefault:
 
 
 object Test1 extends ZIOSpecDefault:
-  import zio.test.{test, assertTrue}
+  import zio.test.{test, *}
   
   def spec =
     test("Only the last assertTrue matters"):
@@ -25,7 +25,7 @@ object Test1 extends ZIOSpecDefault:
 
 
 object Test2 extends ZIOSpecDefault:
-  import zio.test.{test, assertTrue}
+  import zio.test.{test, *}
   
   def spec =
     test("Multiple Boolean expressions"):
@@ -34,7 +34,7 @@ object Test2 extends ZIOSpecDefault:
 
 
 object Test3 extends ZIOSpecDefault:
-  import zio.test.{test, assertTrue}
+  import zio.test.{test, *}
   
   def spec =
     test("Combine using operators"):
@@ -45,7 +45,7 @@ object Test3 extends ZIOSpecDefault:
 
 
 object Test4 extends ZIOSpecDefault:
-  import zio.test.{test, assertCompletes}
+  import zio.test.{test, *}
   
   def spec =
     test("Effect as test"):
@@ -74,7 +74,7 @@ object Test6 extends ZIOSpecDefault:
 
 
 object Test7 extends ZIOSpecDefault:
-  import zio.test.{test, suite, assertTrue}
+  import zio.test.{test, *}
   
   val bTest =
     defer:
@@ -152,7 +152,7 @@ val testToolWithMaterial =
     )
 
 object Test11 extends ZIOSpecDefault:
-  import zio.test.{test, suite}
+  import zio.test.{test, *}
   
   def spec =
     suite("Materials with different Tools")(
@@ -192,17 +192,13 @@ object Test11 extends ZIOSpecDefault:
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
   //     nailer = RoboNailer()
-  //     at <input>:231 
+  //     at <input>:227 
   // 
   //   + Plastic with robo saw & hammer
 
 
 object Test12 extends ZIOSpecDefault:
-  import zio.test.{
-    test,
-    assertTrue,
-    TestRandom,
-  }
+  import zio.test.{test, *}
   
   def spec =
     test("flips 10 times"):
