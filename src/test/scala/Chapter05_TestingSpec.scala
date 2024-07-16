@@ -18,72 +18,82 @@ object Test1 extends ZIOSpecDefault:
   import zio.test.{test, assertTrue}
   
   def spec =
-    test("basic2"):
+    test("Only the last assertTrue matters"):
       assertTrue(1 != 1) // Ignored
       assertTrue(1 == 1)
-  // + basic2
+  // + Only the last assertTrue matters
 
 
 object Test2 extends ZIOSpecDefault:
   import zio.test.{test, assertTrue}
   
   def spec =
-    test("basic3"):
-      // Multiple boolean expressions:
+    test("Multiple Boolean expressions"):
       assertTrue(1 == 1, 2 == 2, 3 == 3)
-  // + basic3
+  // + Multiple Boolean expressions
 
 
 object Test3 extends ZIOSpecDefault:
+  import zio.test.{test, assertTrue}
+  
+  def spec =
+    test("Combine using operators"):
+      assertTrue(1 == 1) ||
+      assertTrue(2 == 2) &&
+      !assertTrue(42 == 47)
+  // + Combine using operators
+
+
+object Test4 extends ZIOSpecDefault:
   import zio.test.{test, assertCompletes}
   
   def spec =
-    test("basic4"):
+    test("Effect as test"):
       defer:
-        printLine("testing basic4").run
+        printLine("This test is an Effect").run
         assertCompletes
-  // testing basic4
-  // + basic4
+  // This test is an Effect
+  // + Effect as test
 
 
 import zio.test.assertCompletes
 
-val basic5 =
+val aTest =
   defer:
-    printLine("testing basic5").run
+    printLine("This is aTest").run
     assertCompletes
 
-object Test5 extends ZIOSpecDefault:
+object Test6 extends ZIOSpecDefault:
   import zio.test.test
   
   def spec =
-    test("basic5"):
-      basic5
-  // testing basic5
-  // + basic5
+    test("aTest"):
+      aTest
+  // This is aTest
+  // + aTest
 
 
-object Test6 extends ZIOSpecDefault:
+object Test7 extends ZIOSpecDefault:
   import zio.test.{test, suite, assertTrue}
   
-  val basic6 =
+  val bTest =
     defer:
-      printLine("testing basic6").run
+      printLine("This is bTest").run
       assertTrue(1 == 1)
   
   def spec =
     suite("A Suite of Tests")(
-      test("basic5 in Suite"):
-        basic5
+      test("aTest in Suite"):
+        aTest
       ,
-      test("basic6 in Suite"):
-        basic6,
+      test("bTest in Suite"):
+        bTest,
     )
-  // testing basic5
-  // testing basic6
+  // This is aTest
+  // This is bTest
   // + A Suite of Tests
-  //   + basic5 in Suite
-  //   + basic6 in Suite
+  //   + aTest in Suite
+  //   + bTest in Suite
 
 
 trait Material:
@@ -141,33 +151,33 @@ val testToolWithMaterial =
       nailer.intensity < material.brittleness,
     )
 
-object Test10 extends ZIOSpecDefault:
+object Test11 extends ZIOSpecDefault:
   import zio.test.{test, suite}
   
   def spec =
     suite("Materials with different Tools")(
-      test("Wood with Hand tools"):
+      test("Wood with hand tools"):
         testToolWithMaterial.provide(
           Material.wood,
           Saw.hand,
           Nailer.hand,
         )
       ,
-      test("Plastic with Hand tools"):
+      test("Plastic with hand tools"):
         testToolWithMaterial.provide(
           Material.plastic,
           Saw.hand,
           Nailer.hand,
         )
       ,
-      test("Plastic with Robo tools"):
+      test("Plastic with robo tools"):
         testToolWithMaterial.provide(
           Material.plastic,
           Saw.robotic,
           Nailer.robotic,
         )
       ,
-      test("Plastic with Robo saw & hammer"):
+      test("Plastic with robo saw & hammer"):
         testToolWithMaterial.provide(
           Material.plastic,
           Saw.robotic,
@@ -175,19 +185,19 @@ object Test10 extends ZIOSpecDefault:
         ),
     )
   // + Materials with different Tools
-  //   + Wood with Hand tools
-  //   + Plastic with Hand tools
-  //   - Plastic with Robo tools
+  //   + Wood with hand tools
+  //   + Plastic with hand tools
+  //   - Plastic with robo tools
   //     ✗ 11 was not less than 10
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
   //     nailer = RoboNailer()
-  //     at <input>:215 
+  //     at <input>:231 
   // 
-  //   + Plastic with Robo saw & hammer
+  //   + Plastic with robo saw & hammer
 
 
-object Test11 extends ZIOSpecDefault:
+object Test12 extends ZIOSpecDefault:
   import zio.test.{
     test,
     assertTrue,
