@@ -47,12 +47,7 @@ object Test3 extends ZIOSpecDefault:
 
 
 object Test4 extends ZIOSpecDefault:
-  import zio.test.{test, assertCompletes}
-  
-  val basic5 =
-    defer:
-      printLine("testing basic5").run
-      assertCompletes
+  import zio.test.test
   
   def spec =
     test("basic5"):
@@ -72,12 +67,12 @@ object Test5 extends ZIOSpecDefault:
   def spec =
     suite("Creating a Suite of Tests")(
       test("basic5 in suite"):
-        basic6 // Duplicate to get it working
+        basic5
       ,
       test("basic6 in suite"):
         basic6,
     )
-  // testing basic6
+  // testing basic5
   // testing basic6
   // + Creating a Suite of Tests
   //   + basic5 in suite
