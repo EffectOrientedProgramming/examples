@@ -86,7 +86,20 @@ object Test6 extends ZIOSpecDefault:
   //   + basic6 in suite
 
 
-object Test7 extends ZIOSpecDefault:
+trait Material:
+  val brittleness: Int
+
+case class Wood() extends Material:
+  val brittleness = 5
+
+case class Plastic() extends Material:
+  val brittleness = 10
+
+object Material:
+  val wood    = ZLayer.succeed(Wood())
+  val plastic = ZLayer.succeed(Plastic())
+
+object Test8 extends ZIOSpecDefault:
   import zio.test.{
     test,
     assertTrue,
@@ -109,7 +122,7 @@ object Test7 extends ZIOSpecDefault:
   // + eat Bread
 
 
-object Test8 extends ZIOSpecDefault:
+object Test9 extends ZIOSpecDefault:
   import zio.test.{
     test,
     assertTrue,

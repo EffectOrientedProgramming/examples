@@ -6,7 +6,7 @@ import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
-  import zio.test.*
+  import zio.test.{test, assertTrue}
   
   def spec =
     test("random is random"):
