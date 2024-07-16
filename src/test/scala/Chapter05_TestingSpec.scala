@@ -6,6 +6,8 @@ import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     zio
       .test
@@ -15,6 +17,8 @@ object Test0 extends ZIOSpecDefault:
 
 
 object Test1 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     zio
       .test
@@ -25,6 +29,8 @@ object Test1 extends ZIOSpecDefault:
 
 
 object Test2 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     zio
       .test
@@ -35,6 +41,7 @@ object Test2 extends ZIOSpecDefault:
 
 
 object Test3 extends ZIOSpecDefault:
+  import zio.test.*
   def spec =
     zio
       .test
@@ -47,6 +54,7 @@ object Test3 extends ZIOSpecDefault:
 
 
 object Test4 extends ZIOSpecDefault:
+  import zio.test.*
   val basic5 =
     defer:
       printLine("testing basic5").run
@@ -62,6 +70,7 @@ object Test4 extends ZIOSpecDefault:
 
 
 object Test5 extends ZIOSpecDefault:
+  import zio.test.*
   val basic6 =
     defer:
       printLine("testing basic6").run
@@ -135,13 +144,13 @@ object Test7 extends ZIOSpecDefault:
   // + flips 10 times
 
 
-import zio.test.*
-
 val timeTravel =
   TestClock.adjust:
     24.hours
 
 object Test9 extends ZIOSpecDefault:
+  import zio.test.*
+  
   def spec =
     zio
       .test

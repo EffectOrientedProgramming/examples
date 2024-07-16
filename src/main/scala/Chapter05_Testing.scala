@@ -4,12 +4,6 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-object App0 extends helpers.ZIOAppDebug:
-  def run =
-    printLine("Sanity check")
-  // Sanity check
-
-
 import zio.test.*
 
 object Basic extends ZIOSpecDefault:
@@ -51,21 +45,21 @@ val flipTen =
     ZIO.debug(s"Num Heads = $numHeads").run
     numHeads
 
-object App1 extends helpers.ZIOAppDebug:
+object App0 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Tails
+  // Tails
+  // Tails
+  // Heads
+  // Heads
   // Heads
   // Tails
   // Heads
   // Heads
-  // Tails
   // Heads
-  // Tails
-  // Heads
-  // Tails
-  // Tails
-  // Num Heads = 5
-  // Result: 5
+  // Num Heads = 6
+  // Result: 6
 
 
 val nightlyBatch =
