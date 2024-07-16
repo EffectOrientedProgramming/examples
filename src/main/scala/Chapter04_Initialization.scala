@@ -334,7 +334,7 @@ val configProvider =
   ConfigProvider.fromHoconString:
     "{ times: 2 }"
 
-val config =
+val configuration =
   ZLayer.fromZIO:
     read:
       configDescriptor.from:
@@ -348,7 +348,7 @@ object App9 extends helpers.ZIOAppDebug:
           val times = retryConfig.times
           eatEatEat(retries = times)
       .provide:
-        config
+        configuration
   // Attempt 1: Failure(Friend Unreachable)
   // Attempt 2: Failure(Friend Unreachable)
   // Attempt 3: Succeeded
