@@ -4,17 +4,6 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-trait Bread:
-  def eat =
-    printLine("Bread: Eating")
-
-case class BreadFromFriend() extends Bread
-
-object IdealFriend:
-  val bread =
-    ZLayer.succeed:
-      BreadFromFriend()
-
 val coinToss =
   defer:
     if Random.nextBoolean.run then
@@ -39,18 +28,18 @@ val flipTen =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipTen
-  // Heads
-  // Heads
-  // Tails
-  // Heads
-  // Tails
   // Tails
   // Heads
   // Heads
-  // Tails
   // Heads
-  // Num Heads = 6
-  // Result: 6
+  // Heads
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Tails
+  // Num Heads = 4
+  // Result: 4
 
 
 val nightlyBatch =

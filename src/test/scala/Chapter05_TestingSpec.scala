@@ -99,30 +99,95 @@ object Material:
   val wood    = ZLayer.succeed(Wood())
   val plastic = ZLayer.succeed(Plastic())
 
-object Test8 extends ZIOSpecDefault:
-  import zio.test.{
-    test,
-    assertTrue,
-    TestConsole,
-  }
+trait Tool:
+  val action: String
+  val intensity: Int
+  val use =
+    printLine(
+      s"$this $action, intensity $intensity"
+    )
+
+trait Saw extends Tool:
+  val action = "sawing"
+case class HandSaw() extends Saw:
+  val intensity = 4
+case class RoboSaw() extends Saw:
+  val intensity = 8
+
+object Saw:
+  val hand    = ZLayer.succeed(HandSaw())
+  val robotic = ZLayer.succeed(RoboSaw())
+
+trait Nailer extends Tool:
+  val action = "nailing"
+case class Hammer() extends Nailer:
+  val intensity = 4
+case class RoboNailer() extends Nailer:
+  val intensity = 11
+
+object Nailer:
+  val hand    = ZLayer.succeed(Hammer())
+  val robotic = ZLayer.succeed(RoboNailer())
+
+import zio.test.assertTrue
+
+val testToolWithMaterial =
+  defer:
+    val material = ZIO.service[Material].run
+    val saw      = ZIO.service[Saw].run
+    val nailer   = ZIO.service[Nailer].run
+    assertTrue(
+      saw.intensity < material.brittleness,
+      nailer.intensity < material.brittleness,
+    )
+
+object Test10 extends ZIOSpecDefault:
+  import zio.test.{test, suite}
   
   def spec =
-    test("eat Bread"):
-      defer:
-        ZIO
-          .serviceWithZIO[Bread]:
-            bread => bread.eat
-          .run
-        val output = TestConsole.output.run
-        assertTrue:
-          output.contains("Bread: Eating\n")
-    .provide:
-      IdealFriend.bread
-  // Bread: Eating
-  // + eat Bread
+    suite("Materials with different Tools")(
+      test("Wood with Hand tools"):
+        testToolWithMaterial.provide(
+          Material.wood,
+          Saw.hand,
+          Nailer.hand,
+        )
+      ,
+      test("Plastic with Hand tools"):
+        testToolWithMaterial.provide(
+          Material.plastic,
+          Saw.hand,
+          Nailer.hand,
+        )
+      ,
+      test("Plastic with Robo tools"):
+        testToolWithMaterial.provide(
+          Material.plastic,
+          Saw.robotic,
+          Nailer.robotic,
+        )
+      ,
+      test("Plastic with Robo saw & hammer"):
+        testToolWithMaterial.provide(
+          Material.plastic,
+          Saw.robotic,
+          Nailer.hand,
+        ),
+    )
+  // + Materials with different Tools
+  //   + Wood with Hand tools
+  //   + Plastic with Hand tools
+  //   - Plastic with Robo tools
+  //     ✗ 11 was not less than 10
+  //     nailer.intensity < material.brittleness,
+  //     .intensity = 11
+  //     nailer = RoboNailer()
+  //     at <input>:215 
+  // 
+  //   + Plastic with Robo saw & hammer
 
 
-object Test9 extends ZIOSpecDefault:
+object Test11 extends ZIOSpecDefault:
   import zio.test.{
     test,
     assertTrue,
