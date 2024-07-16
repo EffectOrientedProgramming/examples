@@ -72,18 +72,18 @@ object Test6 extends ZIOSpecDefault:
       assertTrue(1 == 1)
   
   def spec =
-    suite("Creating a Suite of Tests")(
-      test("basic5 in suite"):
+    suite("A Suite of Tests")(
+      test("basic5 in Suite"):
         basic5
       ,
-      test("basic6 in suite"):
+      test("basic6 in Suite"):
         basic6,
     )
   // testing basic5
   // testing basic6
-  // + Creating a Suite of Tests
-  //   + basic5 in suite
-  //   + basic6 in suite
+  // + A Suite of Tests
+  //   + basic5 in Suite
+  //   + basic6 in Suite
 
 
 trait Material:
