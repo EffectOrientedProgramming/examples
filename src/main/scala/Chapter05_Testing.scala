@@ -4,15 +4,17 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
+import zio.{Console, *}
 val coinToss =
   defer:
     if Random.nextBoolean.run then
-      ZIO.debug("Heads").run
+      printLine("Heads").run
       ZIO.succeed("Heads").run
     else
-      ZIO.debug("Tails").run
+      printLine("Tails").run
       ZIO.fail("Tails").run
 
+import zio.{Console, *}
 val flipTen =
   defer:
     val numHeads =
@@ -22,20 +24,20 @@ val flipTen =
             coinToss
         .run
         .size
-    ZIO.debug(s"Num Heads = $numHeads").run
+    printLine(s"Num Heads = $numHeads").run
     numHeads
 
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipTen
+  // Tails
+  // Tails
   // Heads
   // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
-  // Tails
-  // Tails
-  // Tails
   // Tails
   // Heads
   // Num Heads = 5
@@ -43,8 +45,4 @@ object App0 extends helpers.ZIOAppDebug:
 
 
 val nightlyBatch =
-  ZIO
-    .sleep:
-      24.hours
-    .debug:
-      "Parsing CSV"
+  ZIO.sleep(24.hours).debug("Parsing CSV")
