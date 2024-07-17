@@ -15,12 +15,12 @@ val coinToss =
       ZIO.fail("Tails").run
 
 import zio.{Console, *}
-val flipTen =
+val flipFive =
   defer:
     val numHeads =
       ZIO
         .collectAllSuccesses:
-          List.fill(10):
+          List.fill(5):
             coinToss
         .run
         .size
@@ -29,20 +29,19 @@ val flipTen =
 
 object App0 extends helpers.ZIOAppDebug:
   def run =
-    flipTen
-  // Tails
-  // Tails
-  // Heads
-  // Tails
-  // Heads
-  // Heads
+    flipFive
   // Heads
   // Tails
   // Tails
-  // Tails
-  // Num Heads = 4
-  // Result: 4
+  // Heads
+  // Heads
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =
   ZIO.sleep(24.hours).debug("Parsing CSV")
+
+val timeTravel =
+  TestClock.adjust:
+    24.hours

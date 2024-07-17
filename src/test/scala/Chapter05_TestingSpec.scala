@@ -245,23 +245,31 @@ object Test14 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
-    test("flips 10 times"):
+    test("flips 5 times"):
       defer:
         TestRandom
-          .feedBooleans(true, true, false)
-          .repeatN(9)
+          .feedBooleans(
+            true, true, false, true, false,
+          )
           .run
-        val result = flipTen.run
-        assertTrue(result == 7)
+        val heads = flipFive.run
+        assertTrue(heads == 3)
   // Heads
   // Heads
   // Tails
   // Heads
-  // Heads
   // Tails
-  // Heads
-  // Heads
-  // Tails
-  // Heads
-  // Num Heads = 7
-  // + flips 10 times
+  // Num Heads = 3
+  // + flips 5 times
+
+
+object Test15 extends ZIOSpecDefault:
+  import zio.test.*
+  
+  def spec =
+    test("batch runs after 24 hours"):
+      defer:
+        nightlyBatch.zipPar(timeTravel).run
+        assertCompletes
+  // Parsing CSV: ()
+  // + batch runs after 24 hours
