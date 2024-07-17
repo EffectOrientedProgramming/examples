@@ -213,9 +213,9 @@ object App4 extends helpers.ZIOAppDebug:
         Oven.heated,
         Toaster.ready,
       )
+  // Oven: Heated
   // Toaster: Ready
   // Dough: Mixed
-  // Oven: Heated
   // BreadHomeMade: Baked
   // ToastB: Made
   // Toast: Eating
