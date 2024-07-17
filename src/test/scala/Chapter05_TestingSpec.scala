@@ -201,6 +201,46 @@ object Test12 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
+    test("Capture output"):
+      defer:
+        printLine("Morty").run
+        val out1 = TestConsole.output.run
+        printLine("Beth").run
+        val out2 = TestConsole.output.run
+        printLine(s"$out1\n****\n$out2").run
+        printLine(out2(1)).run
+        assertCompletes
+  // Morty
+  // Beth
+  // Vector(Morty
+  // )
+  // ****
+  // Vector(Morty
+  // , Beth
+  // )
+  // Beth
+  // 
+  // + Capture output
+
+
+object Test13 extends ZIOSpecDefault:
+  val spec =
+    test("Substitute input"):
+      defer:
+        TestConsole
+          .feedLines("Morty", "Beth")
+          .run
+        val input = readLine.run
+        printLine(input).run
+        assertTrue(input == "Morty")
+  // Morty
+  // + Substitute input
+
+
+object Test14 extends ZIOSpecDefault:
+  import zio.test.*
+  
+  def spec =
     test("flips 10 times"):
       defer:
         TestRandom
