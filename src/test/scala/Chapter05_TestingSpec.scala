@@ -232,8 +232,12 @@ object Test13 extends ZIOSpecDefault:
           .run
         val input = readLine.run
         printLine(input).run
+        val output = TestConsole.output.run
+        printLine(output).run
         assertTrue(input == "Morty")
   // Morty
+  // Vector(Morty
+  // )
   // + Substitute input
 
 
