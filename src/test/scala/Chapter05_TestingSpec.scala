@@ -248,20 +248,20 @@ object Test14 extends ZIOSpecDefault:
     test("flips 10 times"):
       defer:
         TestRandom
-          .feedBooleans(true)
+          .feedBooleans(true, true, false)
           .repeatN(9)
           .run
         val result = flipTen.run
-        assertTrue(result == 10)
+        assertTrue(result == 7)
   // Heads
   // Heads
+  // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
-  // Heads
-  // Heads
-  // Heads
-  // Num Heads = 10
+  // Num Heads = 7
   // + flips 10 times

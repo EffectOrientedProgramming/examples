@@ -32,13 +32,13 @@ object App0 extends helpers.ZIOAppDebug:
     flipTen
   // Tails
   // Tails
-  // Tails
-  // Tails
-  // Heads
   // Heads
   // Tails
   // Heads
   // Heads
+  // Heads
+  // Tails
+  // Tails
   // Tails
   // Num Heads = 4
   // Result: 4
