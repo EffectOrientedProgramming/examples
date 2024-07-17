@@ -6,7 +6,7 @@ import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     test("basic"):
@@ -15,7 +15,7 @@ object Test0 extends ZIOSpecDefault:
 
 
 object Test1 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     test("Only the last assertTrue matters"):
@@ -25,7 +25,7 @@ object Test1 extends ZIOSpecDefault:
 
 
 object Test2 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     test("Multiple Boolean expressions"):
@@ -34,7 +34,7 @@ object Test2 extends ZIOSpecDefault:
 
 
 object Test3 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     test("Combine using operators"):
@@ -45,7 +45,7 @@ object Test3 extends ZIOSpecDefault:
 
 
 object Test4 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     test("Effect as test"):
@@ -56,7 +56,7 @@ object Test4 extends ZIOSpecDefault:
   // + Effect as test
 
 
-import zio.test.assertCompletes
+import zio.test.*
 
 val aTest =
   defer:
@@ -64,7 +64,7 @@ val aTest =
     assertCompletes
 
 object Test6 extends ZIOSpecDefault:
-  import zio.test.test
+  import zio.test.*
   
   def spec =
     test("aTest"):
@@ -74,7 +74,7 @@ object Test6 extends ZIOSpecDefault:
 
 
 object Test7 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   val bTest =
     defer:
@@ -139,7 +139,7 @@ object Nailer:
   val hand    = ZLayer.succeed(Hammer())
   val robotic = ZLayer.succeed(RoboNailer())
 
-import zio.test.assertTrue
+import zio.test.*
 
 val testToolWithMaterial =
   defer:
@@ -152,7 +152,7 @@ val testToolWithMaterial =
     )
 
 object Test11 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     suite("Materials with different Tools")(
@@ -198,7 +198,7 @@ object Test11 extends ZIOSpecDefault:
 
 
 object Test12 extends ZIOSpecDefault:
-  import zio.test.{test, *}
+  import zio.test.*
   
   def spec =
     test("flips 10 times"):

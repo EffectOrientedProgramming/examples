@@ -239,7 +239,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.001067122S,User saved)
+  // Result: (PT5.008170569S,User saved)
 
 
 val effect7 =
