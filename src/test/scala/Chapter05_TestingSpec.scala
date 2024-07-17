@@ -204,28 +204,20 @@ object Test12 extends ZIOSpecDefault:
     test("flips 10 times"):
       defer:
         TestRandom
-          .feedBooleans(false)
+          .feedBooleans(true)
           .repeatN(9)
           .run
-        // TODO Are we going to explain the
-        //   macro behavior that prevents
-        //   putting .run inside assertTrue?
         val result = flipTen.run
         assertTrue(result == 10)
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Num Heads = 0
-  // - flips 10 times
-  //   ✗ 0 was not equal to 10
-  //   result == 10
-  //   result = 0
-  //   at <input>:337 
-  //
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Heads
+  // Num Heads = 10
+  // + flips 10 times
