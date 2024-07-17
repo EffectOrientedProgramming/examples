@@ -50,9 +50,9 @@ object Test4 extends ZIOSpecDefault:
   def spec =
     test("Effect as test"):
       defer:
-        printLine("This test is an Effect").run
+        printLine("This Effect is a test").run
         assertCompletes
-  // This test is an Effect
+  // This Effect is a test
   // + Effect as test
 
 
