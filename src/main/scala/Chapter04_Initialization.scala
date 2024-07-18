@@ -149,8 +149,8 @@ object App3 extends helpers.ZIOAppDebug:
       Dough.fresh,
       Oven.heated,
     )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -223,7 +223,7 @@ object App4 extends helpers.ZIOAppDebug:
 
 object OvenSafe:
   val heated =
-    ZLayer.fromZIO:
+    ZLayer.scoped:
       defer:
         printLine("Oven: Heated").run
         Oven()
@@ -238,7 +238,6 @@ object App5 extends helpers.ZIOAppDebug:
       BreadHomeMade.baked,
       Dough.fresh,
       OvenSafe.heated,
-      Scope.default,
     )
   // Oven: Heated
   // Dough: Mixed
