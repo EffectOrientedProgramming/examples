@@ -30,7 +30,7 @@ lazy val runMainClassesDoesNotTolerateFailures = taskKey[Unit]("Print main class
 runMainClassesDoesNotTolerateFailures := Def.taskDyn {
   val s: TaskStreams = streams.value
   val classes = (Compile/discoveredMainClasses).value
-  val tasks = classes.map{className =>
+  val tasks = classes.map { className =>
     Def.task {
       try {
         s.log.info(s"Running $className")
@@ -51,7 +51,7 @@ runMainClassesToleratesFailures := {
   val log = streams.value.log
   val discovered: Seq[String] = (Compile/discoveredMainClasses).value
   // Get the classpath
-  val classpath = Attributed.data((Compile/fullClasspath).value).mkString(":")
+  val classpath = Attributed.data((Compile/fullClasspath).value).mkString(java.io.File.pathSeparator)
 
   discovered.foreach { className =>
     log.info(s"Running $className")
