@@ -262,10 +262,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(35, 575)
-  // Current requests: List(133, 35, 575)
-  // Current requests: List(575)
-  // Current requests: List(754, 133, 35, 575)
+  // Current requests: List(564, 183)
+  // Current requests: List(452, 564, 183)
+  // Current requests: List(183)
+  // Current requests: List(751, 452, 564, 183)
   // Result: Crashed the server!!
 
 
@@ -293,16 +293,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(827)
-  // Current requests: List(963, 827)
-  // Current requests: List(321, 963, 827)
-  // Current requests: List(334, 605)
-  // Current requests: List(605)
-  // Current requests: List(978, 334, 605)
-  // Current requests: List(29, 689)
-  // Current requests: List(689)
-  // Current requests: List(101, 29, 689)
-  // Current requests: List(732)
+  // Current requests: List(790)
+  // Current requests: List(501, 790)
+  // Current requests: List(483, 501, 790)
+  // Current requests: List(927)
+  // Current requests: List(60, 927)
+  // Current requests: List(351, 60, 927)
+  // Current requests: List(702, 532)
+  // Current requests: List(532)
+  // Current requests: List(648, 702, 532)
+  // Current requests: List(142)
   // Result: All Requests Succeeded
 
 
@@ -564,7 +564,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     makeLotsOfRequests
-  // Result: Contract Breaches: 55
+  // Result: Contract Breaches: 68
 
 
 val hedged =
