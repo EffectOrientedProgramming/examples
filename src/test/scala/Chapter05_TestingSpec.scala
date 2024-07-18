@@ -263,7 +263,11 @@ object Test14 extends ZIOSpecDefault:
   // + flips 5 times
 
 
-object Test15 extends ZIOSpecDefault:
+val timeTravel =
+  TestClock.adjust:
+    24.hours
+
+object Test16 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
