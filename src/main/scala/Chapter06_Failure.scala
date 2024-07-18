@@ -246,6 +246,8 @@ object App7 extends helpers.ZIOAppDebug:
   // **Too Cold**
 
 
+// TODO Ensure we've explicitly laid out the downsides of throwing Exceptions. Seems like that might have been deleted at some point.
+
 object App8 extends helpers.ZIOAppDebug:
   override val bootstrap = gpsFailure
   
