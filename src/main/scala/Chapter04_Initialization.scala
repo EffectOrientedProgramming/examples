@@ -149,8 +149,8 @@ object App3 extends helpers.ZIOAppDebug:
       Dough.fresh,
       Oven.heated,
     )
-  // Oven: Heated
   // Dough: Mixed
+  // Oven: Heated
   // BreadHomeMade: Baked
   // Bread: Eating
 
@@ -231,6 +231,8 @@ object OvenSafe:
         _ =>
           printLine("Oven: Turning off")
             .orDie
+
+// TODO can we link to specific paragraphs or at least subsections?
 
 object App5 extends helpers.ZIOAppDebug:
   def run =

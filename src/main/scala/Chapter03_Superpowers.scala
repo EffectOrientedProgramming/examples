@@ -118,6 +118,8 @@ val logUserSignup =
       s"Log: Signup initiated for $userName"
     .orDie
 
+// TODO explain orDie
+
 val userName = "Morty"
 
 val effect0 =
@@ -239,7 +241,7 @@ object App9 extends helpers.ZIOAppDebug:
   def run =
     effect6
   // Log: Signup initiated for Morty
-  // Result: (PT0.000954607S,User saved)
+  // Result: (PT0.035177549S,User saved)
 
 
 val effect7 =
