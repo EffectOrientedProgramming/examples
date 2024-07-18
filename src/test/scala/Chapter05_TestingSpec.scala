@@ -110,15 +110,9 @@ object Material:
   val plastic = ZLayer.succeed(Plastic())
 
 trait Tool:
-  val action: String
   val intensity: Int
-  val use =
-    printLine(
-      s"$this $action, intensity $intensity"
-    )
 
-trait Saw extends Tool:
-  val action = "sawing"
+trait Saw extends Tool
 case class HandSaw() extends Saw:
   val intensity = 4
 case class RoboSaw() extends Saw:
@@ -128,8 +122,7 @@ object Saw:
   val hand    = ZLayer.succeed(HandSaw())
   val robotic = ZLayer.succeed(RoboSaw())
 
-trait Nailer extends Tool:
-  val action = "nailing"
+trait Nailer extends Tool
 case class Hammer() extends Nailer:
   val intensity = 4
 case class RoboNailer() extends Nailer:
@@ -192,7 +185,7 @@ object Test11 extends ZIOSpecDefault:
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
   //     nailer = RoboNailer()
-  //     at <input>:227 
+  //     at <input>:220 
   // 
   //   + Plastic with robo saw & hammer
 
