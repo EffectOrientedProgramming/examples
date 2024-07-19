@@ -262,13 +262,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(543)
-  // Current requests: List(748, 543)
-  // Current requests: List(763, 748, 543)
-  // Current requests: List(678, 763, 748, 543)
-  // Current requests: List(783, 678, 763, 748, 543)
-  // Current requests: List(156, 783, 678, 763, 748, 543)
-  // Current requests: List(14, 156, 783, 678, 763, 748, 543)
+  // Current requests: List(455)
+  // Current requests: List(669, 664, 455)
+  // Current requests: List(664, 455)
+  // Current requests: List(486, 669, 664, 455)
   // Result: Crashed the server!!
 
 
@@ -296,16 +293,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(255)
-  // Current requests: List(516, 255)
-  // Current requests: List(141, 516, 255)
-  // Current requests: List(737, 260)
-  // Current requests: List(260)
-  // Current requests: List(53, 737, 260)
-  // Current requests: List(737, 53)
-  // Current requests: List(52, 737, 53)
-  // Current requests: List(751, 52, 737)
-  // Current requests: List(414, 751)
+  // Current requests: List(116)
+  // Current requests: List(717, 116)
+  // Current requests: List(277, 717, 116)
+  // Current requests: List(967, 62)
+  // Current requests: List(62)
+  // Current requests: List(233, 967, 62)
+  // Current requests: List(576)
+  // Current requests: List(992, 576)
+  // Current requests: List(671, 992, 576)
+  // Current requests: List(129)
   // Result: All Requests Succeeded
 
 
@@ -493,7 +490,7 @@ object App7 extends helpers.ZIOAppDebug:
   
       val made = numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 object Scenario:
@@ -567,7 +564,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     makeLotsOfRequests
-  // Result: Contract Breaches: 55
+  // Result: Contract Breaches: 53
 
 
 val hedged =
