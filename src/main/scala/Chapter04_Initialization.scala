@@ -321,7 +321,10 @@ object App8 extends helpers.ZIOAppDebug:
 
 import zio.config.*
 
-case class RetryConfig(times: Int)
+case class RetryConfig(
+    times: Int,
+    msg: String,
+)
 
 import zio.config.magnolia.deriveConfig
 
@@ -332,7 +335,7 @@ import zio.config.typesafe.*
 
 val configProvider =
   ConfigProvider.fromHoconString:
-    "{ times: 2 }"
+    "{ times: 2, msg: 'Trying to eat bread' }"
 
 val configuration =
   ZLayer.fromZIO:
@@ -346,10 +349,13 @@ object App9 extends helpers.ZIOAppDebug:
       .serviceWithZIO[RetryConfig]:
         retryConfig =>
           val times = retryConfig.times
+          val msg   = retryConfig.msg
+          println(msg)
           println(s"Retrying $times times")
           eatEatEat(retries = times)
       .provide:
         configuration
+  // 'Trying to eat bread'
   // Retrying 2 times
   // Attempt 1: Failure(Friend Unreachable)
   // Attempt 2: Failure(Friend Unreachable)
