@@ -48,9 +48,8 @@ object App1 extends helpers.ZIOAppDebug:
     ZIO
       .serviceWithZIO[X]:
         x => x.display
-      // dependency // Or the noun version
       .provide:
-        X.layer // The "adjectivized object"
+        X.layer
   // Creating X
   // X.display
 
@@ -213,8 +212,8 @@ object App4 extends helpers.ZIOAppDebug:
         Oven.heated,
         Toaster.ready,
       )
-  // Toaster: Ready
   // Oven: Heated
+  // Toaster: Ready
   // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastB: Made
@@ -347,9 +346,11 @@ object App9 extends helpers.ZIOAppDebug:
       .serviceWithZIO[RetryConfig]:
         retryConfig =>
           val times = retryConfig.times
+          println(s"Retrying $times times")
           eatEatEat(retries = times)
       .provide:
         configuration
+  // Retrying 2 times
   // Attempt 1: Failure(Friend Unreachable)
   // Attempt 2: Failure(Friend Unreachable)
   // Attempt 3: Succeeded
