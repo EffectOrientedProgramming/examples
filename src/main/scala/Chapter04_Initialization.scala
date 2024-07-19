@@ -213,8 +213,8 @@ object App4 extends helpers.ZIOAppDebug:
         Toaster.ready,
       )
   // Toaster: Ready
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // ToastB: Made
   // Toast: Eating
@@ -335,7 +335,7 @@ import zio.config.typesafe.*
 
 val configProvider =
   ConfigProvider.fromHoconString:
-    "{ times: 2, msg: 'Trying to eat bread' }"
+    "{ times: 2, msg: Trying to eat bread }"
 
 val configuration =
   ZLayer.fromZIO:
@@ -355,7 +355,7 @@ object App9 extends helpers.ZIOAppDebug:
           eatEatEat(retries = times)
       .provide:
         configuration
-  // 'Trying to eat bread'
+  // Trying to eat bread
   // Retrying 2 times
   // Attempt 1: Failure(Friend Unreachable)
   // Attempt 2: Failure(Friend Unreachable)
