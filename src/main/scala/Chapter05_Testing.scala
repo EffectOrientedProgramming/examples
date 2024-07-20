@@ -4,6 +4,21 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
+import zio.test.*
+
+// TODO Better name for this function
+def testLogic(label: String) =
+  defer:
+    printLine(s"Running $label").run
+    assertCompletes
+
+def testCase(label: String) =
+  test(s"case $label in a value"):
+    testLogic(label)
+
+val testA = testCase("A")
+val testB = testCase("B")
+
 import zio.{Console, *}
 val coinToss =
   defer:
@@ -32,11 +47,11 @@ object App0 extends helpers.ZIOAppDebug:
     flipFive
   // Heads
   // Heads
+  // Tails
   // Heads
-  // Heads
-  // Heads
-  // Num Heads = 5
-  // Result: 5
+  // Tails
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =

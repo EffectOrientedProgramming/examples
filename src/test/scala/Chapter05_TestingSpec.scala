@@ -50,50 +50,57 @@ object Test4 extends ZIOSpecDefault:
   def spec =
     test("Effect as test"):
       defer:
-        printLine("This Effect is a test").run
+        printLine("Running Effect in a test")
+          .run
         assertCompletes
-  // This Effect is a test
+  // Running Effect in a test
   // + Effect as test
 
 
 import zio.test.*
 
-val aTest =
-  defer:
-    printLine("This is aTest").run
-    assertCompletes
+val effectA = testLogic("A")
 
 object Test6 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
-    test("aTest"):
-      aTest
-  // This is aTest
-  // + aTest
+    test("case A"):
+      effectA
+  // Running A
+  // + case A
 
 
 object Test7 extends ZIOSpecDefault:
   import zio.test.*
   
-  val bTest =
-    defer:
-      printLine("This is bTest").run
-      assertTrue(1 == 1)
+  val effectB = testLogic("B")
   
   def spec =
-    suite("A Suite of Tests")(
-      test("aTest in Suite"):
-        aTest
+    suite("Suite of Tests")(
+      test("case A in Suite"):
+        effectA
       ,
-      test("bTest in Suite"):
-        bTest,
+      test("case A in Suite"):
+        effectB,
     )
-  // This is aTest
-  // This is bTest
+  // Running A
+  // Running B
+  // + Suite of Tests
+  //   + case A in Suite
+  //   + case A in Suite
+
+
+object Test8 extends ZIOSpecDefault:
+  import zio.test.*
+  
+  def spec =
+    suite("A Suite of Tests")(testA, testB)
+  // Running A
+  // Running B
   // + A Suite of Tests
-  //   + aTest in Suite
-  //   + bTest in Suite
+  //   + case A in a value
+  //   + case B in a value
 
 
 trait Material:
@@ -144,7 +151,7 @@ val testToolWithMaterial =
       nailer.intensity < material.brittleness,
     )
 
-object Test11 extends ZIOSpecDefault:
+object Test12 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -185,12 +192,12 @@ object Test11 extends ZIOSpecDefault:
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
   //     nailer = RoboNailer()
-  //     at <input>:220 
+  //     at <input>:257 
   // 
   //   + Plastic with robo saw & hammer
 
 
-object Test12 extends ZIOSpecDefault:
+object Test13 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -216,7 +223,7 @@ object Test12 extends ZIOSpecDefault:
   // + Capture output
 
 
-object Test13 extends ZIOSpecDefault:
+object Test14 extends ZIOSpecDefault:
   val spec =
     test("Substitute input"):
       defer:
@@ -234,7 +241,7 @@ object Test13 extends ZIOSpecDefault:
   // + Substitute input
 
 
-object Test14 extends ZIOSpecDefault:
+object Test15 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -260,7 +267,7 @@ val timeTravel =
   TestClock.adjust:
     24.hours
 
-object Test16 extends ZIOSpecDefault:
+object Test17 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
