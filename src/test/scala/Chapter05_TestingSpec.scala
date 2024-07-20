@@ -50,16 +50,15 @@ object Test4 extends ZIOSpecDefault:
   def spec =
     test("Effect as test"):
       defer:
-        printLine("Running Effect in a test")
-          .run
+        printLine("Effect in a test").run
         assertCompletes
-  // Running Effect in a test
+  // Effect in a test
   // + Effect as test
 
 
 import zio.test.*
 
-val effectA = testLogic("A")
+val effectA = showLabel("A")
 
 object Test6 extends ZIOSpecDefault:
   import zio.test.*
@@ -74,7 +73,7 @@ object Test6 extends ZIOSpecDefault:
 object Test7 extends ZIOSpecDefault:
   import zio.test.*
   
-  val effectB = testLogic("B")
+  val effectB = showLabel("B")
   
   def spec =
     suite("Suite of Tests")(
@@ -192,7 +191,7 @@ object Test12 extends ZIOSpecDefault:
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
   //     nailer = RoboNailer()
-  //     at <input>:257 
+  //     at <input>:256 
   // 
   //   + Plastic with robo saw & hammer
 

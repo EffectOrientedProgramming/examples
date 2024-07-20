@@ -6,15 +6,14 @@ import zio.Console.*
 
 import zio.test.*
 
-// TODO Better name for this function
-def testLogic(label: String) =
+def showLabel(label: String) =
   defer:
     printLine(s"Running $label").run
     assertCompletes
 
 def testCase(label: String) =
   test(s"case $label in a value"):
-    testLogic(label)
+    showLabel(label)
 
 val testA = testCase("A")
 val testB = testCase("B")
@@ -45,13 +44,13 @@ val flipFive =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipFive
-  // Heads
+  // Tails
+  // Tails
   // Tails
   // Tails
   // Heads
-  // Tails
-  // Num Heads = 2
-  // Result: 2
+  // Num Heads = 1
+  // Result: 1
 
 
 val nightlyBatch =
