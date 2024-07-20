@@ -181,7 +181,7 @@ object App3 extends helpers.ZIOAppDebug:
   // Bill called API [took 0s]
   // Bruce called API [took 1s]
   // Bill called API [took 2s]
-  // James called API [took 3s]
+  // James called API [took 2s]
   // Bruce called API [took 3s]
   // Bill called API [took 3s]
   // James called API [took 3s]
@@ -262,10 +262,10 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(285)
-  // Current requests: List(847, 285)
-  // Current requests: List(464, 847, 285)
-  // Current requests: List(567, 464, 847, 285)
+  // Current requests: List(477)
+  // Current requests: List(544, 477)
+  // Current requests: List(451, 544, 477)
+  // Current requests: List(941, 451, 544, 477)
   // Result: Crashed the server!!
 
 
@@ -293,16 +293,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(830)
-  // Current requests: List(940, 830)
-  // Current requests: List(989, 940, 830)
-  // Current requests: List(174, 212)
-  // Current requests: List(212)
-  // Current requests: List(289, 174, 212)
-  // Current requests: List(157, 289)
-  // Current requests: List(128, 157, 289)
-  // Current requests: List(1, 128, 157)
-  // Current requests: List(777)
+  // Current requests: List(299)
+  // Current requests: List(122, 299)
+  // Current requests: List(654, 122, 299)
+  // Current requests: List(816, 976)
+  // Current requests: List(976)
+  // Current requests: List(603, 816, 976)
+  // Current requests: List(793, 603)
+  // Current requests: List(940, 793, 603)
+  // Current requests: List(849, 940, 793)
+  // Current requests: List(333)
   // Result: All Requests Succeeded
 
 
@@ -564,7 +564,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     makeLotsOfRequests
-  // Result: Contract Breaches: 41
+  // Result: Contract Breaches: 58
 
 
 val hedged =
