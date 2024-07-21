@@ -30,9 +30,9 @@ object App0 extends helpers.ZIOAppDebug:
   def run =
     flipFive
   // Heads
+  // Heads
+  // Heads
   // Tails
-  // Heads
-  // Heads
   // Tails
   // Num Heads = 3
   // Result: 3
