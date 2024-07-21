@@ -18,7 +18,6 @@ def testCase(label: String) =
 val testA = testCase("A")
 val testB = testCase("B")
 
-import zio.{Console, *}
 val coinToss =
   defer:
     if Random.nextBoolean.run then
@@ -45,12 +44,12 @@ object App0 extends helpers.ZIOAppDebug:
   def run =
     flipFive
   // Tails
-  // Tails
-  // Tails
+  // Heads
+  // Heads
   // Tails
   // Heads
-  // Num Heads = 1
-  // Result: 1
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =
