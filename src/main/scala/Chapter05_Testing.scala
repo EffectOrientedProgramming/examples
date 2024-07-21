@@ -45,9 +45,9 @@ object App0 extends helpers.ZIOAppDebug:
     flipFive
   // Tails
   // Tails
+  // Heads
+  // Heads
   // Tails
-  // Heads
-  // Heads
   // Num Heads = 2
   // Result: 2
 
