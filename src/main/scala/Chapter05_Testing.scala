@@ -4,20 +4,6 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-import zio.test.*
-
-def showLabel(label: String) =
-  defer:
-    printLine(s"Running $label").run
-    assertCompletes
-
-def testCase(label: String) =
-  test(s"case $label in a value"):
-    showLabel(label)
-
-val testA = testCase("A")
-val testB = testCase("B")
-
 val coinToss =
   defer:
     if Random.nextBoolean.run then
@@ -43,13 +29,13 @@ val flipFive =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipFive
-  // Tails
+  // Heads
   // Tails
   // Heads
   // Heads
   // Tails
-  // Num Heads = 2
-  // Result: 2
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =

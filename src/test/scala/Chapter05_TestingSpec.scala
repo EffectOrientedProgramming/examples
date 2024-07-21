@@ -58,9 +58,16 @@ object Test4 extends ZIOSpecDefault:
 
 import zio.test.*
 
+def showLabel(label: String) =
+  defer:
+    printLine(s"Running $label").run
+    assertCompletes
+
+import zio.test.*
+
 val effectA = showLabel("A")
 
-object Test6 extends ZIOSpecDefault:
+object Test7 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -70,7 +77,7 @@ object Test6 extends ZIOSpecDefault:
   // + case A
 
 
-object Test7 extends ZIOSpecDefault:
+object Test8 extends ZIOSpecDefault:
   import zio.test.*
   
   val effectB = showLabel("B")
@@ -90,7 +97,16 @@ object Test7 extends ZIOSpecDefault:
   //   + case A in Suite
 
 
-object Test8 extends ZIOSpecDefault:
+import zio.test.test
+
+def testCase(label: String) =
+  test(s"case $label in a value"):
+    showLabel(label)
+
+val testA = testCase("A")
+val testB = testCase("B")
+
+object Test11 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -150,7 +166,7 @@ val testToolWithMaterial =
       nailer.intensity < material.brittleness,
     )
 
-object Test12 extends ZIOSpecDefault:
+object Test15 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -191,12 +207,12 @@ object Test12 extends ZIOSpecDefault:
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
   //     nailer = RoboNailer()
-  //     at <input>:256 
+  //     at <input>:259 
   // 
   //   + Plastic with robo saw & hammer
 
 
-object Test13 extends ZIOSpecDefault:
+object Test16 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -212,7 +228,7 @@ object Test13 extends ZIOSpecDefault:
   // + Capture output
 
 
-object Test14 extends ZIOSpecDefault:
+object Test17 extends ZIOSpecDefault:
   val spec =
     test("Substitute input"):
       defer:
@@ -225,7 +241,7 @@ object Test14 extends ZIOSpecDefault:
   // + Substitute input
 
 
-object Test15 extends ZIOSpecDefault:
+object Test18 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
@@ -251,7 +267,7 @@ val timeTravel =
   TestClock.adjust:
     24.hours
 
-object Test17 extends ZIOSpecDefault:
+object Test20 extends ZIOSpecDefault:
   import zio.test.*
   
   def spec =
