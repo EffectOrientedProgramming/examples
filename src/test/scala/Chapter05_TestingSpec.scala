@@ -203,22 +203,12 @@ object Test13 extends ZIOSpecDefault:
     test("Capture output"):
       defer:
         printLine("Morty").run
-        val out1 = TestConsole.output.run
         printLine("Beth").run
         val out2 = TestConsole.output.run
-        printLine(s"$out1\n****\n$out2").run
-        printLine(out2(1)).run
-        assertCompletes
+        assertTrue:
+          out2 == Vector("Morty\n", "Beth\n")
   // Morty
   // Beth
-  // Vector(Morty
-  // )
-  // ****
-  // Vector(Morty
-  // , Beth
-  // )
-  // Beth
-  // 
   // + Capture output
 
 
@@ -230,13 +220,8 @@ object Test14 extends ZIOSpecDefault:
           .feedLines("Morty", "Beth")
           .run
         val input = readLine.run
-        printLine(input).run
-        val output = TestConsole.output.run
-        printLine(output).run
-        assertTrue(input == "Morty")
-  // Morty
-  // Vector(Morty
-  // )
+        assertTrue:
+          input == "Morty"
   // + Substitute input
 
 
