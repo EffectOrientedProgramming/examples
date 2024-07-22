@@ -279,7 +279,9 @@ case class ClimateFailure(message: String)
 
 def check(t: Temperature) =
   defer:
-    printLine("Checking Temperature").run
+    printLine("Checking Temperature")
+      .orDie
+      .run
     if t.degrees > 0 then
       ZIO
         .succeed:
@@ -314,8 +316,8 @@ val weatherReport =
   weatherReportFaulty.catchAll:
     case exception: Exception =>
       printLine(exception.getMessage)
-//    case failure: ClimateFailure =>
-//      printLine(failure.message)
+    case failure: ClimateFailure =>
+      printLine(failure.message)
 
 object App9 extends helpers.ZIOAppDebug:
   override val bootstrap = tooCold
@@ -324,7 +326,7 @@ object App9 extends helpers.ZIOAppDebug:
     weatherReport
   // Getting Temperature
   // Checking Temperature
-  // Result: Defect: ClimateFailure
+  // **Too Cold**
 
 
 object App10 extends helpers.ZIOAppDebug:
