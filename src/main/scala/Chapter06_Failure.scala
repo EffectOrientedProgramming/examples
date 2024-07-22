@@ -4,7 +4,7 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-object ObjectX
+case object ObjectX
 
 object ExceptionX extends Exception:
   override def toString: String =
@@ -29,7 +29,7 @@ object App0 extends helpers.ZIOAppDebug:
       val r2 = failureTypes(2).flip.run
       printLine(s"r2: $r2").run
   // r0: String fail
-  // r1: repl.MdocSession$MdocApp$ObjectX$@51611e14
+  // r1: ObjectX
   // r2: ExceptionX
 
 
