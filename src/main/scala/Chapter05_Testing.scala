@@ -31,10 +31,10 @@ object App0 extends helpers.ZIOAppDebug:
   // Tails
   // Heads
   // Heads
+  // Tails
   // Heads
-  // Heads
-  // Num Heads = 4
-  // Result: 4
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =

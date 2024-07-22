@@ -269,10 +269,11 @@ object App6 extends helpers.ZIOAppDebug:
   // GPS Hardware Failure
 
 
-temperatureAppComplete.catchAll:
-  case ex: GpsException =>
-    ZIO.succeed:
-      "This cannot happen"
+def compilerError =
+    temperatureAppComplete.catchAll:
+      case ex: GpsException =>
+        ZIO.succeed:
+          "This cannot happen"
 
 case class ClimateFailure(message: String)
 
