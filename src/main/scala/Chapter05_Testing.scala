@@ -28,13 +28,13 @@ val flipFive =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipFive
+  // Tails
   // Heads
-  // Tails
-  // Tails
-  // Tails
-  // Tails
-  // Num Heads = 1
-  // Result: 1
+  // Heads
+  // Heads
+  // Heads
+  // Num Heads = 4
+  // Result: 4
 
 
 val nightlyBatch =

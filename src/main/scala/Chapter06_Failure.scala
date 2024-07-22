@@ -322,15 +322,6 @@ object App8 extends helpers.ZIOAppDebug:
   // **Too Cold**
 
 
-object App9 extends helpers.ZIOAppDebug:
-  override val bootstrap = gpsFailure
-  
-  def run =
-    weatherReport
-  // Getting Temperature
-  // GPS Failure
-
-
 // since this function isn't a ZIO, it has to get the scenario from a var which is set when the bootstrap is set
 def getTemperatureOrThrow: String =
   scenarioForNonZio match
@@ -341,7 +332,7 @@ def getTemperatureOrThrow: String =
     case _ =>
       "35 degrees"
 
-object App10 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
@@ -354,7 +345,7 @@ val safeTemperatureApp =
   ZIO.attempt:
     getTemperatureOrThrow
 
-object App11 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
