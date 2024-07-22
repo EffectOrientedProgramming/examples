@@ -300,13 +300,6 @@ object App7 extends helpers.ZIOAppDebug:
   // Result: ClimateFailure(**Too Cold**)
 
 
-object App8 extends helpers.ZIOAppDebug:
-  def run =
-    check(Temperature(15))
-  // Checking Temperature
-  // Result: Comfortable Temperature
-
-
 val weatherReportFaulty =
   defer:
     val result = getTemperature.run
@@ -319,7 +312,7 @@ val weatherReport =
     case failure: ClimateFailure =>
       printLine(failure.message)
 
-object App9 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   override val bootstrap = tooCold
   
   def run =
@@ -329,7 +322,7 @@ object App9 extends helpers.ZIOAppDebug:
   // **Too Cold**
 
 
-object App10 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   override val bootstrap = gpsFailure
   
   def run =
@@ -348,7 +341,7 @@ def getTemperatureOrThrow: String =
     case _ =>
       "35 degrees"
 
-object App11 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
@@ -361,7 +354,7 @@ val safeTemperatureApp =
   ZIO.attempt:
     getTemperatureOrThrow
 
-object App12 extends helpers.ZIOAppDebug:
+object App11 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =

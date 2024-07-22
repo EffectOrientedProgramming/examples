@@ -97,11 +97,11 @@ object App2 extends helpers.ZIOAppDebug:
       printLine("main.run complete").run
   // makeY is a zio.ZIO
   // makeY.run creating Y()
-  // makeY.run returned repl.MdocSession$MdocApp$Y@5a142487
+  // makeY.run returned repl.MdocSession$MdocApp$Y@1be54ab2
   // Y.layer is a zio.ZLayer
   // main is a zio.ZIO
   // makeY.run creating Y()
-  // y: repl.MdocSession$MdocApp$Y@71be3428
+  // y: repl.MdocSession$MdocApp$Y@2a91853d
   // Y.display
   // main.run complete
 
@@ -299,8 +299,8 @@ object App7 extends helpers.ZIOAppDebug:
   // Attempt 1: Failure(Friend Unreachable)
   // TODO Handle long line. 
   // Truncating for now: 
-  // repl.MdocSession$MdocApp$BreadStoreBought@77a8a14b
-  // Result: repl.MdocSession$MdocApp$BreadStoreBought@77a8
+  // repl.MdocSession$MdocApp$BreadStoreBought@33b04094
+  // Result: repl.MdocSession$MdocApp$BreadStoreBought@33b0
 
 
 def eatEatEat(retries: Int) =
