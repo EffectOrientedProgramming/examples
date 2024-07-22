@@ -8,7 +8,7 @@ trait Bread:
   def eat =
     printLine("Bread: Eating")
 
-case class BreadStoreBought() extends Bread
+class BreadStoreBought extends Bread
 
 object BreadStoreBought:
   val purchased =
@@ -26,7 +26,7 @@ object App0 extends helpers.ZIOAppDebug:
   // Bread: Eating
 
 
-case class X():
+class X:
   val display = printLine("X.display")
 
 val makeX =
@@ -54,7 +54,7 @@ object App1 extends helpers.ZIOAppDebug:
   // X.display
 
 
-case class Y():
+class Y:
   val display = printLine("Y.display")
 
 val makeY =
@@ -97,16 +97,16 @@ object App2 extends helpers.ZIOAppDebug:
       printLine("main.run complete").run
   // makeY is a zio.ZIO
   // makeY.run creating Y()
-  // makeY.run returned Y()
+  // makeY.run returned repl.MdocSession$MdocApp$Y@5485d93f
   // Y.layer is a zio.ZLayer
   // main is a zio.ZIO
   // makeY.run creating Y()
-  // y: Y()
+  // y: repl.MdocSession$MdocApp$Y@36283c28
   // Y.display
   // main.run complete
 
 
-case class Dough():
+class Dough:
   val letRise = printLine("Dough: rising")
 
 object Dough:
@@ -117,7 +117,7 @@ object Dough:
         Dough()
 
 trait HeatSource
-case class Oven() extends HeatSource
+class Oven extends HeatSource
 
 object Oven:
   val heated =
@@ -126,7 +126,7 @@ object Oven:
         printLine("Oven: Heated").run
         Oven()
 
-case class BreadHomeMade(
+class BreadHomeMade(
     heat: HeatSource,
     dough: Dough,
 ) extends Bread
@@ -174,7 +174,7 @@ object ToastA:
           ZIO.service[Bread].run,
         )
 
-case class Toaster() extends HeatSource
+class Toaster extends HeatSource
 
 object Toaster:
   val ready =
@@ -238,14 +238,14 @@ object App5 extends helpers.ZIOAppDebug:
       Dough.fresh,
       OvenSafe.heated,
     )
-  // Dough: Mixed
   // Oven: Heated
+  // Dough: Mixed
   // BreadHomeMade: Baked
   // Bread: Eating
   // Oven: Turning off
 
 
-case class BreadFromFriend() extends Bread()
+class BreadFromFriend extends Bread()
 
 object Friend:
   def forcedFailure(invocations: Int) =
@@ -297,7 +297,10 @@ object App7 extends helpers.ZIOAppDebug:
           .orElse:
             BreadStoreBought.purchased
   // Attempt 1: Failure(Friend Unreachable)
-  // Result: BreadStoreBought()
+  // TODO Handle long line. 
+  // Truncating for now: 
+  // repl.MdocSession$MdocApp$BreadStoreBought@34226955
+  // Result: repl.MdocSession$MdocApp$BreadStoreBought@3422
 
 
 def eatEatEat(retries: Int) =
