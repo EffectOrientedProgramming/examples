@@ -4,6 +4,77 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
+case object ObjectX
+case object ExceptionX extends Exception:
+  override def toString: String =
+    "ExceptionX"
+
+def failureTypes(n: Int) =
+  n match
+    case 0 =>
+      ZIO.fail("String fail")
+    case 1 =>
+      ZIO.fail(ObjectX)
+    case _ =>
+      ZIO.fail(ExceptionX)
+
+object App0 extends helpers.ZIOAppDebug:
+  def run =
+    defer:
+      val r0 = failureTypes(0).flip.run
+      printLine(s"r0: $r0").run
+      val r1 = failureTypes(1).flip.run
+      printLine(s"r1: $r1").run
+      val r2 = failureTypes(2).flip.run
+      printLine(s"r2: $r2").run
+  // r0: String fail
+  // r1: ObjectX
+  // r2: ExceptionX
+
+
+def testLimit(n: Int, limit: Int) =
+  println(s"testLimit($n, $limit)")
+  if n < limit then
+    ZIO.succeed(s"Passed $n")
+  else
+    println("n >= limit: testLimit failed")
+    ZIO.fail(s"Failed at $n")
+
+def shortCircuiting(n: Int) =
+  defer:
+    val r1 = testLimit(0, n).run
+    printLine(s"-> n: $n, r1: $r1").run
+    val r2 = testLimit(1, n).run
+    printLine(s"-> n: $n, r2: $r2").run
+    val r3 = testLimit(2, n).run
+    printLine(s"-> n: $n, r3: $r3").run
+
+object App1 extends helpers.ZIOAppDebug:
+  def run =
+    defer:
+      val result0 = shortCircuiting(0).flip.run
+      printLine(s"result0: $result0").run
+      val result1 = shortCircuiting(1).flip.run
+      printLine(s"result1: $result1").run
+      val result2 = shortCircuiting(2).flip.run
+      printLine(s"result2: $result2").run
+  // testLimit(0, 0)
+  // n >= limit: testLimit failed
+  // result0: Failed at 0
+  // testLimit(0, 1)
+  // -> n: 1, r1: Passed 0
+  // testLimit(1, 1)
+  // n >= limit: testLimit failed
+  // result1: Failed at 1
+  // testLimit(0, 2)
+  // -> n: 2, r1: Passed 0
+  // testLimit(1, 2)
+  // -> n: 2, r2: Passed 1
+  // testLimit(2, 2)
+  // n >= limit: testLimit failed
+  // result2: Failed at 2
+
+
 enum Scenario:
   case HappyPath,
     TooCold,
@@ -110,7 +181,7 @@ val getTemperature: ZIO[
           .run
     end match
 
-object App0 extends helpers.ZIOAppDebug:
+object App2 extends helpers.ZIOAppDebug:
   override val bootstrap = happyPath
   
   def run =
@@ -119,7 +190,7 @@ object App0 extends helpers.ZIOAppDebug:
   // Result: Temperature(35)
 
 
-object App1 extends helpers.ZIOAppDebug:
+object App3 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   // TODO Reduce output here
@@ -130,7 +201,7 @@ object App1 extends helpers.ZIOAppDebug:
   // Result: Defect: NetworkException: Network Failure
 
 
-object App2 extends helpers.ZIOAppDebug:
+object App4 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
@@ -141,7 +212,7 @@ object App2 extends helpers.ZIOAppDebug:
   // Result: Defect: NetworkException: Network Failure
 
 
-object App3 extends helpers.ZIOAppDebug:
+object App5 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
@@ -179,7 +250,7 @@ val temperatureAppComplete =
       ZIO.succeed:
         "GPS Hardware Failure"
 
-object App4 extends helpers.ZIOAppDebug:
+object App6 extends helpers.ZIOAppDebug:
   override val bootstrap = gpsFailure
   
   def run =
@@ -206,14 +277,14 @@ def check(t: Temperature) =
           ClimateFailure("**Too Cold**")
         .run
 
-object App5 extends helpers.ZIOAppDebug:
+object App7 extends helpers.ZIOAppDebug:
   def run =
     check(Temperature(-20))
   // Checking Temperature
   // Result: ClimateFailure(**Too Cold**)
 
 
-object App6 extends helpers.ZIOAppDebug:
+object App8 extends helpers.ZIOAppDebug:
   def run =
     check(Temperature(15))
   // Checking Temperature
@@ -236,7 +307,7 @@ val weatherReport =
       printLine:
         failure.message
 
-object App7 extends helpers.ZIOAppDebug:
+object App9 extends helpers.ZIOAppDebug:
   override val bootstrap = tooCold
   
   def run =
@@ -246,7 +317,7 @@ object App7 extends helpers.ZIOAppDebug:
   // **Too Cold**
 
 
-object App8 extends helpers.ZIOAppDebug:
+object App10 extends helpers.ZIOAppDebug:
   override val bootstrap = gpsFailure
   
   def run =
@@ -265,7 +336,7 @@ def getTemperatureOrThrow(): String =
     case _ =>
       "35 degrees"
 
-object App9 extends helpers.ZIOAppDebug:
+object App11 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
@@ -278,7 +349,7 @@ val safeTemperatureApp =
   ZIO.attempt:
     getTemperatureOrThrow()
 
-object App10 extends helpers.ZIOAppDebug:
+object App12 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
   def run =
