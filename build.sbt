@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   "dev.zio" %% "zio-config-magnolia" % "4.0.2",
   "dev.zio" %% "zio-config-typesafe" % "4.0.2",
   "dev.zio" %% "zio-cache" % "0.2.3",
-  "nl.vroste" %% "rezilience" % "0.9.4",
+  "nl.vroste" %% "rezilience" % "0.10.1",
   "dev.zio" %% "zio-test" % zioVersion % Test,
   "dev.zio" %% "zio-test-sbt" % zioVersion % Test,
 )
