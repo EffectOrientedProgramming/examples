@@ -29,7 +29,7 @@ object App0 extends helpers.ZIOAppDebug:
       val r2 = failureTypes(2).flip.run
       printLine(s"r2: $r2").run
   // r0: String fail
-  // r1: repl.MdocSession$MdocApp$ObjectX$@5aa5c593
+  // r1: repl.MdocSession$MdocApp$ObjectX$@ebb3f4d
   // r2: ExceptionX
 
 
