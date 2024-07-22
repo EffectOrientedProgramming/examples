@@ -98,41 +98,30 @@ object Test11 extends ZIOSpecDefault:
   //   + case B in a value
 
 
-trait Material:
-  val brittleness: Int
-
-case class Wood() extends Material:
-  val brittleness = 5
-
-case class Plastic() extends Material:
-  val brittleness = 10
+class Material(val brittleness: Int)
 
 object Material:
-  val wood    = ZLayer.succeed(Wood())
-  val plastic = ZLayer.succeed(Plastic())
+  val wood =
+    ZLayer.succeed(Material(brittleness = 5))
+  val plastic =
+    ZLayer
+      .succeed(Material(brittleness = 10))
 
-trait Tool:
-  val intensity: Int
-
-trait Saw extends Tool
-case class HandSaw() extends Saw:
-  val intensity = 4
-case class RoboSaw() extends Saw:
-  val intensity = 8
+class Saw(val intensity: Int)
 
 object Saw:
-  val hand    = ZLayer.succeed(HandSaw())
-  val robotic = ZLayer.succeed(RoboSaw())
+  val hand =
+    ZLayer.succeed(Saw(intensity = 4))
+  val robotic =
+    ZLayer.succeed(Saw(intensity = 8))
 
-trait Nailer extends Tool
-case class Hammer() extends Nailer:
-  val intensity = 4
-case class RoboNailer() extends Nailer:
-  val intensity = 11
+class Nailer(val intensity: Int)
 
 object Nailer:
-  val hand    = ZLayer.succeed(Hammer())
-  val robotic = ZLayer.succeed(RoboNailer())
+  val hand =
+    ZLayer.succeed(Nailer(intensity = 4))
+  val robotic =
+    ZLayer.succeed(Nailer(intensity = 11))
 
 val testToolWithMaterial =
   defer:
@@ -182,8 +171,8 @@ object Test15 extends ZIOSpecDefault:
   //     ✗ 11 was not less than 10
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
-  //     nailer = RoboNailer()
-  //     at <input>:299 
+  //     nailer = repl.MdocSession$MdocApp$Nailer@6525157
+  //     at <input>:277 
   // 
   //   + Plastic with robo saw & hammer
 
