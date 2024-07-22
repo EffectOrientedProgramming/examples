@@ -41,33 +41,38 @@ def testLimit(n: Int, limit: Int) =
     println("n >= limit: testLimit failed")
     ZIO.fail(s"Failed at $n")
 
-def shortCircuiting(n: Int) =
+def shortCircuit(lim: Int) =
   defer:
-    printLine(s"shortCircuiting($n)")
-    val r1 = testLimit(0, n).run
-    printLine(s"-> n: $n, r1: $r1").run
-    val r2 = testLimit(1, n).run
-    printLine(s"-> n: $n, r2: $r2").run
-    val r3 = testLimit(2, n).run
-    printLine(s"-> n: $n, r3: $r3").run
+    printLine(s"-- shortCircuit($lim) --")
+      .run
+    val r1 = testLimit(0, lim).run
+    printLine(s"-> n: $lim, r1: $r1").run
+    val r2 = testLimit(1, lim).run
+    printLine(s"-> n: $lim, r2: $r2").run
+    val r3 = testLimit(2, lim).run
+    printLine(s"-> n: $lim, r3: $r3").run
 
 object App1 extends helpers.ZIOAppDebug:
   def run =
     defer:
-      val result0 = shortCircuiting(0).flip.run
+      val result0 = shortCircuit(0).flip.run
       printLine(s"result0: $result0").run
-      val result1 = shortCircuiting(1).flip.run
+      val result1 = shortCircuit(1).flip.run
       printLine(s"result1: $result1").run
-      val result2 = shortCircuiting(2).flip.run
+      val result2 = shortCircuit(2).flip.run
       printLine(s"result2: $result2").run
+      shortCircuit(3).run // Succeeds
+  // -- shortCircuit(0) --
   // testLimit(0, 0)
   // n >= limit: testLimit failed
   // result0: Failed at 0
+  // -- shortCircuit(1) --
   // testLimit(0, 1)
   // -> n: 1, r1: Passed 0
   // testLimit(1, 1)
   // n >= limit: testLimit failed
   // result1: Failed at 1
+  // -- shortCircuit(2) --
   // testLimit(0, 2)
   // -> n: 2, r1: Passed 0
   // testLimit(1, 2)
@@ -75,6 +80,13 @@ object App1 extends helpers.ZIOAppDebug:
   // testLimit(2, 2)
   // n >= limit: testLimit failed
   // result2: Failed at 2
+  // -- shortCircuit(3) --
+  // testLimit(0, 3)
+  // -> n: 3, r1: Passed 0
+  // testLimit(1, 3)
+  // -> n: 3, r2: Passed 1
+  // testLimit(2, 3)
+  // -> n: 3, r3: Passed 2
 
 
 enum Scenario:
@@ -217,13 +229,13 @@ object App4 extends helpers.ZIOAppDebug:
 object App5 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
-  def run =
-    val safeGetTemperature =
-      getTemperature.catchAll:
-        case e: Exception =>
-          ZIO.succeed:
-            "Could not get temperature"
+  val safeGetTemperature =
+    getTemperature.catchAll:
+      case e: Exception =>
+        ZIO.succeed:
+          "Could not get temperature"
   
+  def run =
     defer:
       val result = safeGetTemperature.run
       printLine(result).run
@@ -231,17 +243,11 @@ object App5 extends helpers.ZIOAppDebug:
   // Could not get temperature
 
 
-val bad =
+val notExhaustive =
   getTemperature.catchAll:
     case ex: NetworkException =>
       ZIO.succeed:
         "Network Unavailable"
-// Pattern Match Exhaustivity Warning:
-//     case ex: NetworkException =>
-//     ^
-// match may not be exhaustive.
-//
-// It would fail on pattern case: _: GpsException
 
 val temperatureAppComplete =
   getTemperature.catchAll:
@@ -262,6 +268,11 @@ object App6 extends helpers.ZIOAppDebug:
   // Getting Temperature
   // GPS Hardware Failure
 
+
+temperatureAppComplete.catchAll:
+  case ex: GpsException =>
+    ZIO.succeed:
+      "This cannot happen"
 
 case class ClimateFailure(message: String)
 
@@ -293,8 +304,6 @@ object App8 extends helpers.ZIOAppDebug:
   // Result: Comfortable Temperature
 
 
-// TODO Subhead name
-
 val weatherReportFaulty =
   defer:
     val result = getTemperature.run
@@ -304,8 +313,8 @@ val weatherReport =
   weatherReportFaulty.catchAll:
     case exception: Exception =>
       printLine(exception.getMessage)
-    case failure: ClimateFailure =>
-      printLine(failure.message)
+//    case failure: ClimateFailure =>
+//      printLine(failure.message)
 
 object App9 extends helpers.ZIOAppDebug:
   override val bootstrap = tooCold
@@ -314,7 +323,7 @@ object App9 extends helpers.ZIOAppDebug:
     weatherReport
   // Getting Temperature
   // Checking Temperature
-  // **Too Cold**
+  // Result: Defect: ClimateFailure
 
 
 object App10 extends helpers.ZIOAppDebug:

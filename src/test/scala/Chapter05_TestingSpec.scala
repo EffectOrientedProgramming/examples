@@ -171,7 +171,7 @@ object Test15 extends ZIOSpecDefault:
   //     ✗ 11 was not less than 10
   //     nailer.intensity < material.brittleness,
   //     .intensity = 11
-  //     nailer = repl.MdocSession$MdocApp$Nailer@4e7c3310
+  //     nailer = repl.MdocSession$MdocApp$Nailer@34179e3c
   //     at <input>:277 
   // 
   //   + Plastic with robo saw & hammer
