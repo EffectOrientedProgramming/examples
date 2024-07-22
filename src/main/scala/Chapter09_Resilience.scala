@@ -262,10 +262,11 @@ object App4 extends helpers.ZIOAppDebug:
     .provide(DelicateResource.live)
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(975)
-  // Current requests: List(667, 975)
-  // Current requests: List(31, 667, 975)
-  // Current requests: List(916, 31, 667, 975)
+  // Current requests: List(792)
+  // Current requests: List(685, 792)
+  // Current requests: List(911, 685, 792)
+  // Current requests: List(532, 911, 685, 792)
+  // Current requests: List(766, 532, 911, 685, 792)
   // Result: Crashed the server!!
 
 
@@ -293,16 +294,16 @@ object App5 extends helpers.ZIOAppDebug:
     )
   // Delicate Resource constructed.
   // Do not make more than 3 concurrent requests!
-  // Current requests: List(383)
-  // Current requests: List(766, 383)
-  // Current requests: List(335, 766, 383)
-  // Current requests: List(312, 766)
-  // Current requests: List(918, 312)
-  // Current requests: List(257, 918, 312)
-  // Current requests: List(786, 257)
-  // Current requests: List(415, 786, 257)
-  // Current requests: List(498, 415, 786)
-  // Current requests: List(645, 498)
+  // Current requests: List(654)
+  // Current requests: List(265, 654)
+  // Current requests: List(962, 265, 654)
+  // Current requests: List(534, 962, 654)
+  // Current requests: List(389, 534, 654)
+  // Current requests: List(153, 389, 534)
+  // Current requests: List(467, 153)
+  // Current requests: List(338, 467, 153)
+  // Current requests: List(148, 338, 467)
+  // Current requests: List(421, 148)
   // Result: All Requests Succeeded
 
 
@@ -489,7 +490,7 @@ object App7 extends helpers.ZIOAppDebug:
   
       val made = numCalls.get.run
       s"Prevented: $prevented Made: $made"
-  // Result: Prevented: 75 Made: 66
+  // Result: Prevented: 74 Made: 67
 
 
 object Scenario:
@@ -563,7 +564,7 @@ object App8 extends helpers.ZIOAppDebug:
   
   def run =
     makeLotsOfRequests
-  // Result: Contract Breaches: 56
+  // Result: Contract Breaches: 57
 
 
 val hedged =

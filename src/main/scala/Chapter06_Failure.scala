@@ -4,8 +4,9 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-case object ObjectX
-case object ExceptionX extends Exception:
+object ObjectX
+
+object ExceptionX extends Exception:
   override def toString: String =
     "ExceptionX"
 
@@ -28,7 +29,7 @@ object App0 extends helpers.ZIOAppDebug:
       val r2 = failureTypes(2).flip.run
       printLine(s"r2: $r2").run
   // r0: String fail
-  // r1: ObjectX
+  // r1: repl.MdocSession$MdocApp$ObjectX$@415654fe
   // r2: ExceptionX
 
 
@@ -291,7 +292,7 @@ object App8 extends helpers.ZIOAppDebug:
   // Result: Comfortable Temperature
 
 
-// TODO Subheader name
+// TODO Subhead name
 
 val weatherReportFaulty =
   defer:
@@ -301,11 +302,9 @@ val weatherReportFaulty =
 val weatherReport =
   weatherReportFaulty.catchAll:
     case exception: Exception =>
-      printLine:
-        exception.getMessage
+      printLine(exception.getMessage)
     case failure: ClimateFailure =>
-      printLine:
-        failure.message
+      printLine(failure.message)
 
 object App9 extends helpers.ZIOAppDebug:
   override val bootstrap = tooCold
@@ -327,7 +326,7 @@ object App10 extends helpers.ZIOAppDebug:
 
 
 // since this function isn't a ZIO, it has to get the scenario from a var which is set when the bootstrap is set
-def getTemperatureOrThrow(): String =
+def getTemperatureOrThrow: String =
   scenarioForNonZio match
     case Some(Scenario.GPSFailure) =>
       throw GpsException()
@@ -341,13 +340,13 @@ object App11 extends helpers.ZIOAppDebug:
   
   def run =
     ZIO.succeed:
-      getTemperatureOrThrow()
+      getTemperatureOrThrow
   // Result: Defect: NetworkException: Network Failure
 
 
 val safeTemperatureApp =
   ZIO.attempt:
-    getTemperatureOrThrow()
+    getTemperatureOrThrow
 
 object App12 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
