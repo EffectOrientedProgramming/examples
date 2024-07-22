@@ -33,3 +33,4 @@ val out =
           ZIO.debug:
             "hello, world"
         .getOrThrow()
+// hello, world

@@ -13,7 +13,6 @@ val coinToss =
       printLine("Tails").run
       ZIO.fail("Tails").run
 
-import zio.{Console, *}
 val flipFive =
   defer:
     val numHeads =
@@ -29,13 +28,13 @@ val flipFive =
 object App0 extends helpers.ZIOAppDebug:
   def run =
     flipFive
-  // Tails
-  // Tails
   // Heads
   // Tails
+  // Heads
+  // Heads
   // Tails
-  // Num Heads = 1
-  // Result: 1
+  // Num Heads = 3
+  // Result: 3
 
 
 val nightlyBatch =

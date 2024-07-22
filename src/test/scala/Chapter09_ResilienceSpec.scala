@@ -6,8 +6,6 @@ import zio.Console.*
 import zio.test.*
 
 object Test0 extends ZIOSpecDefault:
-  import zio.test.*
-  
   def spec =
     test("long testZ"):
       defer:
@@ -20,7 +18,6 @@ object Test0 extends ZIOSpecDefault:
 
 
 object Test1 extends ZIOSpecDefault:
-  import zio.test.*
   def spec =
     test("flaky test!"):
       defer:
