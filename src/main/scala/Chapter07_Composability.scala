@@ -369,7 +369,7 @@ object App11 extends helpers.ZIOAppDebug:
   // Result: Defect: java.lang.Exception: No summary found
 
 
-case class NoSummaryAvailable(topic: String)
+class NoSummaryAvailable(topic: String)
 
 def summaryForZ(file: File, topic: String) =
   ZIO
@@ -492,7 +492,7 @@ object App17 extends helpers.ZIOAppDebug:
   // File - summaryFor(unicode)
   // File - * Threw Exception *
   // File - CLOSE
-  // Result: NoSummaryAvailable(unicode)
+  // Result: repl.MdocSession$MdocApp$NoSummaryAvail
 
 
 object App18 extends helpers.ZIOAppDebug:
@@ -583,8 +583,9 @@ object App22 extends helpers.ZIOAppDebug:
   // Wiki - articleFor(stock market)
   // AI - summarize - start
   // AI - summarize - end
+  // File - write: market is not rational
   // File - CLOSE
-  // Result: strict timeout
+  // Result: market is not rational
 
 
 val daily =
