@@ -43,6 +43,7 @@ def testLimit(n: Int, limit: Int) =
 
 def shortCircuiting(n: Int) =
   defer:
+    printLine(s"shortCircuiting($n)")
     val r1 = testLimit(0, n).run
     printLine(s"-> n: $n, r1: $r1").run
     val r2 = testLimit(1, n).run
