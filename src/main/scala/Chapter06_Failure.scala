@@ -4,20 +4,20 @@ import zio.*
 import zio.direct.*
 import zio.Console.*
 
-case object ObjectX
+case object FailObject
 
-object ExceptionX extends Exception:
+object FailException extends Exception:
   override def toString: String =
-    "ExceptionX"
+    "FailException"
 
 def failureTypes(n: Int) =
   n match
     case 0 =>
       ZIO.fail("String fail")
     case 1 =>
-      ZIO.fail(ObjectX)
+      ZIO.fail(FailObject)
     case _ =>
-      ZIO.fail(ExceptionX)
+      ZIO.fail(FailException)
 
 object App0 extends helpers.ZIOAppDebug:
   def run =
@@ -29,8 +29,8 @@ object App0 extends helpers.ZIOAppDebug:
       val r2 = failureTypes(2).flip.run
       printLine(s"r2: $r2").run
   // r0: String fail
-  // r1: ObjectX
-  // r2: ExceptionX
+  // r1: FailObject
+  // r2: FailException
 
 
 def testLimit(n: Int, limit: Int) =
@@ -207,8 +207,6 @@ object App2 extends helpers.ZIOAppDebug:
 object App3 extends helpers.ZIOAppDebug:
   override val bootstrap = networkFailure
   
-  // TODO Reduce output here
-  
   def run =
     getTemperature
   // Getting Temperature
@@ -232,15 +230,14 @@ object App5 extends helpers.ZIOAppDebug:
   val safeGetTemperature =
     getTemperature.catchAll:
       case e: Exception =>
-        ZIO.succeed:
-          "Could not get temperature"
+        ZIO.succeed("getTemperature failed")
   
   def run =
     defer:
       val result = safeGetTemperature.run
       printLine(result).run
   // Getting Temperature
-  // Could not get temperature
+  // getTemperature failed
 
 
 val notExhaustive =
@@ -275,8 +272,6 @@ def compilerError =
         ZIO.succeed:
           "This cannot happen"
 
-case class ClimateFailure(message: String)
-
 def check(t: Temperature) =
   defer:
     printLine("Checking Temperature")
@@ -292,6 +287,8 @@ def check(t: Temperature) =
         .fail:
           ClimateFailure("**Too Cold**")
         .run
+
+case class ClimateFailure(message: String)
 
 object App7 extends helpers.ZIOAppDebug:
   def run =
