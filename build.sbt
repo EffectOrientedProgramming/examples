@@ -3,8 +3,15 @@ name := "EffectOrientedProgramming"
 scalaVersion := "3.5.0"
 
 val zioVersion = "2.1.7"
+val kyoVersion = "0.11.0"
 
 libraryDependencies ++= Seq(
+  //"io.getkyo" %% "kyo-prelude"       % kyoVersion,
+  "io.getkyo" %% "kyo-core"          % kyoVersion,
+  "io.getkyo" %% "kyo-direct"        % kyoVersion,
+  "io.getkyo" %% "kyo-combinators"   % kyoVersion,
+  "org.slf4j" % "slf4j-simple" % "2.0.16",
+
   "dev.zio" %% "zio" % zioVersion,
   "dev.zio" %% "zio-direct" % "1.0.0-RC7",
   "dev.zio" %% "zio-config" % "4.0.2",
