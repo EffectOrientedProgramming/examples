@@ -2,17 +2,19 @@ package Chapter03_Superpowers_kyo
 
 import kyo.*
 
+import scala.reflect.ClassTag
+
 // start hidden
 enum Scenario:
   case HappyPath
   case NeverWorks
   case Slow
   case WorksOnTry(attempts: Int)
-  def apply(thing: String < (Env[Scenario] & IO & Abort[String] & Async & Var[Int])): Result[String, String] < Async =
+  // "injects" the scenario and a counter into the Effect
+  def apply[A: Flat, E >: Nothing, S](effect: A < (Env[Scenario] & Abort[E] & Var[Int] & S))(using ClassTag[E], Tag[E]): Result[E, A] < S =
     Env.run(this):
       Var.run(0):
-        thing
-    .handleAbort
+        Abort.run(effect)
 
 def saveUser(username: String): String < (Env[Scenario] & IO & Abort[String] & Async & Var[Int]) =
   defer:
@@ -33,11 +35,7 @@ def saveUser(username: String): String < (Env[Scenario] & IO & Abort[String] & A
           await(IO("User saved"))
 // end hidden
 
-val userName = "Morty"
-
-val effect0 =
-  saveUser:
-    userName
+val effect0 = saveUser("Morty")
 
 object App0 extends KyoApp:
   run:
