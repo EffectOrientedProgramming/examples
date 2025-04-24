@@ -1,7 +1,7 @@
-package Chapter03_Superpowers
+package Chapter03_Superpowers_Kyo
 
 import kyo.*
-import helpers.*
+import helpers_kyo.*
 
 val effect0: String < (Env[Scenario] & Abort[String] & IO & Async) =
   saveUser("Morty")
@@ -16,8 +16,8 @@ object App2 extends KyoApp:
     Scenario.WorksOnTry(attempts = 3):
       effect0
 
-val retryPolicy = Retry.Policy.default.limit(2)
-val effect1 = Retry[String](retryPolicy)(effect0)
+val schedule = Schedule.repeat(2)
+val effect1 = Retry[String](schedule)(effect0)
 
 object App3 extends KyoApp:
   run:

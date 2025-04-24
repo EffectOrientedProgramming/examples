@@ -1,25 +1,26 @@
 name := "EffectOrientedProgramming"
 
-scalaVersion := "3.5.0"
+scalaVersion := "3.6.4"
 
-val zioVersion = "2.1.9"
-val kyoVersion = "0.12.2"
+val zioVersion = "2.1.17"
+val kyoVersion = "0.18.0"
 
 libraryDependencies ++= Seq(
   "dev.zio" %% "zio" % zioVersion,
   "dev.zio" %% "zio-direct" % "1.0.0-RC7",
-  "dev.zio" %% "zio-config" % "4.0.2",
-  "dev.zio" %% "zio-config-magnolia" % "4.0.2",
-  "dev.zio" %% "zio-config-typesafe" % "4.0.2",
-  "dev.zio" %% "zio-cache" % "0.2.3",
-  "nl.vroste" %% "rezilience" % "0.10.3",
+  "dev.zio" %% "zio-http" % "3.2.0",
+  "dev.zio" %% "zio-config" % "4.0.4",
+  "dev.zio" %% "zio-config-magnolia" % "4.0.4",
+  "dev.zio" %% "zio-config-typesafe" % "4.0.4",
+  "dev.zio" %% "zio-cache" % "0.2.4",
+  "nl.vroste" %% "rezilience" % "0.10.4",
   "dev.zio" %% "zio-test" % zioVersion % Test,
   "dev.zio" %% "zio-test-sbt" % zioVersion % Test,
 
   "io.getkyo" %% "kyo-core"          % kyoVersion,
   "io.getkyo" %% "kyo-direct"        % kyoVersion,
   "io.getkyo" %% "kyo-combinators"   % kyoVersion,
-  "org.slf4j" % "slf4j-simple" % "2.0.16",
+  "org.slf4j" % "slf4j-simple" % "2.0.17",
 )
 
 fork := true
